@@ -53,7 +53,7 @@ return function(VisualTab)
         transparency = 75,
         color = Color3.fromRGB(255, 0, 0)
     }
-    local outlineColor = Color3.fromRGB(255,255,255)
+    local outlineColor = Color3.fromRGB(0,0,0)
     local chamsSettings = {
         hand = false,
         handColor = Color3.new(1, 1, 1),
