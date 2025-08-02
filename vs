@@ -6,13 +6,13 @@ return function(VisualTab)
         enabled = false,
         box = false,
         boxtype = "Default",
-        boxColor = Color3.new(1,1,1),
+        boxColor = Color3.new(1, 1, 1),
         name = false,
-        nameColor = Color3.new(1,1,1),
+        nameColor = Color3.new(1, 1, 1),
         weapon = false,
-        weaponColor = Color3.new(1,1,1),
+        weaponColor = Color3.new(1, 1, 1),
         distance = false,
-        distanceColor = Color3.new(1,1,1),
+        distanceColor = Color3.new(1, 1, 1),
         maxDistance = 5000,
         sleepcheck = false,
         aicheck = false
@@ -23,10 +23,10 @@ return function(VisualTab)
         name = false,
         weapon = false,
         distance = false,
-        arrowColor = Color3.fromRGB(255, 200, 60),
-        nameColor = Color3.new(1,1,1),
-        weaponColor = Color3.new(1,1,1),
-        distanceColor = Color3.new(1,1,1),
+        arrowColor = Color3.fromRGB(255,255,255),
+        nameColor = Color3.new(1, 1, 1),
+        weaponColor = Color3.new(1, 1, 1),
+        distanceColor = Color3.new(1, 1, 1),
         circleRadius = 140,
         arrowSize = 10,
         textSize = 14,
@@ -39,21 +39,21 @@ return function(VisualTab)
         name = false,
         distance = false,
         maxDistance = 1500,
-        corpse = {enabled = true, color = Color3.fromRGB(255,0,0)},
-        dropped = {enabled = true, color = Color3.fromRGB(204,153,255)},
-        atv = {enabled = true, color = Color3.fromRGB(61,255,200)},
-        stone = {enabled = true, color = Color3.fromRGB(72,72,72)},
-        nitrate = {enabled = true, color = Color3.fromRGB(248,248,248)},
-        iron = {enabled = true, color = Color3.fromRGB(191,183,116)},
-        copter = {enabled = false, color = Color3.fromRGB(0,255,255)},
-        car = {enabled = false, color = Color3.fromRGB(255,255,0)}
+        corpse = {enabled = true, color = Color3.fromRGB(255,255,255)},
+        dropped = {enabled = true, color = Color3.fromRGB(2255,255,255)},
+        atv = {enabled = true, color = Color3.fromRGB(255,255,255)},
+        stone = {enabled = true, color = Color3.fromRGB(255,255,255)},
+        nitrate = {enabled = true, color = Color3.fromRGB(255,255,255)},
+        iron = {enabled = true, color = Color3.fromRGB(255,255,255)},
+        copter = {enabled = false, color = Color3.fromRGB(255,255,255)},
+        car = {enabled = false, color = Color3.fromRGB(255,255,255)}
     }
     local safeZoneChamsSettings = {
         enabled = false,
         transparency = 75,
         color = Color3.fromRGB(255, 0, 0)
     }
-    local outlineColor = Color3.fromRGB(0,0,0)
+    local outlineColor = Color3.fromRGB(255,255,255)
     local chamsSettings = {
         hand = false,
         handColor = Color3.new(1, 1, 1),
@@ -64,7 +64,7 @@ return function(VisualTab)
     }
     local traceSettings = {
         enabled = false,
-        color = Color3.new(0,0.4,1),
+        color = Color3.new(1, 1, 1),
         mode = "Legit"
     }
     local logSettings = {
@@ -80,7 +80,7 @@ return function(VisualTab)
         noLeaves = false,
         clouds = true,
         cloudsColor = Color3.fromRGB(255,255,255),
-        ambient = Color3.fromRGB(120,120,120),
+        ambient = Color3.fromRGB(255,255,255),
         ambientEnabled = false,
         alwaysDay = false,
         removeFog = false,
@@ -325,21 +325,21 @@ local function GetPlayerWeaponType(char)
             if handModel and handModel:GetAttribute("name") then
                 return tostring(handModel:GetAttribute("name"))
             else
-                return "Hands"
+                return "None"
             end
         end
     end
-    if not PlayerTable then return "Hands" end
+    if not PlayerTable then return "None" end
     for _, entry in pairs(PlayerTable) do
         if entry and entry.model == char then
             if entry.equippedItem and entry.equippedItem.type and entry.equippedItem.type ~= "" then
                 return tostring(entry.equippedItem.type)
             else
-                return "Hands"
+                return "None"
             end
         end
     end
-    return "Hands"
+    return "None"
 end
 
 local function getScreenCenter()
@@ -460,7 +460,7 @@ RunService.RenderStepped:Connect(function()
         end
         if offscreenSettings.weapon then
             local weap = GetPlayerWeaponType(target.model)
-            lblStr = lblStr .. "\n" .. (weap or "Hands")
+            lblStr = lblStr .. "\n" .. (weap or "None")
         end
         if lblStr ~= "" then
             if not offscreenLabels[i] then
@@ -1151,21 +1151,21 @@ local function GetPlayerWeaponType(char)
             if handModel and handModel:GetAttribute("name") then
                 return tostring(handModel:GetAttribute("name"))
             else
-                return "Hands"
+                return "None"
             end
         end
     end
-    if not PlayerTable then return "Hands" end
+    if not PlayerTable then return "None" end
     for _, entry in pairs(PlayerTable) do
         if entry and entry.model == char then
             if entry.equippedItem and entry.equippedItem.type and entry.equippedItem.type ~= "" then
                 return tostring(entry.equippedItem.type)
             else
-                return "Hands"
+                return "None"
             end
         end
     end
-    return "Hands"
+    return "None"
 end
 
 local function SleepCheck(plrChar)
