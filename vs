@@ -86,16 +86,96 @@ return function(VisualTab)
         removeFog = false,
         skybox = "Default"
     }
-    local skyboxes = {
-        ["Default"] = {
-            SkyboxBk = "rbxassetid://401664839",
-            SkyboxDn = "rbxassetid://401664862",
-            SkyboxFt = "rbxassetid://401664936",
-            SkyboxLf = "rbxassetid://401664881",
-            SkyboxRt = "rbxassetid://401664929",
-            SkyboxUp = "rbxassetid://401664883"
-        }
-    }
+local skyboxes = {
+    ["Default"] = {
+        SkyboxBk = "rbxassetid://401664839",
+        SkyboxDn = "rbxassetid://401664862",
+        SkyboxFt = "rbxassetid://401664936",
+        SkyboxLf = "rbxassetid://401664881",
+        SkyboxRt = "rbxassetid://401664929",
+        SkyboxUp = "rbxassetid://401664883"
+    },
+    ["Spongebob"] = {
+        SkyboxBk = "rbxassetid://9076122431",
+        SkyboxDn = "rbxassetid://9076122431",
+        SkyboxFt = "rbxassetid://9076122431",
+        SkyboxLf = "rbxassetid://9076122431",
+        SkyboxRt = "rbxassetid://9076122431",
+        SkyboxUp = "rbxassetid://9076122431"
+    },
+    ["Darksky"] = {
+        SkyboxBk = "rbxassetid://116873078",
+        SkyboxDn = "rbxassetid://116873078",
+        SkyboxFt = "rbxassetid://116873078",
+        SkyboxLf = "rbxassetid://116873078",
+        SkyboxRt = "rbxassetid://116873078",
+        SkyboxUp = "rbxassetid://116873078"
+    },
+    ["Night Time Sky"] = {
+        SkyboxBk = "rbxassetid://466635038",
+        SkyboxDn = "rbxassetid://466635038",
+        SkyboxFt = "rbxassetid://466635038",
+        SkyboxLf = "rbxassetid://466635038",
+        SkyboxRt = "rbxassetid://466635038",
+        SkyboxUp = "rbxassetid://466635038"
+    },
+    ["Minecraft Sky"] = {
+        SkyboxBk = "rbxassetid://2758029221",
+        SkyboxDn = "rbxassetid://2758029221",
+        SkyboxFt = "rbxassetid://2758029221",
+        SkyboxLf = "rbxassetid://2758029221",
+        SkyboxRt = "rbxassetid://2758029221",
+        SkyboxUp = "rbxassetid://2758029221"
+    },
+    ["pink sky"] = {
+        SkyboxBk = "rbxassetid://10340396563",
+        SkyboxDn = "rbxassetid://10340396563",
+        SkyboxFt = "rbxassetid://10340396563",
+        SkyboxLf = "rbxassetid://10340396563",
+        SkyboxRt = "rbxassetid://10340396563",
+        SkyboxUp = "rbxassetid://10340396563"
+    },
+    ["Purple sky"] = {
+        SkyboxBk = "rbxassetid://5094389324",
+        SkyboxDn = "rbxassetid://5094389324",
+        SkyboxFt = "rbxassetid://5094389324",
+        SkyboxLf = "rbxassetid://5094389324",
+        SkyboxRt = "rbxassetid://5094389324",
+        SkyboxUp = "rbxassetid://5094389324"
+    },
+    ["FireWatch"] = {
+        SkyboxBk = "rbxassetid://8720439638",
+        SkyboxDn = "rbxassetid://8720439638",
+        SkyboxFt = "rbxassetid://8720439638",
+        SkyboxLf = "rbxassetid://8720439638",
+        SkyboxRt = "rbxassetid://8720439638",
+        SkyboxUp = "rbxassetid://8720439638"
+    },
+    ["c00lkidd Skybox"] = {
+        SkyboxBk = "rbxassetid://133973334152130",
+        SkyboxDn = "rbxassetid://133973334152130",
+        SkyboxFt = "rbxassetid://133973334152130",
+        SkyboxLf = "rbxassetid://133973334152130",
+        SkyboxRt = "rbxassetid://133973334152130",
+        SkyboxUp = "rbxassetid://133973334152130"
+    },
+    ["Nyan Cat"] = {
+        SkyboxBk = "rbxassetid://57754921",
+        SkyboxDn = "rbxassetid://57754921",
+        SkyboxFt = "rbxassetid://57754921",
+        SkyboxLf = "rbxassetid://57754921",
+        SkyboxRt = "rbxassetid://57754921",
+        SkyboxUp = "rbxassetid://57754921"
+    },
+    ["scary skybox"] = {
+        SkyboxBk = "rbxassetid://4868486619",
+        SkyboxDn = "rbxassetid://4868486619",
+        SkyboxFt = "rbxassetid://4868486619",
+        SkyboxLf = "rbxassetid://4868486619",
+        SkyboxRt = "rbxassetid://4868486619",
+        SkyboxUp = "rbxassetid://4868486619"
+    },
+}
 
 print("[UI] Начинается блок World UI")
     -- === UI ===
@@ -194,11 +274,21 @@ local ambientColorPicker = ambientToggle:AddColorPicker("AmbientColor", {Default
 
 local alwaysDayToggle = WorldBox:AddToggle("AlwaysDay", {Text = "Always Day", Default = worldVisuals.alwaysDay, Callback = function(val) worldVisuals.alwaysDay = val end})
 local removeFogToggle = WorldBox:AddToggle("RemoveFog", {Text = "Remove Fog", Default = worldVisuals.removeFog, Callback = function(val) worldVisuals.removeFog = val end})
-    WorldBox:AddDropdown("SkyboxSelect", {Text = "Skybox", Values = {"Default"}, Default = "Default", Callback = function(val) worldVisuals.skybox = val; setSkybox(val) end})
+    WorldBox:AddDropdown("SkyboxSelect", {
+    Text = "Skybox",
+    Values = {"Default", "Spongebob", "Darksky", "Night Time Sky", "Minecraft Sky", "pink sky", "Purple sky", "FireWatch", "c00lkidd Skybox", "Nyan Cat", "scary skybox"},
+    Default = "Default",
+    Callback = function(val) worldVisuals.skybox = val; setSkybox(val) end
+})
     WorldBox:AddToggle("BulletTrace", {Text = "Bullet Trace", Default = false, Callback = function(val) traceSettings.enabled = val end}):AddColorPicker("BulletTraceColor", {Default = Color3.new(0,0.4,1), Title = "Bullet Trace Color", Callback = function(val) traceSettings.color = val end})
     WorldBox:AddDropdown("BulletTraceMode", {Values = {"Legit", "Neon"}, Default = "Legit", Text = "Bullet Trace Mode", Callback = function(val) traceSettings.mode = val end})
     WorldBox:AddToggle("HitSound", {Text = "Hit sound", Default = false, Callback = function(val) hitSoundSettings.enabled = val end})
-    WorldBox:AddDropdown("HitSoundType", {Values = {"Rust"}, Default = "Rust", Text = "Hit sound type", Callback = function(val) hitSoundSettings.soundType = val end})
+    WorldBox:AddDropdown("HitSoundType", {
+    Values = {"Rust", "Skeet", "Sonic", "Sonic Checkpoint", "Oof", "Windows XP Error", "Punch", "Buble", "byebye", "cowbell"},
+    Default = "Rust",
+    Text = "Hit sound type",
+    Callback = function(val) hitSoundSettings.soundType = val end
+})
     WorldBox:AddToggle("Log", {Text = "Log", Default = false, Callback = function(val) logSettings.enabled = val; if setupLogHooks then setupLogHooks() end end})
     WorldBox:AddDropdown("LogTypes", {Values = {"Kill log", "Hit log"}, Multi = true, Default = {"Kill log", "Hit log"}, Text = "Log Types", Callback = function(val) logSettings.types = {}; for k,v in pairs(val) do logSettings.types[k] = v end end})
 -- !!! ВАЖНО: подписка на события colorpickers только ОДИН РАЗ, после их создания !!!
@@ -961,18 +1051,34 @@ local hitSoundList = {
     "PlayerHitHeadshot_Muffled",
     "PlayerHit_Muffled"
 }
-local rustSoundId = "rbxassetid://18805676593"
+
+-- Таблица с id и названиями hit sound
+local hitSoundIds = {
+    ["Rust"] = "rbxassetid://18805676593",
+    ["Skeet"] = "rbxassetid://83717596220569",
+    ["Sonic"] = "rbxassetid://6817149233",
+    ["Sonic Checkpoint"] = "rbxassetid://6817150445",
+    ["Oof"] = "rbxassetid://79348298352567",
+    ["Windows XP Error"] = "rbxassetid://9066167010",
+    ["Punch"] = "rbxassetid://9117969687",
+    ["Buble"] = "rbxassetid://9114176282",
+    ["byebye"] = "rbxassetid://70888261086432",
+    ["cowbell"] = "rbxassetid://99351661703869",
+}
+
 local originalHitSoundIds = {}
+
 local function updateHitSounds()
     local soundService = game:GetService("SoundService")
+    local assetId = hitSoundIds[hitSoundSettings.soundType] or hitSoundIds["Rust"]
     for _, name in ipairs(hitSoundList) do
         local sound = soundService:FindFirstChild(name)
         if sound and sound:IsA("Sound") then
-            if hitSoundSettings.enabled and hitSoundSettings.soundType == "Rust" then
+            if hitSoundSettings.enabled and assetId then
                 if not originalHitSoundIds[name] then
                     originalHitSoundIds[name] = sound.SoundId
                 end
-                sound.SoundId = rustSoundId
+                sound.SoundId = assetId
             else
                 if originalHitSoundIds[name] then
                     sound.SoundId = originalHitSoundIds[name]
@@ -982,10 +1088,10 @@ local function updateHitSounds()
         end
     end
 end
-RunService.RenderStepped:Connect(function()
+
+runservice.RenderStepped:Connect(function()
     updateHitSounds()
 end)
-
 ------------------------------------------------------------
 -- LOGS (Kill/Hit)
 ------------------------------------------------------------
