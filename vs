@@ -295,7 +295,13 @@ return function(VisualTab)
     WorldBox:AddToggle("Log",{Text="Log",Default=false,Callback=function(val)logSettings.enabled=val; if setupLogHooks then setupLogHooks() end end})
     WorldBox:AddDropdown("LogTypes",{Values={"Kill log","Hit log"},Multi=true,Default={"Kill log","Hit log"},Text="Log Types",Callback=function(val)logSettings.types={};for k,v in pairs(val) do logSettings.types[k]=v end end})
 
-    -- === CHAMS UI с динамическим обновлением при смене режима ===
+    -- === CHAMS UI с корректным сбросом при смене режима ===
+    local function resetHandChamsNow()
+        if resetHandChams then resetHandChams() end
+    end
+    local function resetItemChamsNow()
+        if resetItemChams then resetItemChams() end
+    end
     local function updateHandChamsNow()
         if updateHandChams then updateHandChams() end
     end
@@ -308,14 +314,16 @@ return function(VisualTab)
         Default = chamsSettings.hand,
         Callback = function(val)
             chamsSettings.hand = val
-            updateHandChamsNow()
+            resetHandChamsNow()
+            if val then updateHandChamsNow() end
         end
     })
     local handColorPicker = handChamsToggle:AddColorPicker("HandChamsColor", {
         Default = chamsSettings.handColor,
         Callback = function(val)
             chamsSettings.handColor = val
-            updateHandChamsNow()
+            resetHandChamsNow()
+            if chamsSettings.hand then updateHandChamsNow() end
         end
     })
     local handOutlineColorPicker
@@ -332,7 +340,8 @@ return function(VisualTab)
                         Text = "Hand Outline Color",
                         Callback = function(color)
                             chamsSettings.handOutlineColor = color
-                            updateHandChamsNow()
+                            resetHandChamsNow()
+                            if chamsSettings.hand then updateHandChamsNow() end
                         end
                     })
                 end
@@ -340,6 +349,7 @@ return function(VisualTab)
             else
                 if handOutlineColorPicker then handOutlineColorPicker:SetVisible(false) end
             end
+            resetHandChamsNow()
             if chamsSettings.hand then updateHandChamsNow() end
         end
     })
@@ -350,14 +360,16 @@ return function(VisualTab)
         Default = chamsSettings.item,
         Callback = function(val)
             chamsSettings.item = val
-            updateItemChamsNow()
+            resetItemChamsNow()
+            if val then updateItemChamsNow() end
         end
     })
     local itemColorPicker = itemChamsToggle:AddColorPicker("ItemChamsColor", {
         Default = chamsSettings.itemColor,
         Callback = function(val)
             chamsSettings.itemColor = val
-            updateItemChamsNow()
+            resetItemChamsNow()
+            if chamsSettings.item then updateItemChamsNow() end
         end
     })
     local itemOutlineColorPicker
@@ -374,7 +386,8 @@ return function(VisualTab)
                         Text = "Item Outline Color",
                         Callback = function(color)
                             chamsSettings.itemOutlineColor = color
-                            updateItemChamsNow()
+                            resetItemChamsNow()
+                            if chamsSettings.item then updateItemChamsNow() end
                         end
                     })
                 end
@@ -382,6 +395,7 @@ return function(VisualTab)
             else
                 if itemOutlineColorPicker then itemOutlineColorPicker:SetVisible(false) end
             end
+            resetItemChamsNow()
             if chamsSettings.item then updateItemChamsNow() end
         end
     })
