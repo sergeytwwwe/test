@@ -40,7 +40,7 @@ return function(VisualTab)
         distance = false,
         maxDistance = 1500,
         corpse = {enabled = true, color = Color3.fromRGB(255,255,255)},
-        dropped = {enabled = true, color = Color3.fromRGB(2255,255,255)},
+        dropped = {enabled = true, color = Color3.fromRGB(255,255,255)},
         atv = {enabled = true, color = Color3.fromRGB(255,255,255)},
         stone = {enabled = true, color = Color3.fromRGB(255,255,255)},
         nitrate = {enabled = true, color = Color3.fromRGB(255,255,255)},
@@ -86,7 +86,82 @@ return function(VisualTab)
         removeFog = false,
         skybox = "Default"
     }
-    local skyboxes = {["Default"]={SkyboxBk="rbxassetid://401664839",SkyboxDn="rbxassetid://401664862",SkyboxFt="rbxassetid://401664936",SkyboxLf="rbxassetid://401664881",SkyboxRt="rbxassetid://401664929",SkyboxUp="rbxassetid://401664883"},["Spongebob"]={SkyboxBk="rbxassetid://9076122431",SkyboxDn="rbxassetid://9076122431",SkyboxFt="rbxassetid://9076122431",SkyboxLf="rbxassetid://9076122431",SkyboxRt="rbxassetid://9076122431",SkyboxUp="rbxassetid://9076122431"},["Darksky"]={SkyboxBk="rbxassetid://116873078",SkyboxDn="rbxassetid://116873078",SkyboxFt="rbxassetid://116873078",SkyboxLf="rbxassetid://116873078",SkyboxRt="rbxassetid://116873078",SkyboxUp="rbxassetid://116873078"},["Night Time Sky"]={SkyboxBk="rbxassetid://466635038",SkyboxDn="rbxassetid://466635038",SkyboxFt="rbxassetid://466635038",SkyboxLf="rbxassetid://466635038",SkyboxRt="rbxassetid://466635038",SkyboxUp="rbxassetid://466635038"},["Minecraft Sky"]={SkyboxBk="rbxassetid://2758029221",SkyboxDn="rbxassetid://2758029221",SkyboxFt="rbxassetid://2758029221",SkyboxLf="rbxassetid://2758029221",SkyboxRt="rbxassetid://2758029221",SkyboxUp="rbxassetid://2758029221"},["pink sky"]={SkyboxBk="rbxassetid://10340396563",SkyboxDn="rbxassetid://10340396563",SkyboxFt="rbxassetid://10340396563",SkyboxLf="rbxassetid://10340396563",SkyboxRt="rbxassetid://10340396563",SkyboxUp="rbxassetid://10340396563"},["Purple sky"]={SkyboxBk="rbxassetid://5094389324",SkyboxDn="rbxassetid://5094389324",SkyboxFt="rbxassetid://5094389324",SkyboxLf="rbxassetid://5094389324",SkyboxRt="rbxassetid://5094389324",SkyboxUp="rbxassetid://5094389324"},["FireWatch"]={SkyboxBk="rbxassetid://8720439638",SkyboxDn="rbxassetid://8720439638",SkyboxFt="rbxassetid://8720439638",SkyboxLf="rbxassetid://8720439638",SkyboxRt="rbxassetid://8720439638",SkyboxUp="rbxassetid://8720439638"},["c00lkidd Skybox"]={SkyboxBk="rbxassetid://133973334152130",SkyboxDn="rbxassetid://133973334152130",SkyboxFt="rbxassetid://133973334152130",SkyboxLf="rbxassetid://133973334152130",SkyboxRt="rbxassetid://133973334152130",SkyboxUp="rbxassetid://133973334152130"},["Nyan Cat"]={SkyboxBk="rbxassetid://57754921",SkyboxDn="rbxassetid://57754921",SkyboxFt="rbxassetid://57754921",SkyboxLf="rbxassetid://57754921",SkyboxRt="rbxassetid://57754921",SkyboxUp="rbxassetid://57754921"},["scary skybox"]={SkyboxBk="rbxassetid://4868486619",SkyboxDn="rbxassetid://4868486619",SkyboxFt="rbxassetid://4868486619",SkyboxLf="rbxassetid://4868486619",SkyboxRt="rbxassetid://4868486619",SkyboxUp="rbxassetid://4868486619"}}
+    local skyboxes = {
+        ["Default"] = {SkyboxBk="rbxassetid://401664839",SkyboxDn="rbxassetid://401664862",SkyboxFt="rbxassetid://401664936",SkyboxLf="rbxassetid://401664881",SkyboxRt="rbxassetid://401664929",SkyboxUp="rbxassetid://401664883"},
+        ["Spongebob"] = {SkyboxBk="rbxassetid://9076122431",SkyboxDn="rbxassetid://9076122431",SkyboxFt="rbxassetid://9076122431",SkyboxLf="rbxassetid://9076122431",SkyboxRt="rbxassetid://9076122431",SkyboxUp="rbxassetid://9076122431"},
+        ["Darksky"] = {SkyboxBk="rbxassetid://116873078",SkyboxDn="rbxassetid://116873078",SkyboxFt="rbxassetid://116873078",SkyboxLf="rbxassetid://116873078",SkyboxRt="rbxassetid://116873078",SkyboxUp="rbxassetid://116873078"},
+        ["Night Time Sky"] = {SkyboxBk="rbxassetid://466635038",SkyboxDn="rbxassetid://466635038",SkyboxFt="rbxassetid://466635038",SkyboxLf="rbxassetid://466635038",SkyboxRt="rbxassetid://466635038",SkyboxUp="rbxassetid://466635038"},
+        ["Minecraft Sky"] = {SkyboxBk="rbxassetid://2758029221",SkyboxDn="rbxassetid://2758029221",SkyboxFt="rbxassetid://2758029221",SkyboxLf="rbxassetid://2758029221",SkyboxRt="rbxassetid://2758029221",SkyboxUp="rbxassetid://2758029221"},
+        ["pink sky"] = {SkyboxBk="rbxassetid://10340396563",SkyboxDn="rbxassetid://10340396563",SkyboxFt="rbxassetid://10340396563",SkyboxLf="rbxassetid://10340396563",SkyboxRt="rbxassetid://10340396563",SkyboxUp="rbxassetid://10340396563"},
+        ["Purple sky"] = {SkyboxBk="rbxassetid://5094389324",SkyboxDn="rbxassetid://5094389324",SkyboxFt="rbxassetid://5094389324",SkyboxLf="rbxassetid://5094389324",SkyboxRt="rbxassetid://5094389324",SkyboxUp="rbxassetid://5094389324"},
+        ["FireWatch"] = {SkyboxBk="rbxassetid://8720439638",SkyboxDn="rbxassetid://8720439638",SkyboxFt="rbxassetid://8720439638",SkyboxLf="rbxassetid://8720439638",SkyboxRt="rbxassetid://8720439638",SkyboxUp="rbxassetid://8720439638"},
+        ["c00lkidd Skybox"] = {SkyboxBk="rbxassetid://133973334152130",SkyboxDn="rbxassetid://133973334152130",SkyboxFt="rbxassetid://133973334152130",SkyboxLf="rbxassetid://133973334152130",SkyboxRt="rbxassetid://133973334152130",SkyboxUp="rbxassetid://133973334152130"},
+        ["Nyan Cat"] = {SkyboxBk="rbxassetid://57754921",SkyboxDn="rbxassetid://57754921",SkyboxFt="rbxassetid://57754921",SkyboxLf="rbxassetid://57754921",SkyboxRt="rbxassetid://57754921",SkyboxUp="rbxassetid://57754921"},
+        ["scary skybox"] = {SkyboxBk="rbxassetid://4868486619",SkyboxDn="rbxassetid://4868486619",SkyboxFt="rbxassetid://4868486619",SkyboxLf="rbxassetid://4868486619",SkyboxRt="rbxassetid://4868486619",SkyboxUp="rbxassetid://4868486619"}
+    }
+
+    -- === HIT SOUND LOGIC ===
+    local hitSoundList = {
+        "PlayerHit",
+        "PlayerHit2",
+        "PlayerHit2_Muffled",
+        "PlayerHitHeadshot",
+        "PlayerHitHeadshot_Muffled",
+        "PlayerHit_Muffled"
+    }
+    local hitSoundIds = {
+        ["Rust"] = "rbxassetid://18805676593",
+        ["Skeet"] = "rbxassetid://83717596220569",
+        ["Sonic"] = "rbxassetid://6817149233",
+        ["Sonic Checkpoint"] = "rbxassetid://6817150445",
+        ["Oof"] = "rbxassetid://79348298352567",
+        ["Windows XP Error"] = "rbxassetid://9066167010",
+        ["Punch"] = "rbxassetid://9117969687",
+        ["Buble"] = "rbxassetid://9114176282",
+        ["byebye"] = "rbxassetid://70888261086432",
+        ["cowbell"] = "rbxassetid://99351661703869"
+    }
+    local originalHitSoundIds = {}
+    local soundService = game:GetService("SoundService")
+    local function updateHitSounds()
+        local assetId = hitSoundIds[hitSoundSettings.soundType] or hitSoundIds["Rust"]
+        for _, name in ipairs(hitSoundList) do
+            local sound = soundService:FindFirstChild(name)
+            if sound and sound:IsA("Sound") then
+                if hitSoundSettings.enabled and assetId then
+                    if not originalHitSoundIds[name] then
+                        originalHitSoundIds[name] = sound.SoundId
+                    end
+                    sound.SoundId = assetId
+                    sound.Volume = 1
+                else
+                    if originalHitSoundIds[name] then
+                        sound.SoundId = originalHitSoundIds[name]
+                        originalHitSoundIds[name] = nil
+                    end
+                end
+            end
+        end
+    end
+    game:GetService("RunService").RenderStepped:Connect(updateHitSounds)
+
+    -- === SKYBOX LOGIC ===
+    local Lighting = game:GetService("Lighting")
+    local function setSkybox(name)
+        for _,v in pairs(Lighting:GetChildren()) do
+            if v:IsA("Sky") then
+                v:Destroy()
+            end
+        end
+        local sb = skyboxes[name]
+        if sb then
+            local sky = Instance.new("Sky")
+            for k,v in pairs(sb) do
+                sky[k] = v
+            end
+            sky.Parent = Lighting
+        end
+    end
 
     -- === UI ===
     local EspBox = VisualTab:AddLeftGroupbox("ESP", "box")
@@ -140,7 +215,30 @@ return function(VisualTab)
     WorldBox:AddDropdown("HitSoundType",{Values={"Rust","Skeet","Sonic","Sonic Checkpoint","Oof","Windows XP Error","Punch","Buble","byebye","cowbell"},Default="Rust",Text="Hit sound type",Callback=function(val)hitSoundSettings.soundType=val; updateHitSounds() end})
     WorldBox:AddToggle("Log",{Text="Log",Default=false,Callback=function(val)logSettings.enabled=val; if setupLogHooks then setupLogHooks() end end})
     WorldBox:AddDropdown("LogTypes",{Values={"Kill log","Hit log"},Multi=true,Default={"Kill log","Hit log"},Text="Log Types",Callback=function(val)logSettings.types={};for k,v in pairs(val) do logSettings.types[k]=v end end})
+
+    -- CHAMS UI
+    local handChamsToggle = ChamsBox:AddToggle("HandChams",{Text="Hand Chams",Default=chamsSettings.hand,Callback=function(val)chamsSettings.hand=val end})
+    handChamsToggle:AddColorPicker("HandChamsColor",{Default=chamsSettings.handColor,Callback=function(val)chamsSettings.handColor=val end})
+    ChamsBox:AddDropdown("HandChamsMat",{Values={"ForceField","Neon"},Default="ForceField",Text="Hand Material",Callback=function(val)chamsSettings.handMat=val end})
+    local itemChamsToggle = ChamsBox:AddToggle("ItemChams",{Text="Item Chams",Default=chamsSettings.item,Callback=function(val)chamsSettings.item=val end})
+    itemChamsToggle:AddColorPicker("ItemChamsColor",{Default=chamsSettings.itemColor,Callback=function(val)chamsSettings.itemColor=val end})
+    ChamsBox:AddDropdown("ItemChamsMat",{Values={"ForceField","Neon"},Default="ForceField",Text="Item Material",Callback=function(val)chamsSettings.itemMat=val end})
+
+    -- SAFE ZONE CHAMS UI
+    local szChamsToggle = SafeZoneBox:AddToggle("SafeZoneChams",{Text="Safe zone chams",Default=safeZoneChamsSettings.enabled,Callback=function(val)safeZoneChamsSettings.enabled=val end})
+    szChamsToggle:AddColorPicker("SafeZoneChamsColor",{Default=safeZoneChamsSettings.color,Callback=function(val)safeZoneChamsSettings.color=val end})
+    SafeZoneBox:AddSlider("SafeZoneChamsTransparency",{Text="Transparency",Default=safeZoneChamsSettings.transparency,Min=1,Max=100,Rounding=0,Callback=function(val)safeZoneChamsSettings.transparency=val end})
+
     -- !!! ВАЖНО: подписка на события colorpickers только ОДИН РАЗ, после их создания !!!
+    cloudsColorPicker:OnChanged(function(val)
+        worldVisuals.cloudsColor = val
+        if worldVisuals.clouds then
+            setSkybox(worldVisuals.skybox)
+        end
+    end)
+    ambientColorPicker:OnChanged(function(val)
+        worldVisuals.ambient = val
+    end)
 
     -- ESP UI
     EspBox:AddToggle("espEnabled",{Text="Enabled",Default=espSettings.enabled,Callback=function(val)espSettings.enabled=val end})
@@ -179,53 +277,6 @@ return function(VisualTab)
     carToggle:AddColorPicker("objectEspCarColor",{Default=objectEspSettings.car.color,Callback=function(val)objectEspSettings.car.color=val end})
     ObjectEspBox:AddSlider("objectEspMaxDistance",{Text="Max Distance",Default=objectEspSettings.maxDistance,Min=200,Max=3000,Rounding=0,Callback=function(val)objectEspSettings.maxDistance=val end})
 
-    -- CHAMS UI
-    local handChamsToggle = ChamsBox:AddToggle("HandChams",{Text="Hand Chams",Default=chamsSettings.hand,Callback=function(val)chamsSettings.hand=val end})
-    handChamsToggle:AddColorPicker("HandChamsColor",{Default=chamsSettings.handColor,Callback=function(val)chamsSettings.handColor=val end})
-    ChamsBox:AddDropdown("HandChamsMat",{Values={"ForceField","Neon"},Default="ForceField",Text="Hand Material",Callback=function(val)chamsSettings.handMat=val end})
-    local itemChamsToggle = ChamsBox:AddToggle("ItemChams",{Text="Item Chams",Default=chamsSettings.item,Callback=function(val)chamsSettings.item=val end})
-    itemChamsToggle:AddColorPicker("ItemChamsColor",{Default=chamsSettings.itemColor,Callback=function(val)chamsSettings.itemColor=val end})
-    ChamsBox:AddDropdown("ItemChamsMat",{Values={"ForceField","Neon"},Default="ForceField",Text="Item Material",Callback=function(val)chamsSettings.itemMat=val end})
-
-    -- SAFE ZONE CHAMS UI
-    local szChamsToggle = SafeZoneBox:AddToggle("SafeZoneChams",{Text="Safe zone chams",Default=safeZoneChamsSettings.enabled,Callback=function(val)safeZoneChamsSettings.enabled=val end})
-    szChamsToggle:AddColorPicker("SafeZoneChamsColor",{Default=safeZoneChamsSettings.color,Callback=function(val)safeZoneChamsSettings.color=val end})
-    SafeZoneBox:AddSlider("SafeZoneChamsTransparency",{Text="Transparency",Default=safeZoneChamsSettings.transparency,Min=1,Max=100,Rounding=0,Callback=function(val)safeZoneChamsSettings.transparency=val end})
-
-    -- HIT SOUND LOGIC
-    local hitSoundList = {"PlayerHit","PlayerHit2","PlayerHit2_Muffled","PlayerHitHeadshot","PlayerHitHeadshot_Muffled","PlayerHit_Muffled"}
-    local hitSoundIds = {["Rust"]="rbxassetid://18805676593",["Skeet"]="rbxassetid://83717596220569",["Sonic"]="rbxassetid://6817149233",["Sonic Checkpoint"]="rbxassetid://6817150445",["Oof"]="rbxassetid://79348298352567",["Windows XP Error"]="rbxassetid://9066167010",["Punch"]="rbxassetid://9117969687",["Buble"]="rbxassetid://9114176282",["byebye"]="rbxassetid://70888261086432",["cowbell"]="rbxassetid://99351661703869"}
-    local originalHitSoundIds = {}
-    local soundService = game:GetService("SoundService")
-    local function updateHitSounds()
-        local assetId = hitSoundIds[hitSoundSettings.soundType] or hitSoundIds["Rust"]
-        for _,name in ipairs(hitSoundList) do
-            local sound = soundService:FindFirstChild(name)
-            if sound and sound:IsA("Sound") then
-                if hitSoundSettings.enabled and assetId then
-                    if not originalHitSoundIds[name] then originalHitSoundIds[name]=sound.SoundId end
-                    sound.SoundId=assetId
-                    sound.Volume=1
-                else
-                    if originalHitSoundIds[name] then sound.SoundId=originalHitSoundIds[name] originalHitSoundIds[name]=nil end
-                end
-            end
-        end
-    end
-    game:GetService("RunService").RenderStepped:Connect(updateHitSounds)
-
-    -- SKYBOX LOGIC
-    local Lighting = game:GetService("Lighting")
-    local function setSkybox(name)
-        for _,v in pairs(Lighting:GetChildren()) do if v:IsA("Sky") then v:Destroy() end end
-        local sb=skyboxes[name]
-        if sb then
-            local sky=Instance.new("Sky")
-            for k,v in pairs(sb) do sky[k]=v end
-            sky.Parent=Lighting
-        end
-    end
-end
 ------------------------------------------------------------
 -- ЧАСТЬ 2. ЛОГИКА: Offscreen ESP (arrows, labels, очистка), No Grass, No Leaves, Clouds, Ambient, Always Day, Remove Fog, Skybox
 ------------------------------------------------------------
@@ -909,6 +960,7 @@ end)
 RunService.RenderStepped:Connect(function()
     updateBulletTraces()
 end)
+
 ------------------------------------------------------------
 -- LOGS (Kill/Hit)
 ------------------------------------------------------------
