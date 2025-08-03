@@ -247,16 +247,27 @@ return function(VisualTab)
 
     -- === CHAMS UI (исправленный) ===
     -- HAND CHAMS
-    local handOutlineColorPicker
+    local handColorPicker, handOutlineColorPicker, handMatDropdown
+    local function updateHandChamsVisibility()
+        if chamsSettings.handMat == "Chams" then
+            handColorPicker:SetVisible(true)
+            handOutlineColorPicker:SetVisible(true)
+        else
+            handColorPicker:SetVisible(true)
+            handOutlineColorPicker:SetVisible(false)
+        end
+    end
     local handChamsToggle = ChamsBox:AddToggle("HandChams", {
         Text = "Hand Chams",
         Default = chamsSettings.hand,
         Callback = function(val)
             chamsSettings.hand = val
+            updateHandChamsVisibility()
         end
     })
-    local handColorPicker = handChamsToggle:AddColorPicker("HandChamsColor", {
+    handColorPicker = handChamsToggle:AddColorPicker("HandChamsColor", {
         Default = chamsSettings.handColor,
+        Text = "Hand Color",
         Callback = function(val)
             chamsSettings.handColor = val
         end
@@ -268,29 +279,39 @@ return function(VisualTab)
             chamsSettings.handOutlineColor = color
         end
     })
-    handOutlineColorPicker:SetVisible(chamsSettings.handMat == "Chams")
-
-    local handMatDropdown = ChamsBox:AddDropdown("HandChamsMat", {
+    handMatDropdown = ChamsBox:AddDropdown("HandChamsMat", {
         Values = {"ForceField", "Neon", "Chams"},
         Default = chamsSettings.handMat,
         Text = "Hand Material",
         Callback = function(val)
             chamsSettings.handMat = val
-            handOutlineColorPicker:SetVisible(val == "Chams")
+            updateHandChamsVisibility()
         end
     })
+    updateHandChamsVisibility()
 
     -- ITEM CHAMS
-    local itemOutlineColorPicker
+    local itemColorPicker, itemOutlineColorPicker, itemMatDropdown
+    local function updateItemChamsVisibility()
+        if chamsSettings.itemMat == "Chams" then
+            itemColorPicker:SetVisible(true)
+            itemOutlineColorPicker:SetVisible(true)
+        else
+            itemColorPicker:SetVisible(true)
+            itemOutlineColorPicker:SetVisible(false)
+        end
+    end
     local itemChamsToggle = ChamsBox:AddToggle("ItemChams", {
         Text = "Item Chams",
         Default = chamsSettings.item,
         Callback = function(val)
             chamsSettings.item = val
+            updateItemChamsVisibility()
         end
     })
-    local itemColorPicker = itemChamsToggle:AddColorPicker("ItemChamsColor", {
+    itemColorPicker = itemChamsToggle:AddColorPicker("ItemChamsColor", {
         Default = chamsSettings.itemColor,
+        Text = "Item Color",
         Callback = function(val)
             chamsSettings.itemColor = val
         end
@@ -302,17 +323,16 @@ return function(VisualTab)
             chamsSettings.itemOutlineColor = color
         end
     })
-    itemOutlineColorPicker:SetVisible(chamsSettings.itemMat == "Chams")
-
-    local itemMatDropdown = ChamsBox:AddDropdown("ItemChamsMat", {
+    itemMatDropdown = ChamsBox:AddDropdown("ItemChamsMat", {
         Values = {"ForceField", "Neon", "Chams"},
         Default = chamsSettings.itemMat,
         Text = "Item Material",
         Callback = function(val)
             chamsSettings.itemMat = val
-            itemOutlineColorPicker:SetVisible(val == "Chams")
+            updateItemChamsVisibility()
         end
     })
+    updateItemChamsVisibility()
 
     -- SAFE ZONE CHAMS UI
     local szChamsToggle = SafeZoneBox:AddToggle("SafeZoneChams",{Text="Safe zone chams",Default=safeZoneChamsSettings.enabled,Callback=function(val)safeZoneChamsSettings.enabled=val end})
