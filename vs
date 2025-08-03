@@ -245,32 +245,79 @@ return function(VisualTab)
     local WorldBox = VisualTab:AddRightGroupbox("World", "globe")
     local SafeZoneBox = VisualTab:AddRightGroupbox("Safe zone", "shield", {Bottom=true})
 
-    -- Offscreen ESP UI
-    local offscreenElements = {}
-    local function resetOffscreenElements(state)
-        for _, elem in ipairs(offscreenElements) do
-            if elem.SetVisible then elem:SetVisible(state) end
-            if elem.SetValue and state then
-                local key = elem.Name
-                if key and offscreenSettings[key] ~= nil then
-                    elem:SetValue(offscreenSettings[key])
-                end
-            end
+    -- === CHAMS UI (исправленный) ===
+    -- HAND CHAMS
+    local handOutlineColorPicker
+    local handChamsToggle = ChamsBox:AddToggle("HandChams", {
+        Text = "Hand Chams",
+        Default = chamsSettings.hand,
+        Callback = function(val)
+            chamsSettings.hand = val
         end
-    end
+    })
+    local handColorPicker = handChamsToggle:AddColorPicker("HandChamsColor", {
+        Default = chamsSettings.handColor,
+        Callback = function(val)
+            chamsSettings.handColor = val
+        end
+    })
+    handOutlineColorPicker = handChamsToggle:AddColorPicker("HandChamsOutlineColor", {
+        Default = chamsSettings.handOutlineColor,
+        Text = "Hand Outline Color",
+        Callback = function(color)
+            chamsSettings.handOutlineColor = color
+        end
+    })
+    handOutlineColorPicker:SetVisible(chamsSettings.handMat == "Chams")
 
-    local offscreenEnabledToggle = OffscreenEspBox:AddToggle("offscreenEspEnabled", {Text="Enabled", Default=offscreenSettings.enabled, Callback=function(val) offscreenSettings.enabled=val; resetOffscreenElements(val); if not val then offscreenSettings.arrow=false;offscreenSettings.name=false;offscreenSettings.weapon=false;offscreenSettings.distance=false;offscreenSettings.sleepcheck=false;offscreenSettings.aicheck=false;resetOffscreenElements(false) end end})
-    local arrowToggle = OffscreenEspBox:AddToggle("offscreenEspArrow", {Text="Arrow", Default=offscreenSettings.arrow, Callback=function(val) offscreenSettings.arrow=val end}); arrowToggle.Name="arrow"; table.insert(offscreenElements,arrowToggle); arrowToggle:AddColorPicker("offscreenArrowColor",{Default=offscreenSettings.arrowColor,Callback=function(val)offscreenSettings.arrowColor=val end})
-    local nameToggle = OffscreenEspBox:AddToggle("offscreenEspName", {Text="Name", Default=offscreenSettings.name, Callback=function(val) offscreenSettings.name=val end}); nameToggle.Name="name"; table.insert(offscreenElements,nameToggle); nameToggle:AddColorPicker("offscreenNameColor",{Default=offscreenSettings.nameColor,Callback=function(val)offscreenSettings.nameColor=val end})
-    local weapToggle = OffscreenEspBox:AddToggle("offscreenEspWeapon", {Text="Weapon", Default=offscreenSettings.weapon, Callback=function(val) offscreenSettings.weapon=val end}); weapToggle.Name="weapon"; table.insert(offscreenElements,weapToggle); weapToggle:AddColorPicker("offscreenWeaponColor",{Default=offscreenSettings.weaponColor,Callback=function(val)offscreenSettings.weaponColor=val end})
-    local distToggle = OffscreenEspBox:AddToggle("offscreenEspDistance", {Text="Distance", Default=offscreenSettings.distance, Callback=function(val) offscreenSettings.distance=val end}); distToggle.Name="distance"; table.insert(offscreenElements,distToggle); distToggle:AddColorPicker("offscreenDistanceColor",{Default=offscreenSettings.distanceColor,Callback=function(val)offscreenSettings.distanceColor=val end})
-    local circleSlider = OffscreenEspBox:AddSlider("offscreenCircleRadius",{Text="Circle Radius",Default=offscreenSettings.circleRadius,Min=10,Max=500,Rounding=0,Callback=function(val)offscreenSettings.circleRadius=val end}); table.insert(offscreenElements,circleSlider)
-    local arrowSizeSlider = OffscreenEspBox:AddSlider("offscreenArrowSize",{Text="Arrow Size",Default=offscreenSettings.arrowSize,Min=5,Max=25,Rounding=0,Callback=function(val)offscreenSettings.arrowSize=val end}); table.insert(offscreenElements,arrowSizeSlider)
-    local textSizeSlider = OffscreenEspBox:AddSlider("offscreenTextSize",{Text="Text Size",Default=offscreenSettings.textSize,Min=10,Max=30,Rounding=0,Callback=function(val)offscreenSettings.textSize=val end}); table.insert(offscreenElements,textSizeSlider)
-    local maxDistSlider = OffscreenEspBox:AddSlider("offscreenMaxDist",{Text="Max Distance",Default=offscreenSettings.maxDist,Min=200,Max=1500,Rounding=0,Callback=function(val)offscreenSettings.maxDist=val end}); table.insert(offscreenElements,maxDistSlider)
-    local sleepCheckToggle = OffscreenEspBox:AddToggle("offscreenSleepCheck",{Text="Sleep check",Default=offscreenSettings.sleepcheck,Callback=function(val)offscreenSettings.sleepcheck=val end}); sleepCheckToggle.Name="sleepcheck"; table.insert(offscreenElements,sleepCheckToggle)
-    local aiCheckToggle = OffscreenEspBox:AddToggle("offscreenAICheck",{Text="AI check",Default=offscreenSettings.aicheck,Callback=function(val)offscreenSettings.aicheck=val end}); aiCheckToggle.Name="aicheck"; table.insert(offscreenElements,aiCheckToggle)
-    resetOffscreenElements(offscreenSettings.enabled)
+    local handMatDropdown = ChamsBox:AddDropdown("HandChamsMat", {
+        Values = {"ForceField", "Neon", "Chams"},
+        Default = chamsSettings.handMat,
+        Text = "Hand Material",
+        Callback = function(val)
+            chamsSettings.handMat = val
+            handOutlineColorPicker:SetVisible(val == "Chams")
+        end
+    })
+
+    -- ITEM CHAMS
+    local itemOutlineColorPicker
+    local itemChamsToggle = ChamsBox:AddToggle("ItemChams", {
+        Text = "Item Chams",
+        Default = chamsSettings.item,
+        Callback = function(val)
+            chamsSettings.item = val
+        end
+    })
+    local itemColorPicker = itemChamsToggle:AddColorPicker("ItemChamsColor", {
+        Default = chamsSettings.itemColor,
+        Callback = function(val)
+            chamsSettings.itemColor = val
+        end
+    })
+    itemOutlineColorPicker = itemChamsToggle:AddColorPicker("ItemChamsOutlineColor", {
+        Default = chamsSettings.itemOutlineColor,
+        Text = "Item Outline Color",
+        Callback = function(color)
+            chamsSettings.itemOutlineColor = color
+        end
+    })
+    itemOutlineColorPicker:SetVisible(chamsSettings.itemMat == "Chams")
+
+    local itemMatDropdown = ChamsBox:AddDropdown("ItemChamsMat", {
+        Values = {"ForceField", "Neon", "Chams"},
+        Default = chamsSettings.itemMat,
+        Text = "Item Material",
+        Callback = function(val)
+            chamsSettings.itemMat = val
+            itemOutlineColorPicker:SetVisible(val == "Chams")
+        end
+    })
+
+    -- SAFE ZONE CHAMS UI
+    local szChamsToggle = SafeZoneBox:AddToggle("SafeZoneChams",{Text="Safe zone chams",Default=safeZoneChamsSettings.enabled,Callback=function(val)safeZoneChamsSettings.enabled=val end})
+    szChamsToggle:AddColorPicker("SafeZoneChamsColor",{Default=safeZoneChamsSettings.color,Callback=function(val)safeZoneChamsSettings.color=val end})
+    SafeZoneBox:AddSlider("SafeZoneChamsTransparency",{Text="Transparency",Default=safeZoneChamsSettings.transparency,Min=1,Max=100,Rounding=0,Callback=function(val)safeZoneChamsSettings.transparency=val end})
 
     -- World UI (colorpickers внутри чекбоксов)
     WorldBox:AddLabel("Map Visuals")
@@ -294,137 +341,6 @@ return function(VisualTab)
     WorldBox:AddDropdown("HitSoundType",{Values={"Rust","Skeet","Sonic","Sonic Checkpoint","Oof","Windows XP Error","Punch","Buble","byebye","cowbell"},Default="Rust",Text="Hit sound type",Callback=function(val)hitSoundSettings.soundType=val; updateHitSounds() end})
     WorldBox:AddToggle("Log",{Text="Log",Default=false,Callback=function(val)logSettings.enabled=val; if setupLogHooks then setupLogHooks() end end})
     WorldBox:AddDropdown("LogTypes",{Values={"Kill log","Hit log"},Multi=true,Default={"Kill log","Hit log"},Text="Log Types",Callback=function(val)logSettings.types={};for k,v in pairs(val) do logSettings.types[k]=v end end})
-
-    -- === CHAMS UI с корректной работой чекбокса (не скрывается!) и динамикой колорпиков ===
-    -- reset/update-реализации должны быть в логике!
-    local function resetHandChamsNow()
-        if resetHandChams then resetHandChams() end
-    end
-    local function resetItemChamsNow()
-        if resetItemChams then resetItemChams() end
-    end
-    local function updateHandChamsNow()
-        if updateHandChams then updateHandChams() end
-    end
-    local function updateItemChamsNow()
-        if updateItemChams then updateItemChams() end
-    end
-
-    local handOutlineColorPicker
-    local handChamsToggle = ChamsBox:AddToggle("HandChams", {
-        Text = "Hand Chams",
-        Default = chamsSettings.hand,
-        Callback = function(val)
-            chamsSettings.hand = val
-            resetHandChamsNow()
-            if val then updateHandChamsNow() end
-        end
-    })
-    local handColorPicker = handChamsToggle:AddColorPicker("HandChamsColor", {
-        Default = chamsSettings.handColor,
-        Callback = function(val)
-            chamsSettings.handColor = val
-            if chamsSettings.hand then
-                resetHandChamsNow()
-                updateHandChamsNow()
-            end
-        end
-    })
-    local handMatDropdown = ChamsBox:AddDropdown("HandChamsMat", {
-        Values = {"ForceField", "Neon", "Chams"},
-        Default = "ForceField",
-        Text = "Hand Material",
-        Callback = function(val)
-            chamsSettings.handMat = val
-            if val == "Chams" then
-                if not handOutlineColorPicker then
-                    handOutlineColorPicker = handChamsToggle:AddColorPicker("HandChamsOutlineColor", {
-                        Default = chamsSettings.handOutlineColor,
-                        Text = "Hand Outline Color",
-                        Callback = function(color)
-                            chamsSettings.handOutlineColor = color
-                            if chamsSettings.hand then
-                                resetHandChamsNow()
-                                updateHandChamsNow()
-                            end
-                        end
-                    })
-                end
-                handOutlineColorPicker:SetVisible(true)
-            else
-                if handOutlineColorPicker then handOutlineColorPicker:SetVisible(false) end
-            end
-            if chamsSettings.hand then
-                resetHandChamsNow()
-                updateHandChamsNow()
-            end
-        end
-    })
-    if chamsSettings.handMat ~= "Chams" and handOutlineColorPicker then handOutlineColorPicker:SetVisible(false) end
-
-    local itemOutlineColorPicker
-    local itemChamsToggle = ChamsBox:AddToggle("ItemChams", {
-        Text = "Item Chams",
-        Default = chamsSettings.item,
-        Callback = function(val)
-            chamsSettings.item = val
-            resetItemChamsNow()
-            if val then updateItemChamsNow() end
-        end
-    })
-    local itemColorPicker = itemChamsToggle:AddColorPicker("ItemChamsColor", {
-        Default = chamsSettings.itemColor,
-        Callback = function(val)
-            chamsSettings.itemColor = val
-            if chamsSettings.item then
-                resetItemChamsNow()
-                updateItemChamsNow()
-            end
-        end
-    })
-    local itemMatDropdown = ChamsBox:AddDropdown("ItemChamsMat", {
-        Values = {"ForceField", "Neon", "Chams"},
-        Default = "ForceField",
-        Text = "Item Material",
-        Callback = function(val)
-            chamsSettings.itemMat = val
-            if val == "Chams" then
-                if not itemOutlineColorPicker then
-                    itemOutlineColorPicker = itemChamsToggle:AddColorPicker("ItemChamsOutlineColor", {
-                        Default = chamsSettings.itemOutlineColor,
-                        Text = "Item Outline Color",
-                        Callback = function(color)
-                            chamsSettings.itemOutlineColor = color
-                            if chamsSettings.item then
-                                resetItemChamsNow()
-                                updateItemChamsNow()
-                            end
-                        end
-                    })
-                end
-                itemOutlineColorPicker:SetVisible(true)
-            else
-                if itemOutlineColorPicker then itemOutlineColorPicker:SetVisible(false) end
-            end
-            if chamsSettings.item then
-                resetItemChamsNow()
-                updateItemChamsNow()
-            end
-        end
-    })
-    if chamsSettings.itemMat ~= "Chams" and itemOutlineColorPicker then itemOutlineColorPicker:SetVisible(false) end
-
-    -- SAFE ZONE CHAMS UI
-    local szChamsToggle = SafeZoneBox:AddToggle("SafeZoneChams",{Text="Safe zone chams",Default=safeZoneChamsSettings.enabled,Callback=function(val)safeZoneChamsSettings.enabled=val end})
-    szChamsToggle:AddColorPicker("SafeZoneChamsColor",{Default=safeZoneChamsSettings.color,Callback=function(val)safeZoneChamsSettings.color=val end})
-    SafeZoneBox:AddSlider("SafeZoneChamsTransparency",{Text="Transparency",Default=safeZoneChamsSettings.transparency,Min=1,Max=100,Rounding=0,Callback=function(val)safeZoneChamsSettings.transparency=val end})
-
-    cloudsColorPicker:OnChanged(function(val)
-        worldVisuals.cloudsColor = val
-    end)
-    ambientColorPicker:OnChanged(function(val)
-        worldVisuals.ambient = val
-    end)
 
     -- ESP UI
     EspBox:AddToggle("espEnabled",{Text="Enabled",Default=espSettings.enabled,Callback=function(val)espSettings.enabled=val end})
