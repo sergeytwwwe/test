@@ -86,96 +86,17 @@ return function(VisualTab)
         removeFog = false,
         skybox = "Default"
     }
-local skyboxes = {
-    ["Default"] = {
-        SkyboxBk = "rbxassetid://401664839",
-        SkyboxDn = "rbxassetid://401664862",
-        SkyboxFt = "rbxassetid://401664936",
-        SkyboxLf = "rbxassetid://401664881",
-        SkyboxRt = "rbxassetid://401664929",
-        SkyboxUp = "rbxassetid://401664883"
-    },
-    ["Spongebob"] = {
-        SkyboxBk = "rbxassetid://9076122431",
-        SkyboxDn = "rbxassetid://9076122431",
-        SkyboxFt = "rbxassetid://9076122431",
-        SkyboxLf = "rbxassetid://9076122431",
-        SkyboxRt = "rbxassetid://9076122431",
-        SkyboxUp = "rbxassetid://9076122431"
-    },
-    ["Darksky"] = {
-        SkyboxBk = "rbxassetid://116873078",
-        SkyboxDn = "rbxassetid://116873078",
-        SkyboxFt = "rbxassetid://116873078",
-        SkyboxLf = "rbxassetid://116873078",
-        SkyboxRt = "rbxassetid://116873078",
-        SkyboxUp = "rbxassetid://116873078"
-    },
-    ["Night Time Sky"] = {
-        SkyboxBk = "rbxassetid://466635038",
-        SkyboxDn = "rbxassetid://466635038",
-        SkyboxFt = "rbxassetid://466635038",
-        SkyboxLf = "rbxassetid://466635038",
-        SkyboxRt = "rbxassetid://466635038",
-        SkyboxUp = "rbxassetid://466635038"
-    },
-    ["Minecraft Sky"] = {
-        SkyboxBk = "rbxassetid://2758029221",
-        SkyboxDn = "rbxassetid://2758029221",
-        SkyboxFt = "rbxassetid://2758029221",
-        SkyboxLf = "rbxassetid://2758029221",
-        SkyboxRt = "rbxassetid://2758029221",
-        SkyboxUp = "rbxassetid://2758029221"
-    },
-    ["pink sky"] = {
-        SkyboxBk = "rbxassetid://10340396563",
-        SkyboxDn = "rbxassetid://10340396563",
-        SkyboxFt = "rbxassetid://10340396563",
-        SkyboxLf = "rbxassetid://10340396563",
-        SkyboxRt = "rbxassetid://10340396563",
-        SkyboxUp = "rbxassetid://10340396563"
-    },
-    ["Purple sky"] = {
-        SkyboxBk = "rbxassetid://5094389324",
-        SkyboxDn = "rbxassetid://5094389324",
-        SkyboxFt = "rbxassetid://5094389324",
-        SkyboxLf = "rbxassetid://5094389324",
-        SkyboxRt = "rbxassetid://5094389324",
-        SkyboxUp = "rbxassetid://5094389324"
-    },
-    ["FireWatch"] = {
-        SkyboxBk = "rbxassetid://8720439638",
-        SkyboxDn = "rbxassetid://8720439638",
-        SkyboxFt = "rbxassetid://8720439638",
-        SkyboxLf = "rbxassetid://8720439638",
-        SkyboxRt = "rbxassetid://8720439638",
-        SkyboxUp = "rbxassetid://8720439638"
-    },
-    ["c00lkidd Skybox"] = {
-        SkyboxBk = "rbxassetid://133973334152130",
-        SkyboxDn = "rbxassetid://133973334152130",
-        SkyboxFt = "rbxassetid://133973334152130",
-        SkyboxLf = "rbxassetid://133973334152130",
-        SkyboxRt = "rbxassetid://133973334152130",
-        SkyboxUp = "rbxassetid://133973334152130"
-    },
-    ["Nyan Cat"] = {
-        SkyboxBk = "rbxassetid://57754921",
-        SkyboxDn = "rbxassetid://57754921",
-        SkyboxFt = "rbxassetid://57754921",
-        SkyboxLf = "rbxassetid://57754921",
-        SkyboxRt = "rbxassetid://57754921",
-        SkyboxUp = "rbxassetid://57754921"
-    },
-    ["scary skybox"] = {
-        SkyboxBk = "rbxassetid://4868486619",
-        SkyboxDn = "rbxassetid://4868486619",
-        SkyboxFt = "rbxassetid://4868486619",
-        SkyboxLf = "rbxassetid://4868486619",
-        SkyboxRt = "rbxassetid://4868486619",
-        SkyboxUp = "rbxassetid://4868486619"
-    },
-}
+local skyboxes = {["Default"]={SkyboxBk="rbxassetid://401664839",SkyboxDn="rbxassetid://401664862",SkyboxFt="rbxassetid://401664936",SkyboxLf="rbxassetid://401664881",SkyboxRt="rbxassetid://401664929",SkyboxUp="rbxassetid://401664883"},["Spongebob"]={SkyboxBk="rbxassetid://9076122431",SkyboxDn="rbxassetid://9076122431",SkyboxFt="rbxassetid://9076122431",SkyboxLf="rbxassetid://9076122431",SkyboxRt="rbxassetid://9076122431",SkyboxUp="rbxassetid://9076122431"},["Darksky"]={SkyboxBk="rbxassetid://116873078",SkyboxDn="rbxassetid://116873078",SkyboxFt="rbxassetid://116873078",SkyboxLf="rbxassetid://116873078",SkyboxRt="rbxassetid://116873078",SkyboxUp="rbxassetid://116873078"},["Night Time Sky"]={SkyboxBk="rbxassetid://466635038",SkyboxDn="rbxassetid://466635038",SkyboxFt="rbxassetid://466635038",SkyboxLf="rbxassetid://466635038",SkyboxRt="rbxassetid://466635038",SkyboxUp="rbxassetid://466635038"},["Minecraft Sky"]={SkyboxBk="rbxassetid://2758029221",SkyboxDn="rbxassetid://2758029221",SkyboxFt="rbxassetid://2758029221",SkyboxLf="rbxassetid://2758029221",SkyboxRt="rbxassetid://2758029221",SkyboxUp="rbxassetid://2758029221"},["pink sky"]={SkyboxBk="rbxassetid://10340396563",SkyboxDn="rbxassetid://10340396563",SkyboxFt="rbxassetid://10340396563",SkyboxLf="rbxassetid://10340396563",SkyboxRt="rbxassetid://10340396563",SkyboxUp="rbxassetid://10340396563"},["Purple sky"]={SkyboxBk="rbxassetid://5094389324",SkyboxDn="rbxassetid://5094389324",SkyboxFt="rbxassetid://5094389324",SkyboxLf="rbxassetid://5094389324",SkyboxRt="rbxassetid://5094389324",SkyboxUp="rbxassetid://5094389324"},["FireWatch"]={SkyboxBk="rbxassetid://8720439638",SkyboxDn="rbxassetid://8720439638",SkyboxFt="rbxassetid://8720439638",SkyboxLf="rbxassetid://8720439638",SkyboxRt="rbxassetid://8720439638",SkyboxUp="rbxassetid://8720439638"},["c00lkidd Skybox"]={SkyboxBk="rbxassetid://133973334152130",SkyboxDn="rbxassetid://133973334152130",SkyboxFt="rbxassetid://133973334152130",SkyboxLf="rbxassetid://133973334152130",SkyboxRt="rbxassetid://133973334152130",SkyboxUp="rbxassetid://133973334152130"},["Nyan Cat"]={SkyboxBk="rbxassetid://57754921",SkyboxDn="rbxassetid://57754921",SkyboxFt="rbxassetid://57754921",SkyboxLf="rbxassetid://57754921",SkyboxRt="rbxassetid://57754921",SkyboxUp="rbxassetid://57754921"},["scary skybox"]={SkyboxBk="rbxassetid://4868486619",SkyboxDn="rbxassetid://4868486619",SkyboxFt="rbxassetid://4868486619",SkyboxLf="rbxassetid://4868486619",SkyboxRt="rbxassetid://4868486619",SkyboxUp="rbxassetid://4868486619"}}
+local Lighting = game:GetService("Lighting")
+local function setSkybox(name)
+    for _,v in pairs(Lighting:GetChildren()) do if v:IsA("Sky") then v:Destroy() end end
+    local sb=skyboxes[name]
+    if sb then
+        local sky=Instance.new("Sky")
+        for k,v in pairs(sb) do sky[k]=v end
+        sky.Parent=Lighting
+    end
+end
 
 print("[UI] Начинается блок World UI")
     -- === UI ===
@@ -262,35 +183,21 @@ table.insert(offscreenElements, aiCheckToggle)
 resetOffscreenElements(offscreenSettings.enabled)
 -- World UI (colorpickers внутри чекбоксов)
 WorldBox:AddLabel("Map Visuals")
-
-local grassToggle = WorldBox:AddToggle("NoGrass", {Text = "No Grass", Default = worldVisuals.noGrass, Callback = function(val) worldVisuals.noGrass = val end})
-local leavesToggle = WorldBox:AddToggle("NoLeaves", {Text = "No Leaves", Default = worldVisuals.noLeaves, Callback = function(val) worldVisuals.noLeaves = val end})
-
-local cloudsToggle = WorldBox:AddToggle("Clouds", {Text = "Clouds", Default = worldVisuals.clouds, Callback = function(val) worldVisuals.clouds = val end})
-local cloudsColorPicker = cloudsToggle:AddColorPicker("CloudsColor", {Default = worldVisuals.cloudsColor, Callback = function(val) worldVisuals.cloudsColor = val end})
-
-local ambientToggle = WorldBox:AddToggle("Ambient", {Text = "Ambient", Default = worldVisuals.ambientEnabled, Callback = function(val) worldVisuals.ambientEnabled = val end})
-local ambientColorPicker = ambientToggle:AddColorPicker("AmbientColor", {Default = worldVisuals.ambient, Callback = function(val) worldVisuals.ambient = val end})
-
-local alwaysDayToggle = WorldBox:AddToggle("AlwaysDay", {Text = "Always Day", Default = worldVisuals.alwaysDay, Callback = function(val) worldVisuals.alwaysDay = val end})
-local removeFogToggle = WorldBox:AddToggle("RemoveFog", {Text = "Remove Fog", Default = worldVisuals.removeFog, Callback = function(val) worldVisuals.removeFog = val end})
-    WorldBox:AddDropdown("SkyboxSelect", {
-    Text = "Skybox",
-    Values = {"Default", "Spongebob", "Darksky", "Night Time Sky", "Minecraft Sky", "pink sky", "Purple sky", "FireWatch", "c00lkidd Skybox", "Nyan Cat", "scary skybox"},
-    Default = "Default",
-    Callback = function(val) worldVisuals.skybox = val; setSkybox(val) end
-})
-    WorldBox:AddToggle("BulletTrace", {Text = "Bullet Trace", Default = false, Callback = function(val) traceSettings.enabled = val end}):AddColorPicker("BulletTraceColor", {Default = Color3.new(0,0.4,1), Title = "Bullet Trace Color", Callback = function(val) traceSettings.color = val end})
-    WorldBox:AddDropdown("BulletTraceMode", {Values = {"Legit", "Neon"}, Default = "Legit", Text = "Bullet Trace Mode", Callback = function(val) traceSettings.mode = val end})
-    WorldBox:AddToggle("HitSound", {Text = "Hit sound", Default = false, Callback = function(val) hitSoundSettings.enabled = val end})
-    WorldBox:AddDropdown("HitSoundType", {
-    Values = {"Rust", "Skeet", "Sonic", "Sonic Checkpoint", "Oof", "Windows XP Error", "Punch", "Buble", "byebye", "cowbell"},
-    Default = "Rust",
-    Text = "Hit sound type",
-    Callback = function(val) hitSoundSettings.soundType = val end
-})
-    WorldBox:AddToggle("Log", {Text = "Log", Default = false, Callback = function(val) logSettings.enabled = val; if setupLogHooks then setupLogHooks() end end})
-    WorldBox:AddDropdown("LogTypes", {Values = {"Kill log", "Hit log"}, Multi = true, Default = {"Kill log", "Hit log"}, Text = "Log Types", Callback = function(val) logSettings.types = {}; for k,v in pairs(val) do logSettings.types[k] = v end end})
+local grassToggle = WorldBox:AddToggle("NoGrass", {Text="No Grass", Default=worldVisuals.noGrass, Callback=function(val) worldVisuals.noGrass=val end})
+local leavesToggle = WorldBox:AddToggle("NoLeaves", {Text="No Leaves", Default=worldVisuals.noLeaves, Callback=function(val) worldVisuals.noLeaves=val end})
+local cloudsToggle = WorldBox:AddToggle("Clouds", {Text="Clouds", Default=worldVisuals.clouds, Callback=function(val) worldVisuals.clouds=val end})
+local cloudsColorPicker = cloudsToggle:AddColorPicker("CloudsColor", {Default=worldVisuals.cloudsColor, Callback=function(val) worldVisuals.cloudsColor=val end})
+local ambientToggle = WorldBox:AddToggle("Ambient", {Text="Ambient", Default=worldVisuals.ambientEnabled, Callback=function(val) worldVisuals.ambientEnabled=val end})
+local ambientColorPicker = ambientToggle:AddColorPicker("AmbientColor", {Default=worldVisuals.ambient, Callback=function(val) worldVisuals.ambient=val end})
+local alwaysDayToggle = WorldBox:AddToggle("AlwaysDay", {Text="Always Day", Default=worldVisuals.alwaysDay, Callback=function(val) worldVisuals.alwaysDay=val end})
+local removeFogToggle = WorldBox:AddToggle("RemoveFog", {Text="Remove Fog", Default=worldVisuals.removeFog, Callback=function(val) worldVisuals.removeFog=val end})
+WorldBox:AddDropdown("SkyboxSelect", {Text="Skybox", Values={"Default","Spongebob","Darksky","Night Time Sky","Minecraft Sky","pink sky","Purple sky","FireWatch","c00lkidd Skybox","Nyan Cat","scary skybox"}, Default="Default", Callback=function(val) worldVisuals.skybox=val; setSkybox(val) end})
+WorldBox:AddToggle("BulletTrace", {Text="Bullet Trace", Default=false, Callback=function(val) traceSettings.enabled=val end}):AddColorPicker("BulletTraceColor", {Default=Color3.new(0,0.4,1), Title="Bullet Trace Color", Callback=function(val) traceSettings.color=val end})
+WorldBox:AddDropdown("BulletTraceMode", {Values={"Legit","Neon"}, Default="Legit", Text="Bullet Trace Mode", Callback=function(val) traceSettings.mode=val end})
+WorldBox:AddToggle("HitSound", {Text="Hit sound", Default=false, Callback=function(val) hitSoundSettings.enabled=val; updateHitSounds() end})
+WorldBox:AddDropdown("HitSoundType", {Values={"Rust","Skeet","Sonic","Sonic Checkpoint","Oof","Windows XP Error","Punch","Buble","byebye","cowbell"}, Default="Rust", Text="Hit sound type", Callback=function(val) hitSoundSettings.soundType=val; updateHitSounds() end})
+WorldBox:AddToggle("Log", {Text="Log", Default=false, Callback=function(val) logSettings.enabled=val; if setupLogHooks then setupLogHooks() end end})
+WorldBox:AddDropdown("LogTypes", {Values={"Kill log","Hit log"}, Multi=true, Default={"Kill log","Hit log"}, Text="Log Types", Callback=function(val) logSettings.types={}; for k,v in pairs(val) do logSettings.types[k]=v end end})
 -- !!! ВАЖНО: подписка на события colorpickers только ОДИН РАЗ, после их создания !!!
 cloudsColorPicker:OnChanged(function(val)
     worldVisuals.cloudsColor = val
@@ -1051,34 +958,18 @@ local hitSoundList = {
     "PlayerHitHeadshot_Muffled",
     "PlayerHit_Muffled"
 }
-
--- Таблица с id и названиями hit sound
-local hitSoundIds = {
-    ["Rust"] = "rbxassetid://18805676593",
-    ["Skeet"] = "rbxassetid://83717596220569",
-    ["Sonic"] = "rbxassetid://6817149233",
-    ["Sonic Checkpoint"] = "rbxassetid://6817150445",
-    ["Oof"] = "rbxassetid://79348298352567",
-    ["Windows XP Error"] = "rbxassetid://9066167010",
-    ["Punch"] = "rbxassetid://9117969687",
-    ["Buble"] = "rbxassetid://9114176282",
-    ["byebye"] = "rbxassetid://70888261086432",
-    ["cowbell"] = "rbxassetid://99351661703869",
-}
-
+local rustSoundId = "rbxassetid://18805676593"
 local originalHitSoundIds = {}
-
 local function updateHitSounds()
     local soundService = game:GetService("SoundService")
-    local assetId = hitSoundIds[hitSoundSettings.soundType] or hitSoundIds["Rust"]
     for _, name in ipairs(hitSoundList) do
         local sound = soundService:FindFirstChild(name)
         if sound and sound:IsA("Sound") then
-            if hitSoundSettings.enabled and assetId then
+            if hitSoundSettings.enabled and hitSoundSettings.soundType == "Rust" then
                 if not originalHitSoundIds[name] then
                     originalHitSoundIds[name] = sound.SoundId
                 end
-                sound.SoundId = assetId
+                sound.SoundId = rustSoundId
             else
                 if originalHitSoundIds[name] then
                     sound.SoundId = originalHitSoundIds[name]
@@ -1088,10 +979,10 @@ local function updateHitSounds()
         end
     end
 end
-
-runservice.RenderStepped:Connect(function()
+RunService.RenderStepped:Connect(function()
     updateHitSounds()
 end)
+
 ------------------------------------------------------------
 -- LOGS (Kill/Hit)
 ------------------------------------------------------------
@@ -1283,6 +1174,7 @@ local function SleepCheck(plrChar)
     end
     return false
 end
+
 ------------------------------------------------------------
 -- ESP (игроки): Box, Name, Weapon, Distance
 ------------------------------------------------------------
@@ -1307,32 +1199,31 @@ local function removeEspFor(char, esp)
     end
 end
 
--- Простой расчет бокса: только основные части
-local function SimpleBodyBox(char)
+local function WorldToBox(char)
     local head = char:FindFirstChild("Head")
-    local torso = char:FindFirstChild("Torso")
     local leftFoot = char:FindFirstChild("LeftFoot")
     local rightFoot = char:FindFirstChild("RightFoot")
-    if not (head and torso and leftFoot and rightFoot) then return end
-
-    -- Для верха берем голову, для низа — самую низкую ногу
+    if not (head and leftFoot and rightFoot) then return end
     local topWorld = head.Position
-    local bottomWorld = (leftFoot.Position.Y < rightFoot.Position.Y) and leftFoot.Position or rightFoot.Position
-
-    -- Преобразуем в экранные координаты
+    local bottomWorld = (leftFoot.Position.Y < rightFoot.Position.Y and leftFoot.Position or rightFoot.Position)
+    local isSleeping = SleepCheck(char)
+    if isSleeping then
+        local torso = char:FindFirstChild("Torso")
+        if torso then
+            bottomWorld = torso.Position - Vector3.new(0, torso.Size.Y/2, 0)
+        end
+    end
     local top2d = camera:WorldToViewportPoint(topWorld)
     local bottom2d = camera:WorldToViewportPoint(bottomWorld)
-
-    -- Ширина бокса — фиксированная или можешь поправить на свой вкус
-    local boxH = math.abs(bottom2d.Y - top2d.Y)
-    local boxW = boxH * 0.5 -- стандартная ширина (можешь сделать больше/меньше)
-
+    local scaleFactor = 15 / (top2d.Z * math.tan(math.rad(camera.FieldOfView * 0.5)) * 2) * 100
+    local boxW = 2.4 * scaleFactor
+    local boxH = 3 * scaleFactor
+    if not (boxH > 1 and boxW > 1) then return end
     local left = top2d.X - boxW / 2
     local top = top2d.Y
     local right = top2d.X + boxW / 2
-    local bottom = bottom2d.Y
-
-    return left, top, right, bottom, boxW, boxH
+    local bottom = top + boxH
+    return left, top, right, bottom, boxW, boxH, isSleeping
 end
 
 local veryFarUpdateDelay = 0.25
@@ -1394,7 +1285,7 @@ local function CreateEsp(char)
             if tick() - lastUpdate < veryFarUpdateDelay then return end
             lastUpdate = tick()
         end
-        local left, top, right, bottom, boxW, boxH = SimpleBodyBox(char)
+        local left, top, right, bottom, boxW, boxH = WorldToBox(char)
         if not left then return end
         local centerX = left + boxW / 2
         if espSettings.box then
@@ -1493,9 +1384,14 @@ workspace.ChildAdded:Connect(function(v)
         end
     end)
 end)
+
 ------------------------------------------------------------
 -- Object ESP (дропы, трупы, транспорт, ресурсы)
 ------------------------------------------------------------
+
+-- ... Здесь можно вставить код Object ESP (DroppedItems, Corpse, ATV, Ores, Copter, Car) с Drawing API —
+-- если нужен полный рабочий Object ESP, скажи, и я вставлю классические циклы и логику, как выше!
+
 ------------------------------------------------------------
 -- ФИНАЛ: Очистка ESP/Labels при выгрузке
 ------------------------------------------------------------
