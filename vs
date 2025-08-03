@@ -100,7 +100,7 @@ return function(VisualTab)
         ["scary skybox"] = {SkyboxBk="rbxassetid://4868486619",SkyboxDn="rbxassetid://4868486619",SkyboxFt="rbxassetid://4868486619",SkyboxLf="rbxassetid://4868486619",SkyboxRt="rbxassetid://4868486619",SkyboxUp="rbxassetid://4868486619"}
     }
 
-    -- === HIT SOUND LOGIC ===
+    -- == HIT SOUND LOGIC ==
     local hitSoundList = {
         "PlayerHit",
         "PlayerHit2",
@@ -145,20 +145,21 @@ return function(VisualTab)
     end
     game:GetService("RunService").RenderStepped:Connect(updateHitSounds)
 
-    -- === SKYBOX LOGIC ===
+    -- == SKYBOX LOGIC ==
     local Lighting = game:GetService("Lighting")
     local function setSkybox(name)
-        for _,v in pairs(Lighting:GetChildren()) do
-            if v:IsA("Sky") then
-                v:Destroy()
-            end
+        for _,sky in pairs(Lighting:GetChildren()) do
+            if sky:IsA("Sky") then sky:Destroy() end
         end
         local sb = skyboxes[name]
         if sb then
             local sky = Instance.new("Sky")
-            for k,v in pairs(sb) do
-                sky[k] = v
-            end
+            sky.SkyboxBk = sb.SkyboxBk
+            sky.SkyboxDn = sb.SkyboxDn
+            sky.SkyboxFt = sb.SkyboxFt
+            sky.SkyboxLf = sb.SkyboxLf
+            sky.SkyboxRt = sb.SkyboxRt
+            sky.SkyboxUp = sb.SkyboxUp
             sky.Parent = Lighting
         end
     end
@@ -232,9 +233,6 @@ return function(VisualTab)
     -- !!! ВАЖНО: подписка на события colorpickers только ОДИН РАЗ, после их создания !!!
     cloudsColorPicker:OnChanged(function(val)
         worldVisuals.cloudsColor = val
-        if worldVisuals.clouds then
-            setSkybox(worldVisuals.skybox)
-        end
     end)
     ambientColorPicker:OnChanged(function(val)
         worldVisuals.ambient = val
