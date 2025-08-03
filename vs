@@ -295,7 +295,8 @@ return function(VisualTab)
     WorldBox:AddToggle("Log",{Text="Log",Default=false,Callback=function(val)logSettings.enabled=val; if setupLogHooks then setupLogHooks() end end})
     WorldBox:AddDropdown("LogTypes",{Values={"Kill log","Hit log"},Multi=true,Default={"Kill log","Hit log"},Text="Log Types",Callback=function(val)logSettings.types={};for k,v in pairs(val) do logSettings.types[k]=v end end})
 
-    -- === CHAMS UI с корректным сбросом при смене режима ===
+    -- === CHAMS UI с корректной работой чекбокса (не скрывается!) и динамикой колорпиков ===
+    -- reset/update-реализации должны быть в логике!
     local function resetHandChamsNow()
         if resetHandChams then resetHandChams() end
     end
@@ -309,6 +310,7 @@ return function(VisualTab)
         if updateItemChams then updateItemChams() end
     end
 
+    local handOutlineColorPicker
     local handChamsToggle = ChamsBox:AddToggle("HandChams", {
         Text = "Hand Chams",
         Default = chamsSettings.hand,
@@ -322,11 +324,12 @@ return function(VisualTab)
         Default = chamsSettings.handColor,
         Callback = function(val)
             chamsSettings.handColor = val
-            resetHandChamsNow()
-            if chamsSettings.hand then updateHandChamsNow() end
+            if chamsSettings.hand then
+                resetHandChamsNow()
+                updateHandChamsNow()
+            end
         end
     })
-    local handOutlineColorPicker
     local handMatDropdown = ChamsBox:AddDropdown("HandChamsMat", {
         Values = {"ForceField", "Neon", "Chams"},
         Default = "ForceField",
@@ -340,8 +343,10 @@ return function(VisualTab)
                         Text = "Hand Outline Color",
                         Callback = function(color)
                             chamsSettings.handOutlineColor = color
-                            resetHandChamsNow()
-                            if chamsSettings.hand then updateHandChamsNow() end
+                            if chamsSettings.hand then
+                                resetHandChamsNow()
+                                updateHandChamsNow()
+                            end
                         end
                     })
                 end
@@ -349,12 +354,15 @@ return function(VisualTab)
             else
                 if handOutlineColorPicker then handOutlineColorPicker:SetVisible(false) end
             end
-            resetHandChamsNow()
-            if chamsSettings.hand then updateHandChamsNow() end
+            if chamsSettings.hand then
+                resetHandChamsNow()
+                updateHandChamsNow()
+            end
         end
     })
     if chamsSettings.handMat ~= "Chams" and handOutlineColorPicker then handOutlineColorPicker:SetVisible(false) end
 
+    local itemOutlineColorPicker
     local itemChamsToggle = ChamsBox:AddToggle("ItemChams", {
         Text = "Item Chams",
         Default = chamsSettings.item,
@@ -368,11 +376,12 @@ return function(VisualTab)
         Default = chamsSettings.itemColor,
         Callback = function(val)
             chamsSettings.itemColor = val
-            resetItemChamsNow()
-            if chamsSettings.item then updateItemChamsNow() end
+            if chamsSettings.item then
+                resetItemChamsNow()
+                updateItemChamsNow()
+            end
         end
     })
-    local itemOutlineColorPicker
     local itemMatDropdown = ChamsBox:AddDropdown("ItemChamsMat", {
         Values = {"ForceField", "Neon", "Chams"},
         Default = "ForceField",
@@ -386,8 +395,10 @@ return function(VisualTab)
                         Text = "Item Outline Color",
                         Callback = function(color)
                             chamsSettings.itemOutlineColor = color
-                            resetItemChamsNow()
-                            if chamsSettings.item then updateItemChamsNow() end
+                            if chamsSettings.item then
+                                resetItemChamsNow()
+                                updateItemChamsNow()
+                            end
                         end
                     })
                 end
@@ -395,8 +406,10 @@ return function(VisualTab)
             else
                 if itemOutlineColorPicker then itemOutlineColorPicker:SetVisible(false) end
             end
-            resetItemChamsNow()
-            if chamsSettings.item then updateItemChamsNow() end
+            if chamsSettings.item then
+                resetItemChamsNow()
+                updateItemChamsNow()
+            end
         end
     })
     if chamsSettings.itemMat ~= "Chams" and itemOutlineColorPicker then itemOutlineColorPicker:SetVisible(false) end
