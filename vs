@@ -961,6 +961,9 @@ local function applyItemChams(obj)
         if not originalItemProps[id] then
             originalItemProps[id] = {Material=obj.Material, Color=obj.Color}
         end
+        -- Всегда сбрасываем к исходному перед наложением Highlight!
+        obj.Material = originalItemProps[id].Material
+        obj.Color = originalItemProps[id].Color
         if chamsSettings.itemMat == "Chams" then
             removeHighlights(obj)
             applyHighlight(obj, chamsSettings.itemColor, chamsSettings.itemOutlineColor)
@@ -1050,6 +1053,9 @@ local function updateHandChams()
                 if not originalHandProps[id] then
                     originalHandProps[id] = {Material=hand.Material, Color=hand.Color}
                 end
+                -- Всегда сбрасываем к исходному перед наложением Highlight!
+                hand.Material = originalHandProps[id].Material
+                hand.Color = originalHandProps[id].Color
                 if chamsSettings.handMat == "Chams" then
                     removeHighlights(hand)
                     applyHighlight(hand, chamsSettings.handColor, chamsSettings.handOutlineColor)
@@ -1080,6 +1086,9 @@ local function updateHandChams()
                     if not originalHandProps[id] then
                         originalHandProps[id] = {Material=limb.Material, Color=limb.Color}
                     end
+                    -- Всегда сбрасываем к исходному перед наложением Highlight!
+                    limb.Material = originalHandProps[id].Material
+                    limb.Color = originalHandProps[id].Color
                     if chamsSettings.handMat == "Chams" then
                         removeHighlights(limb)
                         applyHighlight(limb, chamsSettings.handColor, chamsSettings.handOutlineColor)
@@ -1106,7 +1115,6 @@ game:GetService("RunService").RenderStepped:Connect(function()
     updateItemChams()
     updateHandChams()
 end)
-
 ------------------------------------------------------------
 -- BULLET TRACE
 ------------------------------------------------------------
