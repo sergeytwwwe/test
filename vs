@@ -57,10 +57,12 @@ return function(VisualTab)
     local chamsSettings = {
         hand = false,
         handColor = Color3.new(1, 1, 1),
-        handMat = "Chams", -- только Chams
+        handOutlineColor = Color3.new(1,1,1),
+        handMat = "ForceField",
         item = false,
         itemColor = Color3.new(1, 1, 1),
-        itemMat = "Chams"
+        itemOutlineColor = Color3.new(1,1,1),
+        itemMat = "ForceField"
     }
     local traceSettings = {
         enabled = false,
@@ -293,38 +295,70 @@ return function(VisualTab)
     WorldBox:AddToggle("Log",{Text="Log",Default=false,Callback=function(val)logSettings.enabled=val; if setupLogHooks then setupLogHooks() end end})
     WorldBox:AddDropdown("LogTypes",{Values={"Kill log","Hit log"},Multi=true,Default={"Kill log","Hit log"},Text="Log Types",Callback=function(val)logSettings.types={};for k,v in pairs(val) do logSettings.types[k]=v end end})
 
-    -- CHAMS UI, исправлено: только по 1 ColorPicker на Hand и Item
+    -- CHAMS UI с динамическими ColorPicker
     local handChamsToggle = ChamsBox:AddToggle("HandChams", {
         Text = "Hand Chams",
         Default = chamsSettings.hand,
         Callback = function(val) chamsSettings.hand = val end
     })
-    handChamsToggle:AddColorPicker("HandChamsColor", {
+    local handColorPicker = handChamsToggle:AddColorPicker("HandChamsColor", {
         Default = chamsSettings.handColor,
         Callback = function(val) chamsSettings.handColor = val end
     })
-    ChamsBox:AddDropdown("HandChamsMat", {
-        Values = {"Off", "Chams"},
-        Default = "Off",
-        Text = "Hand Chams Type",
-        Callback = function(val) chamsSettings.handMat = val end
+    local handOutlineColorPicker
+    local handMatDropdown = ChamsBox:AddDropdown("HandChamsMat", {
+        Values = {"ForceField", "Neon", "Chams"},
+        Default = "ForceField",
+        Text = "Hand Material",
+        Callback = function(val)
+            chamsSettings.handMat = val
+            if val == "Chams" then
+                if not handOutlineColorPicker then
+                    handOutlineColorPicker = handChamsToggle:AddColorPicker("HandChamsOutlineColor", {
+                        Default = chamsSettings.handOutlineColor,
+                        Text = "Hand Outline Color",
+                        Callback = function(color) chamsSettings.handOutlineColor = color end
+                    })
+                end
+                handOutlineColorPicker:SetVisible(true)
+            else
+                if handOutlineColorPicker then handOutlineColorPicker:SetVisible(false) end
+            end
+        end
     })
+    if chamsSettings.handMat ~= "Chams" and handOutlineColorPicker then handOutlineColorPicker:SetVisible(false) end
 
     local itemChamsToggle = ChamsBox:AddToggle("ItemChams", {
         Text = "Item Chams",
         Default = chamsSettings.item,
         Callback = function(val) chamsSettings.item = val end
     })
-    itemChamsToggle:AddColorPicker("ItemChamsColor", {
+    local itemColorPicker = itemChamsToggle:AddColorPicker("ItemChamsColor", {
         Default = chamsSettings.itemColor,
         Callback = function(val) chamsSettings.itemColor = val end
     })
-    ChamsBox:AddDropdown("ItemChamsMat", {
-        Values = {"Off", "Chams"},
-        Default = "Off",
-        Text = "Item Chams Type",
-        Callback = function(val) chamsSettings.itemMat = val end
+    local itemOutlineColorPicker
+    local itemMatDropdown = ChamsBox:AddDropdown("ItemChamsMat", {
+        Values = {"ForceField", "Neon", "Chams"},
+        Default = "ForceField",
+        Text = "Item Material",
+        Callback = function(val)
+            chamsSettings.itemMat = val
+            if val == "Chams" then
+                if not itemOutlineColorPicker then
+                    itemOutlineColorPicker = itemChamsToggle:AddColorPicker("ItemChamsOutlineColor", {
+                        Default = chamsSettings.itemOutlineColor,
+                        Text = "Item Outline Color",
+                        Callback = function(color) chamsSettings.itemOutlineColor = color end
+                    })
+                end
+                itemOutlineColorPicker:SetVisible(true)
+            else
+                if itemOutlineColorPicker then itemOutlineColorPicker:SetVisible(false) end
+            end
+        end
     })
+    if chamsSettings.itemMat ~= "Chams" and itemOutlineColorPicker then itemOutlineColorPicker:SetVisible(false) end
 
     -- SAFE ZONE CHAMS UI
     local szChamsToggle = SafeZoneBox:AddToggle("SafeZoneChams",{Text="Safe zone chams",Default=safeZoneChamsSettings.enabled,Callback=function(val)safeZoneChamsSettings.enabled=val end})
@@ -839,18 +873,16 @@ print("[UI] Конец блока подключения UI событий (Worl
 -- === CHAMS (Руки и предметы) ===
 local originalHandProps, originalItemProps = {}, {}
 
-local function applyHighlight(part, color)
-    -- Удаляем прошлый Highlight
+local function applyHighlight(part, fillColor, outlineColor)
     for _, v in ipairs(part:GetChildren()) do
         if v:IsA("Highlight") then v:Destroy() end
     end
-    -- Создаем новый Highlight
     local highlight = Instance.new("Highlight")
     highlight.Adornee = part
-    highlight.FillColor = color
-    highlight.FillTransparency = 0.7 -- прозрачная внутрянка
-    highlight.OutlineColor = color
-    highlight.OutlineTransparency = 0 -- четкая обводка
+    highlight.FillColor = fillColor
+    highlight.FillTransparency = 0.7
+    highlight.OutlineColor = outlineColor or fillColor
+    highlight.OutlineTransparency = 0
     highlight.Parent = part
     return highlight
 end
@@ -861,15 +893,28 @@ local function removeHighlights(part)
     end
 end
 
+local function isInIgnore(obj)
+    local ignore = workspace:FindFirstChild("Const") and workspace.Const:FindFirstChild("Ignore")
+    if not ignore then return false end
+    return obj and obj.Parent == ignore
+end
+
 local function applyItemChams(obj)
     local id = obj:GetDebugId()
-    if obj.Name == "Arrow" or obj.Name == "Bullet" then return end
-    if chamsSettings.item and chamsSettings.itemMat == "Chams" then
+    -- Arrow/Bullet игнорируются только если они в Ignore
+    if isInIgnore(obj) and (obj.Name == "Arrow" or obj.Name == "Bullet") then return end
+    if chamsSettings.item then
         if not originalItemProps[id] then
             originalItemProps[id] = {Material=obj.Material, Color=obj.Color}
         end
-        removeHighlights(obj)
-        applyHighlight(obj, chamsSettings.itemColor)
+        if chamsSettings.itemMat == "Chams" then
+            removeHighlights(obj)
+            applyHighlight(obj, chamsSettings.itemColor, chamsSettings.itemOutlineColor)
+        else
+            removeHighlights(obj)
+            obj.Material = Enum.Material[chamsSettings.itemMat]
+            obj.Color = chamsSettings.itemColor
+        end
     else
         local old = originalItemProps[id]
         if old then
@@ -894,7 +939,7 @@ local function updateIgnoreChams()
     local ignore = workspace:FindFirstChild("Const") and workspace.Const:FindFirstChild("Ignore")
     if not ignore then return end
     for _, obj in ipairs(ignore:GetChildren()) do
-        if obj.Name ~= "FPSArms" and obj.Name ~= "LocalCharacter" and obj.Name ~= "Arrow" and obj.Name ~= "Bullet" then
+        if obj.Name ~= "FPSArms" and obj.Name ~= "LocalCharacter" then
             recurseItemChams(obj)
         end
     end
@@ -947,12 +992,18 @@ local function updateHandChams()
         local hand = arms:FindFirstChild(name)
         if hand and hand:IsA("MeshPart") then
             local id = hand:GetDebugId()
-            if chamsSettings.hand and chamsSettings.handMat == "Chams" then
+            if chamsSettings.hand then
                 if not originalHandProps[id] then
                     originalHandProps[id] = {Material=hand.Material, Color=hand.Color}
                 end
-                removeHighlights(hand)
-                applyHighlight(hand, chamsSettings.handColor)
+                if chamsSettings.handMat == "Chams" then
+                    removeHighlights(hand)
+                    applyHighlight(hand, chamsSettings.handColor, chamsSettings.handOutlineColor)
+                else
+                    removeHighlights(hand)
+                    hand.Material = Enum.Material[chamsSettings.handMat]
+                    hand.Color = chamsSettings.handColor
+                end
             else
                 local old = originalHandProps[id]
                 if old then
@@ -971,12 +1022,18 @@ local function updateHandChams()
             local limb = fake:FindFirstChild(name)
             if limb and limb:IsA("MeshPart") then
                 local id = limb:GetDebugId()
-                if chamsSettings.hand and chamsSettings.handMat == "Chams" then
+                if chamsSettings.hand then
                     if not originalHandProps[id] then
                         originalHandProps[id] = {Material=limb.Material, Color=limb.Color}
                     end
-                    removeHighlights(limb)
-                    applyHighlight(limb, chamsSettings.handColor)
+                    if chamsSettings.handMat == "Chams" then
+                        removeHighlights(limb)
+                        applyHighlight(limb, chamsSettings.handColor, chamsSettings.handOutlineColor)
+                    else
+                        removeHighlights(limb)
+                        limb.Material = Enum.Material[chamsSettings.handMat]
+                        limb.Color = chamsSettings.handColor
+                    end
                 else
                     local old = originalHandProps[id]
                     if old then
@@ -995,6 +1052,7 @@ game:GetService("RunService").RenderStepped:Connect(function()
     updateItemChams()
     updateHandChams()
 end)
+
 ------------------------------------------------------------
 -- BULLET TRACE
 ------------------------------------------------------------
