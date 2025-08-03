@@ -245,87 +245,90 @@ return function(VisualTab)
     local WorldBox = VisualTab:AddRightGroupbox("World", "globe")
     local SafeZoneBox = VisualTab:AddRightGroupbox("Safe zone", "shield", {Bottom=true})
 
-  -- Hand Chams
-local handColorPicker, handOutlineColorPicker, handMatDropdown
-local function updateHandChamsUI()
-    local enabled = chamsSettings.hand
-    handColorPicker:SetVisible(enabled)
-    handMatDropdown:SetVisible(enabled)
-    handOutlineColorPicker:SetVisible(enabled and chamsSettings.handMat == "Chams")
-end
-local handChamsToggle = ChamsBox:AddToggle("HandChams", {
-    Text = "Hand Chams",
-    Default = chamsSettings.hand,
-    Callback = function(val)
-        chamsSettings.hand = val
-        updateHandChamsUI()
-    end
-})
-handColorPicker = handChamsToggle:AddColorPicker("HandChamsColor", {
-    Default = chamsSettings.handColor,
-    Text = "Hand Color",
-    Callback = function(val)
-        chamsSettings.handColor = val
-    end
-})
-handOutlineColorPicker = handChamsToggle:AddColorPicker("HandChamsOutlineColor", {
-    Default = chamsSettings.handOutlineColor,
-    Text = "Hand Outline Color",
-    Callback = function(color)
-        chamsSettings.handOutlineColor = color
-    end
-})
-handMatDropdown = ChamsBox:AddDropdown("HandChamsMat", {
-    Values = {"ForceField", "Neon", "Chams"},
-    Default = chamsSettings.handMat,
-    Text = "Hand Material",
-    Callback = function(val)
-        chamsSettings.handMat = val
-        updateHandChamsUI()
-    end
-})
-updateHandChamsUI()
+    -- === CHAMS UI (ПОЛНОСТЬЮ ИСПРАВЛЕННЫЙ БЛОК) ===
+    -- Hand/Item Chams: всегда чекбокс и colorpicker, outline colorpicker только при Chams
 
--- Item Chams
-local itemColorPicker, itemOutlineColorPicker, itemMatDropdown
-local function updateItemChamsUI()
-    local enabled = chamsSettings.item
-    itemColorPicker:SetVisible(enabled)
-    itemMatDropdown:SetVisible(enabled)
-    itemOutlineColorPicker:SetVisible(enabled and chamsSettings.itemMat == "Chams")
-end
-local itemChamsToggle = ChamsBox:AddToggle("ItemChams", {
-    Text = "Item Chams",
-    Default = chamsSettings.item,
-    Callback = function(val)
-        chamsSettings.item = val
-        updateItemChamsUI()
+    -- Hand Chams
+    local handColorPicker, handOutlineColorPicker, handMatDropdown
+    local function updateHandChamsUI()
+        local enabled = chamsSettings.hand
+        handColorPicker:SetVisible(enabled)
+        handMatDropdown:SetVisible(enabled)
+        handOutlineColorPicker:SetVisible(enabled and chamsSettings.handMat == "Chams")
     end
-})
-itemColorPicker = itemChamsToggle:AddColorPicker("ItemChamsColor", {
-    Default = chamsSettings.itemColor,
-    Text = "Item Color",
-    Callback = function(val)
-        chamsSettings.itemColor = val
+    local handChamsToggle = ChamsBox:AddToggle("HandChams", {
+        Text = "Hand Chams",
+        Default = chamsSettings.hand,
+        Callback = function(val)
+            chamsSettings.hand = val
+            updateHandChamsUI()
+        end
+    })
+    handColorPicker = handChamsToggle:AddColorPicker("HandChamsColor", {
+        Default = chamsSettings.handColor,
+        Text = "Hand Color",
+        Callback = function(val)
+            chamsSettings.handColor = val
+        end
+    })
+    handOutlineColorPicker = handChamsToggle:AddColorPicker("HandChamsOutlineColor", {
+        Default = chamsSettings.handOutlineColor,
+        Text = "Hand Outline Color",
+        Callback = function(color)
+            chamsSettings.handOutlineColor = color
+        end
+    })
+    handMatDropdown = ChamsBox:AddDropdown("HandChamsMat", {
+        Values = {"ForceField", "Neon", "Chams"},
+        Default = chamsSettings.handMat,
+        Text = "Hand Material",
+        Callback = function(val)
+            chamsSettings.handMat = val
+            updateHandChamsUI()
+        end
+    })
+    updateHandChamsUI()
+
+    -- Item Chams
+    local itemColorPicker, itemOutlineColorPicker, itemMatDropdown
+    local function updateItemChamsUI()
+        local enabled = chamsSettings.item
+        itemColorPicker:SetVisible(enabled)
+        itemMatDropdown:SetVisible(enabled)
+        itemOutlineColorPicker:SetVisible(enabled and chamsSettings.itemMat == "Chams")
     end
-})
-itemOutlineColorPicker = itemChamsToggle:AddColorPicker("ItemChamsOutlineColor", {
-    Default = chamsSettings.itemOutlineColor,
-    Text = "Item Outline Color",
-    Callback = function(color)
-        chamsSettings.itemOutlineColor = color
-    end
-})
-itemMatDropdown = ChamsBox:AddDropdown("ItemChamsMat", {
-    Values = {"ForceField", "Neon", "Chams"},
-    Default = chamsSettings.itemMat,
-    Text = "Item Material",
-    Callback = function(val)
-        chamsSettings.itemMat = val
-        updateItemChamsUI()
-    end
-})
-updateItemChamsUI()
+    local itemChamsToggle = ChamsBox:AddToggle("ItemChams", {
+        Text = "Item Chams",
+        Default = chamsSettings.item,
+        Callback = function(val)
+            chamsSettings.item = val
+            updateItemChamsUI()
+        end
+    })
+    itemColorPicker = itemChamsToggle:AddColorPicker("ItemChamsColor", {
+        Default = chamsSettings.itemColor,
+        Text = "Item Color",
+        Callback = function(val)
+            chamsSettings.itemColor = val
+        end
+    })
+    itemOutlineColorPicker = itemChamsToggle:AddColorPicker("ItemChamsOutlineColor", {
+        Default = chamsSettings.itemOutlineColor,
+        Text = "Item Outline Color",
+        Callback = function(color)
+            chamsSettings.itemOutlineColor = color
+        end
+    })
+    itemMatDropdown = ChamsBox:AddDropdown("ItemChamsMat", {
+        Values = {"ForceField", "Neon", "Chams"},
+        Default = chamsSettings.itemMat,
+        Text = "Item Material",
+        Callback = function(val)
+            chamsSettings.itemMat = val
+            updateItemChamsUI()
+        end
+    })
+    updateItemChamsUI()
 
     -- SAFE ZONE CHAMS UI
     local szChamsToggle = SafeZoneBox:AddToggle("SafeZoneChams",{Text="Safe zone chams",Default=safeZoneChamsSettings.enabled,Callback=function(val)safeZoneChamsSettings.enabled=val end})
@@ -391,6 +394,91 @@ updateItemChamsUI()
     local carToggle = ObjectEspBox:AddToggle("objectEspCar",{Text="Car",Default=objectEspSettings.car.enabled,Callback=function(val)objectEspSettings.car.enabled=val end})
     carToggle:AddColorPicker("objectEspCarColor",{Default=objectEspSettings.car.color,Callback=function(val)objectEspSettings.car.color=val end})
     ObjectEspBox:AddSlider("objectEspMaxDistance",{Text="Max Distance",Default=objectEspSettings.maxDistance,Min=200,Max=3000,Rounding=0,Callback=function(val)objectEspSettings.maxDistance=val end})
+
+    -- === Offscreen ESP UI ===
+    OffscreenEspBox:AddToggle("offscreenEnabled", {
+        Text = "Enable Offscreen ESP",
+        Default = offscreenSettings.enabled,
+        Callback = function(val) offscreenSettings.enabled = val end
+    })
+    OffscreenEspBox:AddToggle("offscreenArrow", {
+        Text = "Show Arrow",
+        Default = offscreenSettings.arrow,
+        Callback = function(val) offscreenSettings.arrow = val end
+    }):AddColorPicker("offscreenArrowColor", {
+        Default = offscreenSettings.arrowColor,
+        Text = "Arrow Color",
+        Callback = function(val) offscreenSettings.arrowColor = val end
+    })
+    OffscreenEspBox:AddSlider("offscreenRadius", {
+        Text = "Arrow Circle Radius",
+        Min = 50,
+        Max = 400,
+        Default = offscreenSettings.circleRadius,
+        Rounding = 0,
+        Callback = function(val) offscreenSettings.circleRadius = val end
+    })
+    OffscreenEspBox:AddSlider("offscreenArrowSize", {
+        Text = "Arrow Size",
+        Min = 4,
+        Max = 40,
+        Default = offscreenSettings.arrowSize,
+        Rounding = 0,
+        Callback = function(val) offscreenSettings.arrowSize = val end
+    })
+    OffscreenEspBox:AddSlider("offscreenMaxDistance", {
+        Text = "Max Distance",
+        Min = 200,
+        Max = 3000,
+        Default = offscreenSettings.maxDist,
+        Rounding = 0,
+        Callback = function(val) offscreenSettings.maxDist = val end
+    })
+    OffscreenEspBox:AddToggle("offscreenName", {
+        Text = "Show Name",
+        Default = offscreenSettings.name,
+        Callback = function(val) offscreenSettings.name = val end
+    }):AddColorPicker("offscreenNameColor", {
+        Default = offscreenSettings.nameColor,
+        Text = "Name Color",
+        Callback = function(val) offscreenSettings.nameColor = val end
+    })
+    OffscreenEspBox:AddToggle("offscreenWeapon", {
+        Text = "Show Weapon",
+        Default = offscreenSettings.weapon,
+        Callback = function(val) offscreenSettings.weapon = val end
+    }):AddColorPicker("offscreenWeaponColor", {
+        Default = offscreenSettings.weaponColor,
+        Text = "Weapon Color",
+        Callback = function(val) offscreenSettings.weaponColor = val end
+    })
+    OffscreenEspBox:AddToggle("offscreenDistance", {
+        Text = "Show Distance",
+        Default = offscreenSettings.distance,
+        Callback = function(val) offscreenSettings.distance = val end
+    }):AddColorPicker("offscreenDistanceColor", {
+        Default = offscreenSettings.distanceColor,
+        Text = "Distance Color",
+        Callback = function(val) offscreenSettings.distanceColor = val end
+    })
+    OffscreenEspBox:AddSlider("offscreenTextSize", {
+        Text = "Text Size",
+        Min = 10,
+        Max = 36,
+        Default = offscreenSettings.textSize,
+        Rounding = 0,
+        Callback = function(val) offscreenSettings.textSize = val end
+    })
+    OffscreenEspBox:AddToggle("offscreenSleep", {
+        Text = "Sleep Check",
+        Default = offscreenSettings.sleepcheck,
+        Callback = function(val) offscreenSettings.sleepcheck = val end
+    })
+    OffscreenEspBox:AddToggle("offscreenAICheck", {
+        Text = "AI Check",
+        Default = offscreenSettings.aicheck,
+        Callback = function(val) offscreenSettings.aicheck = val end
+    })
 
 ------------------------------------------------------------
 -- ЧАСТЬ 2. ЛОГИКА: Offscreen ESP (arrows, labels, очистка), No Grass, No Leaves, Clouds, Ambient, Always Day, Remove Fog, Skybox
