@@ -57,12 +57,10 @@ return function(VisualTab)
     local chamsSettings = {
         hand = false,
         handColor = Color3.new(1, 1, 1),
-        handOutlineColor = Color3.fromRGB(255, 255, 255),
-        handMat = "ForceField",
+        handMat = "Chams", -- только Chams
         item = false,
         itemColor = Color3.new(1, 1, 1),
-        itemOutlineColor = Color3.fromRGB(255, 255, 255),
-        itemMat = "ForceField"
+        itemMat = "Chams"
     }
     local traceSettings = {
         enabled = false,
@@ -295,16 +293,38 @@ return function(VisualTab)
     WorldBox:AddToggle("Log",{Text="Log",Default=false,Callback=function(val)logSettings.enabled=val; if setupLogHooks then setupLogHooks() end end})
     WorldBox:AddDropdown("LogTypes",{Values={"Kill log","Hit log"},Multi=true,Default={"Kill log","Hit log"},Text="Log Types",Callback=function(val)logSettings.types={};for k,v in pairs(val) do logSettings.types[k]=v end end})
 
-    -- CHAMS UI
-    local handChamsToggle = ChamsBox:AddToggle("HandChams",{Text="Hand Chams",Default=chamsSettings.hand,Callback=function(val)chamsSettings.hand=val end})
-    handChamsToggle:AddColorPicker("HandChamsColor",{Default=chamsSettings.handColor,Callback=function(val)chamsSettings.handColor=val end})
-    handChamsToggle:AddColorPicker("HandOutlineColor",{Default=chamsSettings.handOutlineColor,Text="Hand Outline Color",Callback=function(val)chamsSettings.handOutlineColor=val end})
-    ChamsBox:AddDropdown("HandChamsMat",{Values={"ForceField","Neon","Outline"},Default="ForceField",Text="Hand Material",Callback=function(val)chamsSettings.handMat=val end})
+    -- CHAMS UI, исправлено: только по 1 ColorPicker на Hand и Item
+    local handChamsToggle = ChamsBox:AddToggle("HandChams", {
+        Text = "Hand Chams",
+        Default = chamsSettings.hand,
+        Callback = function(val) chamsSettings.hand = val end
+    })
+    handChamsToggle:AddColorPicker("HandChamsColor", {
+        Default = chamsSettings.handColor,
+        Callback = function(val) chamsSettings.handColor = val end
+    })
+    ChamsBox:AddDropdown("HandChamsMat", {
+        Values = {"Off", "Chams"},
+        Default = "Off",
+        Text = "Hand Chams Type",
+        Callback = function(val) chamsSettings.handMat = val end
+    })
 
-    local itemChamsToggle = ChamsBox:AddToggle("ItemChams",{Text="Item Chams",Default=chamsSettings.item,Callback=function(val)chamsSettings.item=val end})
-    itemChamsToggle:AddColorPicker("ItemChamsColor",{Default=chamsSettings.itemColor,Callback=function(val)chamsSettings.itemColor=val end})
-    itemChamsToggle:AddColorPicker("ItemOutlineColor",{Default=chamsSettings.itemOutlineColor,Text="Item Outline Color",Callback=function(val)chamsSettings.itemOutlineColor=val end})
-    ChamsBox:AddDropdown("ItemChamsMat",{Values={"ForceField","Neon","Outline"},Default="ForceField",Text="Item Material",Callback=function(val)chamsSettings.itemMat=val end})
+    local itemChamsToggle = ChamsBox:AddToggle("ItemChams", {
+        Text = "Item Chams",
+        Default = chamsSettings.item,
+        Callback = function(val) chamsSettings.item = val end
+    })
+    itemChamsToggle:AddColorPicker("ItemChamsColor", {
+        Default = chamsSettings.itemColor,
+        Callback = function(val) chamsSettings.itemColor = val end
+    })
+    ChamsBox:AddDropdown("ItemChamsMat", {
+        Values = {"Off", "Chams"},
+        Default = "Off",
+        Text = "Item Chams Type",
+        Callback = function(val) chamsSettings.itemMat = val end
+    })
 
     -- SAFE ZONE CHAMS UI
     local szChamsToggle = SafeZoneBox:AddToggle("SafeZoneChams",{Text="Safe zone chams",Default=safeZoneChamsSettings.enabled,Callback=function(val)safeZoneChamsSettings.enabled=val end})
@@ -819,7 +839,7 @@ print("[UI] Конец блока подключения UI событий (Worl
 -- === CHAMS (Руки и предметы) ===
 local originalHandProps, originalItemProps = {}, {}
 
-local function applyHighlight(part, fillColor, outlineColor)
+local function applyHighlight(part, color)
     -- Удаляем прошлый Highlight
     for _, v in ipairs(part:GetChildren()) do
         if v:IsA("Highlight") then v:Destroy() end
@@ -827,9 +847,9 @@ local function applyHighlight(part, fillColor, outlineColor)
     -- Создаем новый Highlight
     local highlight = Instance.new("Highlight")
     highlight.Adornee = part
-    highlight.FillColor = fillColor
+    highlight.FillColor = color
     highlight.FillTransparency = 0.7 -- прозрачная внутрянка
-    highlight.OutlineColor = outlineColor
+    highlight.OutlineColor = color
     highlight.OutlineTransparency = 0 -- четкая обводка
     highlight.Parent = part
     return highlight
@@ -844,20 +864,12 @@ end
 local function applyItemChams(obj)
     local id = obj:GetDebugId()
     if obj.Name == "Arrow" or obj.Name == "Bullet" then return end
-    if chamsSettings.item then
+    if chamsSettings.item and chamsSettings.itemMat == "Chams" then
         if not originalItemProps[id] then
             originalItemProps[id] = {Material=obj.Material, Color=obj.Color}
         end
-        if chamsSettings.itemMat == "Outline" then
-            removeHighlights(obj)
-            applyHighlight(obj, chamsSettings.itemColor, chamsSettings.itemOutlineColor)
-            obj.Material = Enum.Material.Plastic
-            obj.Color = chamsSettings.itemColor
-        else
-            removeHighlights(obj)
-            obj.Material = Enum.Material[chamsSettings.itemMat]
-            obj.Color = chamsSettings.itemColor
-        end
+        removeHighlights(obj)
+        applyHighlight(obj, chamsSettings.itemColor)
     else
         local old = originalItemProps[id]
         if old then
@@ -935,20 +947,12 @@ local function updateHandChams()
         local hand = arms:FindFirstChild(name)
         if hand and hand:IsA("MeshPart") then
             local id = hand:GetDebugId()
-            if chamsSettings.hand then
+            if chamsSettings.hand and chamsSettings.handMat == "Chams" then
                 if not originalHandProps[id] then
                     originalHandProps[id] = {Material=hand.Material, Color=hand.Color}
                 end
-                if chamsSettings.handMat == "Outline" then
-                    removeHighlights(hand)
-                    applyHighlight(hand, chamsSettings.handColor, chamsSettings.handOutlineColor)
-                    hand.Material = Enum.Material.Plastic
-                    hand.Color = chamsSettings.handColor
-                else
-                    removeHighlights(hand)
-                    hand.Material = Enum.Material[chamsSettings.handMat]
-                    hand.Color = chamsSettings.handColor
-                end
+                removeHighlights(hand)
+                applyHighlight(hand, chamsSettings.handColor)
             else
                 local old = originalHandProps[id]
                 if old then
@@ -967,20 +971,12 @@ local function updateHandChams()
             local limb = fake:FindFirstChild(name)
             if limb and limb:IsA("MeshPart") then
                 local id = limb:GetDebugId()
-                if chamsSettings.hand then
+                if chamsSettings.hand and chamsSettings.handMat == "Chams" then
                     if not originalHandProps[id] then
                         originalHandProps[id] = {Material=limb.Material, Color=limb.Color}
                     end
-                    if chamsSettings.handMat == "Outline" then
-                        removeHighlights(limb)
-                        applyHighlight(limb, chamsSettings.handColor, chamsSettings.handOutlineColor)
-                        limb.Material = Enum.Material.Plastic
-                        limb.Color = chamsSettings.handColor
-                    else
-                        removeHighlights(limb)
-                        limb.Material = Enum.Material[chamsSettings.handMat]
-                        limb.Color = chamsSettings.handColor
-                    end
+                    removeHighlights(limb)
+                    applyHighlight(limb, chamsSettings.handColor)
                 else
                     local old = originalHandProps[id]
                     if old then
