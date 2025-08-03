@@ -133,11 +133,11 @@ return function(VisualTab)
     local ambientColorPicker = ambientToggle:AddColorPicker("AmbientColor",{Default=worldVisuals.ambient,Callback=function(val)worldVisuals.ambient=val end})
     local alwaysDayToggle = WorldBox:AddToggle("AlwaysDay",{Text="Always Day",Default=worldVisuals.alwaysDay,Callback=function(val)worldVisuals.alwaysDay=val end})
     local removeFogToggle = WorldBox:AddToggle("RemoveFog",{Text="Remove Fog",Default=worldVisuals.removeFog,Callback=function(val)worldVisuals.removeFog=val end})
-    WorldBox:AddDropdown("SkyboxSelect",{Text="Skybox",Values={"Default","Spongebob","Darksky","Night Time Sky","Minecraft Sky","pink sky","Purple sky","FireWatch","c00lkidd Skybox","Nyan Cat","scary skybox"},Default="Default",Callback=function(val)worldVisuals.skybox=val; if setSkybox then setSkybox(val) end end})
+    WorldBox:AddDropdown("SkyboxSelect",{Text="Skybox",Values={"Default","Spongebob","Darksky","Night Time Sky","Minecraft Sky","pink sky","Purple sky","FireWatch","c00lkidd Skybox","Nyan Cat","scary skybox"},Default="Default",Callback=function(val)worldVisuals.skybox=val; setSkybox(val) end})
     WorldBox:AddToggle("BulletTrace",{Text="Bullet Trace",Default=false,Callback=function(val)traceSettings.enabled=val end}):AddColorPicker("BulletTraceColor",{Default=Color3.new(0,0.4,1),Title="Bullet Trace Color",Callback=function(val)traceSettings.color=val end})
     WorldBox:AddDropdown("BulletTraceMode",{Values={"Legit","Neon"},Default="Legit",Text="Bullet Trace Mode",Callback=function(val)traceSettings.mode=val end})
-    WorldBox:AddToggle("HitSound",{Text="Hit sound",Default=false,Callback=function(val)hitSoundSettings.enabled=val; if updateHitSounds then updateHitSounds() end end})
-    WorldBox:AddDropdown("HitSoundType",{Values={"Rust","Skeet","Sonic","Sonic Checkpoint","Oof","Windows XP Error","Punch","Buble","byebye","cowbell"},Default="Rust",Text="Hit sound type",Callback=function(val)hitSoundSettings.soundType=val; if updateHitSounds then updateHitSounds() end end})
+    WorldBox:AddToggle("HitSound",{Text="Hit sound",Default=false,Callback=function(val)hitSoundSettings.enabled=val; updateHitSounds() end})
+    WorldBox:AddDropdown("HitSoundType",{Values={"Rust","Skeet","Sonic","Sonic Checkpoint","Oof","Windows XP Error","Punch","Buble","byebye","cowbell"},Default="Rust",Text="Hit sound type",Callback=function(val)hitSoundSettings.soundType=val; updateHitSounds() end})
     WorldBox:AddToggle("Log",{Text="Log",Default=false,Callback=function(val)logSettings.enabled=val; if setupLogHooks then setupLogHooks() end end})
     WorldBox:AddDropdown("LogTypes",{Values={"Kill log","Hit log"},Multi=true,Default={"Kill log","Hit log"},Text="Log Types",Callback=function(val)logSettings.types={};for k,v in pairs(val) do logSettings.types[k]=v end end})
     -- !!! ВАЖНО: подписка на события colorpickers только ОДИН РАЗ, после их создания !!!
@@ -226,7 +226,6 @@ return function(VisualTab)
         end
     end
 end
-
 ------------------------------------------------------------
 -- ЧАСТЬ 2. ЛОГИКА: Offscreen ESP (arrows, labels, очистка), No Grass, No Leaves, Clouds, Ambient, Always Day, Remove Fog, Skybox
 ------------------------------------------------------------
