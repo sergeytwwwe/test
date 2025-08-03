@@ -86,182 +86,146 @@ return function(VisualTab)
         removeFog = false,
         skybox = "Default"
     }
-local skyboxes = {["Default"]={SkyboxBk="rbxassetid://401664839",SkyboxDn="rbxassetid://401664862",SkyboxFt="rbxassetid://401664936",SkyboxLf="rbxassetid://401664881",SkyboxRt="rbxassetid://401664929",SkyboxUp="rbxassetid://401664883"},["Spongebob"]={SkyboxBk="rbxassetid://9076122431",SkyboxDn="rbxassetid://9076122431",SkyboxFt="rbxassetid://9076122431",SkyboxLf="rbxassetid://9076122431",SkyboxRt="rbxassetid://9076122431",SkyboxUp="rbxassetid://9076122431"},["Darksky"]={SkyboxBk="rbxassetid://116873078",SkyboxDn="rbxassetid://116873078",SkyboxFt="rbxassetid://116873078",SkyboxLf="rbxassetid://116873078",SkyboxRt="rbxassetid://116873078",SkyboxUp="rbxassetid://116873078"},["Night Time Sky"]={SkyboxBk="rbxassetid://466635038",SkyboxDn="rbxassetid://466635038",SkyboxFt="rbxassetid://466635038",SkyboxLf="rbxassetid://466635038",SkyboxRt="rbxassetid://466635038",SkyboxUp="rbxassetid://466635038"},["Minecraft Sky"]={SkyboxBk="rbxassetid://2758029221",SkyboxDn="rbxassetid://2758029221",SkyboxFt="rbxassetid://2758029221",SkyboxLf="rbxassetid://2758029221",SkyboxRt="rbxassetid://2758029221",SkyboxUp="rbxassetid://2758029221"},["pink sky"]={SkyboxBk="rbxassetid://10340396563",SkyboxDn="rbxassetid://10340396563",SkyboxFt="rbxassetid://10340396563",SkyboxLf="rbxassetid://10340396563",SkyboxRt="rbxassetid://10340396563",SkyboxUp="rbxassetid://10340396563"},["Purple sky"]={SkyboxBk="rbxassetid://5094389324",SkyboxDn="rbxassetid://5094389324",SkyboxFt="rbxassetid://5094389324",SkyboxLf="rbxassetid://5094389324",SkyboxRt="rbxassetid://5094389324",SkyboxUp="rbxassetid://5094389324"},["FireWatch"]={SkyboxBk="rbxassetid://8720439638",SkyboxDn="rbxassetid://8720439638",SkyboxFt="rbxassetid://8720439638",SkyboxLf="rbxassetid://8720439638",SkyboxRt="rbxassetid://8720439638",SkyboxUp="rbxassetid://8720439638"},["c00lkidd Skybox"]={SkyboxBk="rbxassetid://133973334152130",SkyboxDn="rbxassetid://133973334152130",SkyboxFt="rbxassetid://133973334152130",SkyboxLf="rbxassetid://133973334152130",SkyboxRt="rbxassetid://133973334152130",SkyboxUp="rbxassetid://133973334152130"},["Nyan Cat"]={SkyboxBk="rbxassetid://57754921",SkyboxDn="rbxassetid://57754921",SkyboxFt="rbxassetid://57754921",SkyboxLf="rbxassetid://57754921",SkyboxRt="rbxassetid://57754921",SkyboxUp="rbxassetid://57754921"},["scary skybox"]={SkyboxBk="rbxassetid://4868486619",SkyboxDn="rbxassetid://4868486619",SkyboxFt="rbxassetid://4868486619",SkyboxLf="rbxassetid://4868486619",SkyboxRt="rbxassetid://4868486619",SkyboxUp="rbxassetid://4868486619"}}
-local Lighting = game:GetService("Lighting")
-local function setSkybox(name)
-    for _,v in pairs(Lighting:GetChildren()) do if v:IsA("Sky") then v:Destroy() end end
-    local sb=skyboxes[name]
-    if sb then
-        local sky=Instance.new("Sky")
-        for k,v in pairs(sb) do sky[k]=v end
-        sky.Parent=Lighting
-    end
-end
+    local skyboxes = {["Default"]={SkyboxBk="rbxassetid://401664839",SkyboxDn="rbxassetid://401664862",SkyboxFt="rbxassetid://401664936",SkyboxLf="rbxassetid://401664881",SkyboxRt="rbxassetid://401664929",SkyboxUp="rbxassetid://401664883"},["Spongebob"]={SkyboxBk="rbxassetid://9076122431",SkyboxDn="rbxassetid://9076122431",SkyboxFt="rbxassetid://9076122431",SkyboxLf="rbxassetid://9076122431",SkyboxRt="rbxassetid://9076122431",SkyboxUp="rbxassetid://9076122431"},["Darksky"]={SkyboxBk="rbxassetid://116873078",SkyboxDn="rbxassetid://116873078",SkyboxFt="rbxassetid://116873078",SkyboxLf="rbxassetid://116873078",SkyboxRt="rbxassetid://116873078",SkyboxUp="rbxassetid://116873078"},["Night Time Sky"]={SkyboxBk="rbxassetid://466635038",SkyboxDn="rbxassetid://466635038",SkyboxFt="rbxassetid://466635038",SkyboxLf="rbxassetid://466635038",SkyboxRt="rbxassetid://466635038",SkyboxUp="rbxassetid://466635038"},["Minecraft Sky"]={SkyboxBk="rbxassetid://2758029221",SkyboxDn="rbxassetid://2758029221",SkyboxFt="rbxassetid://2758029221",SkyboxLf="rbxassetid://2758029221",SkyboxRt="rbxassetid://2758029221",SkyboxUp="rbxassetid://2758029221"},["pink sky"]={SkyboxBk="rbxassetid://10340396563",SkyboxDn="rbxassetid://10340396563",SkyboxFt="rbxassetid://10340396563",SkyboxLf="rbxassetid://10340396563",SkyboxRt="rbxassetid://10340396563",SkyboxUp="rbxassetid://10340396563"},["Purple sky"]={SkyboxBk="rbxassetid://5094389324",SkyboxDn="rbxassetid://5094389324",SkyboxFt="rbxassetid://5094389324",SkyboxLf="rbxassetid://5094389324",SkyboxRt="rbxassetid://5094389324",SkyboxUp="rbxassetid://5094389324"},["FireWatch"]={SkyboxBk="rbxassetid://8720439638",SkyboxDn="rbxassetid://8720439638",SkyboxFt="rbxassetid://8720439638",SkyboxLf="rbxassetid://8720439638",SkyboxRt="rbxassetid://8720439638",SkyboxUp="rbxassetid://8720439638"},["c00lkidd Skybox"]={SkyboxBk="rbxassetid://133973334152130",SkyboxDn="rbxassetid://133973334152130",SkyboxFt="rbxassetid://133973334152130",SkyboxLf="rbxassetid://133973334152130",SkyboxRt="rbxassetid://133973334152130",SkyboxUp="rbxassetid://133973334152130"},["Nyan Cat"]={SkyboxBk="rbxassetid://57754921",SkyboxDn="rbxassetid://57754921",SkyboxFt="rbxassetid://57754921",SkyboxLf="rbxassetid://57754921",SkyboxRt="rbxassetid://57754921",SkyboxUp="rbxassetid://57754921"},["scary skybox"]={SkyboxBk="rbxassetid://4868486619",SkyboxDn="rbxassetid://4868486619",SkyboxFt="rbxassetid://4868486619",SkyboxLf="rbxassetid://4868486619",SkyboxRt="rbxassetid://4868486619",SkyboxUp="rbxassetid://4868486619"}}
 
-print("[UI] Начинается блок World UI")
     -- === UI ===
     local EspBox = VisualTab:AddLeftGroupbox("ESP", "box")
-    local ObjectEspBox = VisualTab:AddLeftGroupbox("Object ESP", "cube", {Bottom = true})
+    local ObjectEspBox = VisualTab:AddLeftGroupbox("Object ESP", "cube", {Bottom=true})
     local OffscreenEspBox = VisualTab:AddLeftGroupbox("Offscreen ESP", "eye")
     local ChamsBox = VisualTab:AddRightGroupbox("Chams", "wand")
     local WorldBox = VisualTab:AddRightGroupbox("World", "globe")
-    local SafeZoneBox = VisualTab:AddRightGroupbox("Safe zone", "shield", {Bottom = true})
+    local SafeZoneBox = VisualTab:AddRightGroupbox("Safe zone", "shield", {Bottom=true})
 
--- Offscreen ESP UI (корректное управление чекбоксами/слайдерами, включая авто-инициализацию при включении)
-local offscreenElements = {}
-
-local function resetOffscreenElements(state)
-    -- Применить значения из offscreenSettings к UI
-    for _, elem in ipairs(offscreenElements) do
-        if elem.SetVisible then elem:SetVisible(state) end
-        if elem.SetValue and state then
-            -- Если элемент чекбокс, то активировать если значение в settings true
-            local key = elem.Name
-            if key and offscreenSettings[key] ~= nil then
-                elem:SetValue(offscreenSettings[key])
+    -- Offscreen ESP UI
+    local offscreenElements = {}
+    local function resetOffscreenElements(state)
+        for _, elem in ipairs(offscreenElements) do
+            if elem.SetVisible then elem:SetVisible(state) end
+            if elem.SetValue and state then
+                local key = elem.Name
+                if key and offscreenSettings[key] ~= nil then
+                    elem:SetValue(offscreenSettings[key])
+                end
             end
         end
     end
-end
 
-local offscreenEnabledToggle = OffscreenEspBox:AddToggle("offscreenEspEnabled", {
-    Text = "Enabled",
-    Default = offscreenSettings.enabled,
-    Callback = function(val)
-        offscreenSettings.enabled = val
-        resetOffscreenElements(val)
-        -- Если выключаем чекбокс, выключить все остальные настройки
-        if not val then
-            offscreenSettings.arrow = false
-            offscreenSettings.name = false
-            offscreenSettings.weapon = false
-            offscreenSettings.distance = false
-            offscreenSettings.sleepcheck = false
-            offscreenSettings.aicheck = false
-            resetOffscreenElements(false)
-        end
-    end
-})
+    local offscreenEnabledToggle = OffscreenEspBox:AddToggle("offscreenEspEnabled", {Text="Enabled", Default=offscreenSettings.enabled, Callback=function(val) offscreenSettings.enabled=val; resetOffscreenElements(val); if not val then offscreenSettings.arrow=false;offscreenSettings.name=false;offscreenSettings.weapon=false;offscreenSettings.distance=false;offscreenSettings.sleepcheck=false;offscreenSettings.aicheck=false;resetOffscreenElements(false) end end})
+    local arrowToggle = OffscreenEspBox:AddToggle("offscreenEspArrow", {Text="Arrow", Default=offscreenSettings.arrow, Callback=function(val) offscreenSettings.arrow=val end}); arrowToggle.Name="arrow"; table.insert(offscreenElements,arrowToggle); arrowToggle:AddColorPicker("offscreenArrowColor",{Default=offscreenSettings.arrowColor,Callback=function(val)offscreenSettings.arrowColor=val end})
+    local nameToggle = OffscreenEspBox:AddToggle("offscreenEspName", {Text="Name", Default=offscreenSettings.name, Callback=function(val) offscreenSettings.name=val end}); nameToggle.Name="name"; table.insert(offscreenElements,nameToggle); nameToggle:AddColorPicker("offscreenNameColor",{Default=offscreenSettings.nameColor,Callback=function(val)offscreenSettings.nameColor=val end})
+    local weapToggle = OffscreenEspBox:AddToggle("offscreenEspWeapon", {Text="Weapon", Default=offscreenSettings.weapon, Callback=function(val) offscreenSettings.weapon=val end}); weapToggle.Name="weapon"; table.insert(offscreenElements,weapToggle); weapToggle:AddColorPicker("offscreenWeaponColor",{Default=offscreenSettings.weaponColor,Callback=function(val)offscreenSettings.weaponColor=val end})
+    local distToggle = OffscreenEspBox:AddToggle("offscreenEspDistance", {Text="Distance", Default=offscreenSettings.distance, Callback=function(val) offscreenSettings.distance=val end}); distToggle.Name="distance"; table.insert(offscreenElements,distToggle); distToggle:AddColorPicker("offscreenDistanceColor",{Default=offscreenSettings.distanceColor,Callback=function(val)offscreenSettings.distanceColor=val end})
+    local circleSlider = OffscreenEspBox:AddSlider("offscreenCircleRadius",{Text="Circle Radius",Default=offscreenSettings.circleRadius,Min=10,Max=500,Rounding=0,Callback=function(val)offscreenSettings.circleRadius=val end}); table.insert(offscreenElements,circleSlider)
+    local arrowSizeSlider = OffscreenEspBox:AddSlider("offscreenArrowSize",{Text="Arrow Size",Default=offscreenSettings.arrowSize,Min=5,Max=25,Rounding=0,Callback=function(val)offscreenSettings.arrowSize=val end}); table.insert(offscreenElements,arrowSizeSlider)
+    local textSizeSlider = OffscreenEspBox:AddSlider("offscreenTextSize",{Text="Text Size",Default=offscreenSettings.textSize,Min=10,Max=30,Rounding=0,Callback=function(val)offscreenSettings.textSize=val end}); table.insert(offscreenElements,textSizeSlider)
+    local maxDistSlider = OffscreenEspBox:AddSlider("offscreenMaxDist",{Text="Max Distance",Default=offscreenSettings.maxDist,Min=200,Max=1500,Rounding=0,Callback=function(val)offscreenSettings.maxDist=val end}); table.insert(offscreenElements,maxDistSlider)
+    local sleepCheckToggle = OffscreenEspBox:AddToggle("offscreenSleepCheck",{Text="Sleep check",Default=offscreenSettings.sleepcheck,Callback=function(val)offscreenSettings.sleepcheck=val end}); sleepCheckToggle.Name="sleepcheck"; table.insert(offscreenElements,sleepCheckToggle)
+    local aiCheckToggle = OffscreenEspBox:AddToggle("offscreenAICheck",{Text="AI check",Default=offscreenSettings.aicheck,Callback=function(val)offscreenSettings.aicheck=val end}); aiCheckToggle.Name="aicheck"; table.insert(offscreenElements,aiCheckToggle)
+    resetOffscreenElements(offscreenSettings.enabled)
 
-local arrowToggle = OffscreenEspBox:AddToggle("offscreenEspArrow", {Text = "Arrow", Default = offscreenSettings.arrow, Callback = function(val) offscreenSettings.arrow = val end})
-arrowToggle.Name = "arrow"
-table.insert(offscreenElements, arrowToggle)
-arrowToggle:AddColorPicker("offscreenArrowColor", {Default = offscreenSettings.arrowColor, Callback = function(val) offscreenSettings.arrowColor = val end})
+    -- World UI (colorpickers внутри чекбоксов)
+    WorldBox:AddLabel("Map Visuals")
+    local grassToggle = WorldBox:AddToggle("NoGrass",{Text="No Grass",Default=worldVisuals.noGrass,Callback=function(val)worldVisuals.noGrass=val end})
+    local leavesToggle = WorldBox:AddToggle("NoLeaves",{Text="No Leaves",Default=worldVisuals.noLeaves,Callback=function(val)worldVisuals.noLeaves=val end})
+    local cloudsToggle = WorldBox:AddToggle("Clouds",{Text="Clouds",Default=worldVisuals.clouds,Callback=function(val)worldVisuals.clouds=val end})
+    local cloudsColorPicker = cloudsToggle:AddColorPicker("CloudsColor",{Default=worldVisuals.cloudsColor,Callback=function(val)worldVisuals.cloudsColor=val end})
+    local ambientToggle = WorldBox:AddToggle("Ambient",{Text="Ambient",Default=worldVisuals.ambientEnabled,Callback=function(val)worldVisuals.ambientEnabled=val end})
+    local ambientColorPicker = ambientToggle:AddColorPicker("AmbientColor",{Default=worldVisuals.ambient,Callback=function(val)worldVisuals.ambient=val end})
+    local alwaysDayToggle = WorldBox:AddToggle("AlwaysDay",{Text="Always Day",Default=worldVisuals.alwaysDay,Callback=function(val)worldVisuals.alwaysDay=val end})
+    local removeFogToggle = WorldBox:AddToggle("RemoveFog",{Text="Remove Fog",Default=worldVisuals.removeFog,Callback=function(val)worldVisuals.removeFog=val end})
+    WorldBox:AddDropdown("SkyboxSelect",{Text="Skybox",Values={"Default","Spongebob","Darksky","Night Time Sky","Minecraft Sky","pink sky","Purple sky","FireWatch","c00lkidd Skybox","Nyan Cat","scary skybox"},Default="Default",Callback=function(val)worldVisuals.skybox=val; if setSkybox then setSkybox(val) end end})
+    WorldBox:AddToggle("BulletTrace",{Text="Bullet Trace",Default=false,Callback=function(val)traceSettings.enabled=val end}):AddColorPicker("BulletTraceColor",{Default=Color3.new(0,0.4,1),Title="Bullet Trace Color",Callback=function(val)traceSettings.color=val end})
+    WorldBox:AddDropdown("BulletTraceMode",{Values={"Legit","Neon"},Default="Legit",Text="Bullet Trace Mode",Callback=function(val)traceSettings.mode=val end})
+    WorldBox:AddToggle("HitSound",{Text="Hit sound",Default=false,Callback=function(val)hitSoundSettings.enabled=val; if updateHitSounds then updateHitSounds() end end})
+    WorldBox:AddDropdown("HitSoundType",{Values={"Rust","Skeet","Sonic","Sonic Checkpoint","Oof","Windows XP Error","Punch","Buble","byebye","cowbell"},Default="Rust",Text="Hit sound type",Callback=function(val)hitSoundSettings.soundType=val; if updateHitSounds then updateHitSounds() end end})
+    WorldBox:AddToggle("Log",{Text="Log",Default=false,Callback=function(val)logSettings.enabled=val; if setupLogHooks then setupLogHooks() end end})
+    WorldBox:AddDropdown("LogTypes",{Values={"Kill log","Hit log"},Multi=true,Default={"Kill log","Hit log"},Text="Log Types",Callback=function(val)logSettings.types={};for k,v in pairs(val) do logSettings.types[k]=v end end})
+    -- !!! ВАЖНО: подписка на события colorpickers только ОДИН РАЗ, после их создания !!!
 
-local nameToggle = OffscreenEspBox:AddToggle("offscreenEspName", {Text = "Name", Default = offscreenSettings.name, Callback = function(val) offscreenSettings.name = val end})
-nameToggle.Name = "name"
-table.insert(offscreenElements, nameToggle)
-nameToggle:AddColorPicker("offscreenNameColor", {Default = offscreenSettings.nameColor, Callback = function(val) offscreenSettings.nameColor = val end})
-
-local weapToggle = OffscreenEspBox:AddToggle("offscreenEspWeapon", {Text = "Weapon", Default = offscreenSettings.weapon, Callback = function(val) offscreenSettings.weapon = val end})
-weapToggle.Name = "weapon"
-table.insert(offscreenElements, weapToggle)
-weapToggle:AddColorPicker("offscreenWeaponColor", {Default = offscreenSettings.weaponColor, Callback = function(val) offscreenSettings.weaponColor = val end})
-
-local distToggle = OffscreenEspBox:AddToggle("offscreenEspDistance", {Text = "Distance", Default = offscreenSettings.distance, Callback = function(val) offscreenSettings.distance = val end})
-distToggle.Name = "distance"
-table.insert(offscreenElements, distToggle)
-distToggle:AddColorPicker("offscreenDistanceColor", {Default = offscreenSettings.distanceColor, Callback = function(val) offscreenSettings.distanceColor = val end})
-
-local circleSlider = OffscreenEspBox:AddSlider("offscreenCircleRadius", {Text = "Circle Radius", Default = offscreenSettings.circleRadius, Min = 10, Max = 500, Rounding = 0, Callback = function(val) offscreenSettings.circleRadius = val end})
-table.insert(offscreenElements, circleSlider)
-local arrowSizeSlider = OffscreenEspBox:AddSlider("offscreenArrowSize", {Text = "Arrow Size", Default = offscreenSettings.arrowSize, Min = 5, Max = 25, Rounding = 0, Callback = function(val) offscreenSettings.arrowSize = val end})
-table.insert(offscreenElements, arrowSizeSlider)
-local textSizeSlider = OffscreenEspBox:AddSlider("offscreenTextSize", {Text = "Text Size", Default = offscreenSettings.textSize, Min = 10, Max = 30, Rounding = 0, Callback = function(val) offscreenSettings.textSize = val end})
-table.insert(offscreenElements, textSizeSlider)
-local maxDistSlider = OffscreenEspBox:AddSlider("offscreenMaxDist", {Text = "Max Distance", Default = offscreenSettings.maxDist, Min = 200, Max = 1500, Rounding = 0, Callback = function(val) offscreenSettings.maxDist = val end})
-table.insert(offscreenElements, maxDistSlider)
-
-local sleepCheckToggle = OffscreenEspBox:AddToggle("offscreenSleepCheck", {Text = "Sleep check", Default = offscreenSettings.sleepcheck, Callback = function(val) offscreenSettings.sleepcheck = val end})
-sleepCheckToggle.Name = "sleepcheck"
-table.insert(offscreenElements, sleepCheckToggle)
-local aiCheckToggle = OffscreenEspBox:AddToggle("offscreenAICheck", {Text = "AI check", Default = offscreenSettings.aicheck, Callback = function(val) offscreenSettings.aicheck = val end})
-aiCheckToggle.Name = "aicheck"
-table.insert(offscreenElements, aiCheckToggle)
-
--- При старте и после reload UI
-resetOffscreenElements(offscreenSettings.enabled)
--- World UI (colorpickers внутри чекбоксов)
-WorldBox:AddLabel("Map Visuals")
-local grassToggle = WorldBox:AddToggle("NoGrass", {Text="No Grass", Default=worldVisuals.noGrass, Callback=function(val) worldVisuals.noGrass=val end})
-local leavesToggle = WorldBox:AddToggle("NoLeaves", {Text="No Leaves", Default=worldVisuals.noLeaves, Callback=function(val) worldVisuals.noLeaves=val end})
-local cloudsToggle = WorldBox:AddToggle("Clouds", {Text="Clouds", Default=worldVisuals.clouds, Callback=function(val) worldVisuals.clouds=val end})
-local cloudsColorPicker = cloudsToggle:AddColorPicker("CloudsColor", {Default=worldVisuals.cloudsColor, Callback=function(val) worldVisuals.cloudsColor=val end})
-local ambientToggle = WorldBox:AddToggle("Ambient", {Text="Ambient", Default=worldVisuals.ambientEnabled, Callback=function(val) worldVisuals.ambientEnabled=val end})
-local ambientColorPicker = ambientToggle:AddColorPicker("AmbientColor", {Default=worldVisuals.ambient, Callback=function(val) worldVisuals.ambient=val end})
-local alwaysDayToggle = WorldBox:AddToggle("AlwaysDay", {Text="Always Day", Default=worldVisuals.alwaysDay, Callback=function(val) worldVisuals.alwaysDay=val end})
-local removeFogToggle = WorldBox:AddToggle("RemoveFog", {Text="Remove Fog", Default=worldVisuals.removeFog, Callback=function(val) worldVisuals.removeFog=val end})
-WorldBox:AddDropdown("SkyboxSelect", {Text="Skybox", Values={"Default","Spongebob","Darksky","Night Time Sky","Minecraft Sky","pink sky","Purple sky","FireWatch","c00lkidd Skybox","Nyan Cat","scary skybox"}, Default="Default", Callback=function(val) worldVisuals.skybox=val; setSkybox(val) end})
-WorldBox:AddToggle("BulletTrace", {Text="Bullet Trace", Default=false, Callback=function(val) traceSettings.enabled=val end}):AddColorPicker("BulletTraceColor", {Default=Color3.new(0,0.4,1), Title="Bullet Trace Color", Callback=function(val) traceSettings.color=val end})
-WorldBox:AddDropdown("BulletTraceMode", {Values={"Legit","Neon"}, Default="Legit", Text="Bullet Trace Mode", Callback=function(val) traceSettings.mode=val end})
-WorldBox:AddToggle("HitSound", {Text="Hit sound", Default=false, Callback=function(val) hitSoundSettings.enabled=val; updateHitSounds() end})
-WorldBox:AddDropdown("HitSoundType", {Values={"Rust","Skeet","Sonic","Sonic Checkpoint","Oof","Windows XP Error","Punch","Buble","byebye","cowbell"}, Default="Rust", Text="Hit sound type", Callback=function(val) hitSoundSettings.soundType=val; updateHitSounds() end})
-WorldBox:AddToggle("Log", {Text="Log", Default=false, Callback=function(val) logSettings.enabled=val; if setupLogHooks then setupLogHooks() end end})
-WorldBox:AddDropdown("LogTypes", {Values={"Kill log","Hit log"}, Multi=true, Default={"Kill log","Hit log"}, Text="Log Types", Callback=function(val) logSettings.types={}; for k,v in pairs(val) do logSettings.types[k]=v end end})
--- !!! ВАЖНО: подписка на события colorpickers только ОДИН РАЗ, после их создания !!!
-cloudsColorPicker:OnChanged(function(val)
-    worldVisuals.cloudsColor = val
-    if worldVisuals.clouds and setClouds then
-        setClouds(true, val)
-    end
-end)
-
-ambientColorPicker:OnChanged(function(val)
-    worldVisuals.ambient = val
-    if worldVisuals.ambientEnabled and setAmbient then
-        setAmbient(true, val)
-    end
-end)
     -- ESP UI
-    EspBox:AddToggle("espEnabled", {Text = "Enabled", Default = espSettings.enabled, Callback = function(val) espSettings.enabled = val end})
-    local boxToggle = EspBox:AddToggle("espBox", {Text = "Box", Default = espSettings.box, Callback = function(val) espSettings.box = val end})
-    boxToggle:AddColorPicker("boxColor", {Default = espSettings.boxColor, Callback = function(val) espSettings.boxColor = val end})
-    EspBox:AddDropdown("espBoxType", {Values = {"Default", "Corner"}, Default = 1, Text = "Box Type", Callback = function(val) espSettings.boxtype = val end})
-    local nameBox = EspBox:AddToggle("espName", {Text = "Name", Default = espSettings.name, Callback = function(val) espSettings.name = val end})
-    nameBox:AddColorPicker("nameColor", {Default = espSettings.nameColor, Callback = function(val) espSettings.nameColor = val end})
-    local weaponBox = EspBox:AddToggle("espWeapon", {Text = "Weapon", Default = espSettings.weapon, Callback = function(val) espSettings.weapon = val end})
-    weaponBox:AddColorPicker("weaponColor", {Default = espSettings.weaponColor, Callback = function(val) espSettings.weaponColor = val end})
-    local distBox = EspBox:AddToggle("espDistance", {Text = "Show Distance", Default = espSettings.distance, Callback = function(val) espSettings.distance = val end})
-    distBox:AddColorPicker("distanceColor", {Default = espSettings.distanceColor, Callback = function(val) espSettings.distanceColor = val end})
-    EspBox:AddSlider("espMaxDistance", {Text = "Max Distance", Default = espSettings.maxDistance, Min = 1, Max = 10000, Rounding = 0, Callback = function(val) espSettings.maxDistance = val end})
-    EspBox:AddToggle("espSleep", {Text = "Sleep Check", Default = espSettings.sleepcheck, Callback = function(val) espSettings.sleepcheck = val end})
-    EspBox:AddToggle("espAICheck", {Text = "AI Check", Default = espSettings.aicheck, Callback = function(val) espSettings.aicheck = val end})
+    EspBox:AddToggle("espEnabled",{Text="Enabled",Default=espSettings.enabled,Callback=function(val)espSettings.enabled=val end})
+    local boxToggle = EspBox:AddToggle("espBox",{Text="Box",Default=espSettings.box,Callback=function(val)espSettings.box=val end})
+    boxToggle:AddColorPicker("boxColor",{Default=espSettings.boxColor,Callback=function(val)espSettings.boxColor=val end})
+    EspBox:AddDropdown("espBoxType",{Values={"Default","Corner"},Default=1,Text="Box Type",Callback=function(val)espSettings.boxtype=val end})
+    local nameBox = EspBox:AddToggle("espName",{Text="Name",Default=espSettings.name,Callback=function(val)espSettings.name=val end})
+    nameBox:AddColorPicker("nameColor",{Default=espSettings.nameColor,Callback=function(val)espSettings.nameColor=val end})
+    local weaponBox = EspBox:AddToggle("espWeapon",{Text="Weapon",Default=espSettings.weapon,Callback=function(val)espSettings.weapon=val end})
+    weaponBox:AddColorPicker("weaponColor",{Default=espSettings.weaponColor,Callback=function(val)espSettings.weaponColor=val end})
+    local distBox = EspBox:AddToggle("espDistance",{Text="Show Distance",Default=espSettings.distance,Callback=function(val)espSettings.distance=val end})
+    distBox:AddColorPicker("distanceColor",{Default=espSettings.distanceColor,Callback=function(val)espSettings.distanceColor=val end})
+    EspBox:AddSlider("espMaxDistance",{Text="Max Distance",Default=espSettings.maxDistance,Min=1,Max=10000,Rounding=0,Callback=function(val)espSettings.maxDistance=val end})
+    EspBox:AddToggle("espSleep",{Text="Sleep Check",Default=espSettings.sleepcheck,Callback=function(val)espSettings.sleepcheck=val end})
+    EspBox:AddToggle("espAICheck",{Text="AI Check",Default=espSettings.aicheck,Callback=function(val)espSettings.aicheck=val end})
 
-    -- Object ESP UI (только основные: без дублей, colorpickers внутри чекбоксов)
-    ObjectEspBox:AddToggle("objectEspEnabled", {Text = "Enabled", Default = objectEspSettings.enabled, Callback = function(val) objectEspSettings.enabled = val end})
-    ObjectEspBox:AddToggle("objectEspName", {Text = "Name", Default = objectEspSettings.name, Callback = function(val) objectEspSettings.name = val end})
-    ObjectEspBox:AddToggle("objectEspDistance", {Text = "Distance", Default = objectEspSettings.distance, Callback = function(val) objectEspSettings.distance = val end})
-    local corpseToggle = ObjectEspBox:AddToggle("objectEspCorpse", {Text = "Corpse", Default = objectEspSettings.corpse.enabled, Callback = function(val) objectEspSettings.corpse.enabled = val end})
-    corpseToggle:AddColorPicker("objectEspCorpseColor", {Default = objectEspSettings.corpse.color, Callback = function(val) objectEspSettings.corpse.color = val end})
-    local droppedToggle = ObjectEspBox:AddToggle("objectEspDropped", {Text = "Dropped Item", Default = objectEspSettings.dropped.enabled, Callback = function(val) objectEspSettings.dropped.enabled = val end})
-    droppedToggle:AddColorPicker("objectEspDroppedColor", {Default = objectEspSettings.dropped.color, Callback = function(val) objectEspSettings.dropped.color = val end})
-    local atvToggle = ObjectEspBox:AddToggle("objectEspAtv", {Text = "ATV", Default = objectEspSettings.atv.enabled, Callback = function(val) objectEspSettings.atv.enabled = val end})
-    atvToggle:AddColorPicker("objectEspAtvColor", {Default = objectEspSettings.atv.color, Callback = function(val) objectEspSettings.atv.color = val end})
-    local stoneToggle = ObjectEspBox:AddToggle("objectEspStone", {Text = "Stone", Default = objectEspSettings.stone.enabled, Callback = function(val) objectEspSettings.stone.enabled = val end})
-    stoneToggle:AddColorPicker("objectEspStoneColor", {Default = objectEspSettings.stone.color, Callback = function(val) objectEspSettings.stone.color = val end})
-    local nitrateToggle = ObjectEspBox:AddToggle("objectEspNitrate", {Text = "Nitrate", Default = objectEspSettings.nitrate.enabled, Callback = function(val) objectEspSettings.nitrate.enabled = val end})
-    nitrateToggle:AddColorPicker("objectEspNitrateColor", {Default = objectEspSettings.nitrate.color, Callback = function(val) objectEspSettings.nitrate.color = val end})
-    local ironToggle = ObjectEspBox:AddToggle("objectEspIron", {Text = "Iron", Default = objectEspSettings.iron.enabled, Callback = function(val) objectEspSettings.iron.enabled = val end})
-    ironToggle:AddColorPicker("objectEspIronColor", {Default = objectEspSettings.iron.color, Callback = function(val) objectEspSettings.iron.color = val end})
-    local copterToggle = ObjectEspBox:AddToggle("objectEspCopter", {Text = "Copter", Default = objectEspSettings.copter.enabled, Callback = function(val) objectEspSettings.copter.enabled = val end})
-    copterToggle:AddColorPicker("objectEspCopterColor", {Default = objectEspSettings.copter.color, Callback = function(val) objectEspSettings.copter.color = val end})
-    local carToggle = ObjectEspBox:AddToggle("objectEspCar", {Text = "Car", Default = objectEspSettings.car.enabled, Callback = function(val) objectEspSettings.car.enabled = val end})
-    carToggle:AddColorPicker("objectEspCarColor", {Default = objectEspSettings.car.color, Callback = function(val) objectEspSettings.car.color = val end})
-    ObjectEspBox:AddSlider("objectEspMaxDistance", {Text = "Max Distance", Default = objectEspSettings.maxDistance, Min = 200, Max = 3000, Rounding = 0, Callback = function(val) objectEspSettings.maxDistance = val end})
+    -- Object ESP UI
+    ObjectEspBox:AddToggle("objectEspEnabled",{Text="Enabled",Default=objectEspSettings.enabled,Callback=function(val)objectEspSettings.enabled=val end})
+    ObjectEspBox:AddToggle("objectEspName",{Text="Name",Default=objectEspSettings.name,Callback=function(val)objectEspSettings.name=val end})
+    ObjectEspBox:AddToggle("objectEspDistance",{Text="Distance",Default=objectEspSettings.distance,Callback=function(val)objectEspSettings.distance=val end})
+    local corpseToggle = ObjectEspBox:AddToggle("objectEspCorpse",{Text="Corpse",Default=objectEspSettings.corpse.enabled,Callback=function(val)objectEspSettings.corpse.enabled=val end})
+    corpseToggle:AddColorPicker("objectEspCorpseColor",{Default=objectEspSettings.corpse.color,Callback=function(val)objectEspSettings.corpse.color=val end})
+    local droppedToggle = ObjectEspBox:AddToggle("objectEspDropped",{Text="Dropped Item",Default=objectEspSettings.dropped.enabled,Callback=function(val)objectEspSettings.dropped.enabled=val end})
+    droppedToggle:AddColorPicker("objectEspDroppedColor",{Default=objectEspSettings.dropped.color,Callback=function(val)objectEspSettings.dropped.color=val end})
+    local atvToggle = ObjectEspBox:AddToggle("objectEspAtv",{Text="ATV",Default=objectEspSettings.atv.enabled,Callback=function(val)objectEspSettings.atv.enabled=val end})
+    atvToggle:AddColorPicker("objectEspAtvColor",{Default=objectEspSettings.atv.color,Callback=function(val)objectEspSettings.atv.color=val end})
+    local stoneToggle = ObjectEspBox:AddToggle("objectEspStone",{Text="Stone",Default=objectEspSettings.stone.enabled,Callback=function(val)objectEspSettings.stone.enabled=val end})
+    stoneToggle:AddColorPicker("objectEspStoneColor",{Default=objectEspSettings.stone.color,Callback=function(val)objectEspSettings.stone.color=val end})
+    local nitrateToggle = ObjectEspBox:AddToggle("objectEspNitrate",{Text="Nitrate",Default=objectEspSettings.nitrate.enabled,Callback=function(val)objectEspSettings.nitrate.enabled=val end})
+    nitrateToggle:AddColorPicker("objectEspNitrateColor",{Default=objectEspSettings.nitrate.color,Callback=function(val)objectEspSettings.nitrate.color=val end})
+    local ironToggle = ObjectEspBox:AddToggle("objectEspIron",{Text="Iron",Default=objectEspSettings.iron.enabled,Callback=function(val)objectEspSettings.iron.enabled=val end})
+    ironToggle:AddColorPicker("objectEspIronColor",{Default=objectEspSettings.iron.color,Callback=function(val)objectEspSettings.iron.color=val end})
+    local copterToggle = ObjectEspBox:AddToggle("objectEspCopter",{Text="Copter",Default=objectEspSettings.copter.enabled,Callback=function(val)objectEspSettings.copter.enabled=val end})
+    copterToggle:AddColorPicker("objectEspCopterColor",{Default=objectEspSettings.copter.color,Callback=function(val)objectEspSettings.copter.color=val end})
+    local carToggle = ObjectEspBox:AddToggle("objectEspCar",{Text="Car",Default=objectEspSettings.car.enabled,Callback=function(val)objectEspSettings.car.enabled=val end})
+    carToggle:AddColorPicker("objectEspCarColor",{Default=objectEspSettings.car.color,Callback=function(val)objectEspSettings.car.color=val end})
+    ObjectEspBox:AddSlider("objectEspMaxDistance",{Text="Max Distance",Default=objectEspSettings.maxDistance,Min=200,Max=3000,Rounding=0,Callback=function(val)objectEspSettings.maxDistance=val end})
 
     -- CHAMS UI
-    local handChamsToggle = ChamsBox:AddToggle("HandChams", {Text = "Hand Chams", Default = chamsSettings.hand, Callback = function(val) chamsSettings.hand = val end})
-    handChamsToggle:AddColorPicker("HandChamsColor", {Default = chamsSettings.handColor, Callback = function(val) chamsSettings.handColor = val end})
-    ChamsBox:AddDropdown("HandChamsMat", {Values = {"ForceField", "Neon"}, Default = "ForceField", Text = "Hand Material", Callback = function(val) chamsSettings.handMat = val end})
-    local itemChamsToggle = ChamsBox:AddToggle("ItemChams", {Text = "Item Chams", Default = chamsSettings.item, Callback = function(val) chamsSettings.item = val end})
-    itemChamsToggle:AddColorPicker("ItemChamsColor", {Default = chamsSettings.itemColor, Callback = function(val) chamsSettings.itemColor = val end})
-    ChamsBox:AddDropdown("ItemChamsMat", {Values = {"ForceField", "Neon"}, Default = "ForceField", Text = "Item Material", Callback = function(val) chamsSettings.itemMat = val end})
+    local handChamsToggle = ChamsBox:AddToggle("HandChams",{Text="Hand Chams",Default=chamsSettings.hand,Callback=function(val)chamsSettings.hand=val end})
+    handChamsToggle:AddColorPicker("HandChamsColor",{Default=chamsSettings.handColor,Callback=function(val)chamsSettings.handColor=val end})
+    ChamsBox:AddDropdown("HandChamsMat",{Values={"ForceField","Neon"},Default="ForceField",Text="Hand Material",Callback=function(val)chamsSettings.handMat=val end})
+    local itemChamsToggle = ChamsBox:AddToggle("ItemChams",{Text="Item Chams",Default=chamsSettings.item,Callback=function(val)chamsSettings.item=val end})
+    itemChamsToggle:AddColorPicker("ItemChamsColor",{Default=chamsSettings.itemColor,Callback=function(val)chamsSettings.itemColor=val end})
+    ChamsBox:AddDropdown("ItemChamsMat",{Values={"ForceField","Neon"},Default="ForceField",Text="Item Material",Callback=function(val)chamsSettings.itemMat=val end})
 
     -- SAFE ZONE CHAMS UI
-    local szChamsToggle = SafeZoneBox:AddToggle("SafeZoneChams", {Text = "Safe zone chams", Default = safeZoneChamsSettings.enabled, Callback = function(val) safeZoneChamsSettings.enabled = val end})
-    szChamsToggle:AddColorPicker("SafeZoneChamsColor", {Default = safeZoneChamsSettings.color, Callback = function(val) safeZoneChamsSettings.color = val end})
-    SafeZoneBox:AddSlider("SafeZoneChamsTransparency", {Text = "Transparency", Default = safeZoneChamsSettings.transparency, Min = 1, Max = 100, Rounding = 0, Callback = function(val) safeZoneChamsSettings.transparency = val end})
+    local szChamsToggle = SafeZoneBox:AddToggle("SafeZoneChams",{Text="Safe zone chams",Default=safeZoneChamsSettings.enabled,Callback=function(val)safeZoneChamsSettings.enabled=val end})
+    szChamsToggle:AddColorPicker("SafeZoneChamsColor",{Default=safeZoneChamsSettings.color,Callback=function(val)safeZoneChamsSettings.color=val end})
+    SafeZoneBox:AddSlider("SafeZoneChamsTransparency",{Text="Transparency",Default=safeZoneChamsSettings.transparency,Min=1,Max=100,Rounding=0,Callback=function(val)safeZoneChamsSettings.transparency=val end})
 
+    -- HIT SOUND LOGIC
+    local hitSoundList = {"PlayerHit","PlayerHit2","PlayerHit2_Muffled","PlayerHitHeadshot","PlayerHitHeadshot_Muffled","PlayerHit_Muffled"}
+    local hitSoundIds = {["Rust"]="rbxassetid://18805676593",["Skeet"]="rbxassetid://83717596220569",["Sonic"]="rbxassetid://6817149233",["Sonic Checkpoint"]="rbxassetid://6817150445",["Oof"]="rbxassetid://79348298352567",["Windows XP Error"]="rbxassetid://9066167010",["Punch"]="rbxassetid://9117969687",["Buble"]="rbxassetid://9114176282",["byebye"]="rbxassetid://70888261086432",["cowbell"]="rbxassetid://99351661703869"}
+    local originalHitSoundIds = {}
+    local soundService = game:GetService("SoundService")
+    local function updateHitSounds()
+        local assetId = hitSoundIds[hitSoundSettings.soundType] or hitSoundIds["Rust"]
+        for _,name in ipairs(hitSoundList) do
+            local sound = soundService:FindFirstChild(name)
+            if sound and sound:IsA("Sound") then
+                if hitSoundSettings.enabled and assetId then
+                    if not originalHitSoundIds[name] then originalHitSoundIds[name]=sound.SoundId end
+                    sound.SoundId=assetId
+                    sound.Volume=1
+                else
+                    if originalHitSoundIds[name] then sound.SoundId=originalHitSoundIds[name] originalHitSoundIds[name]=nil end
+                end
+            end
+        end
+    end
+    game:GetService("RunService").RenderStepped:Connect(updateHitSounds)
+
+    -- SKYBOX LOGIC
+    local Lighting = game:GetService("Lighting")
+    local function setSkybox(name)
+        for _,v in pairs(Lighting:GetChildren()) do if v:IsA("Sky") then v:Destroy() end end
+        local sb=skyboxes[name]
+        if sb then
+            local sky=Instance.new("Sky")
+            for k,v in pairs(sb) do sky[k]=v end
+            sky.Parent=Lighting
+        end
+    end
+end
 
 ------------------------------------------------------------
 -- ЧАСТЬ 2. ЛОГИКА: Offscreen ESP (arrows, labels, очистка), No Grass, No Leaves, Clouds, Ambient, Always Day, Remove Fog, Skybox
@@ -946,30 +910,6 @@ end)
 RunService.RenderStepped:Connect(function()
     updateBulletTraces()
 end)
-
-------------------------------------------------------------
--- HIT SOUND
-------------------------------------------------------------
-local hitSoundList = {"PlayerHit","PlayerHit2","PlayerHit2_Muffled","PlayerHitHeadshot","PlayerHitHeadshot_Muffled","PlayerHit_Muffled"}
-local hitSoundIds = {["Rust"]="rbxassetid://18805676593",["Skeet"]="rbxassetid://83717596220569",["Sonic"]="rbxassetid://6817149233",["Sonic Checkpoint"]="rbxassetid://6817150445",["Oof"]="rbxassetid://79348298352567",["Windows XP Error"]="rbxassetid://9066167010",["Punch"]="rbxassetid://9117969687",["Buble"]="rbxassetid://9114176282",["byebye"]="rbxassetid://70888261086432",["cowbell"]="rbxassetid://99351661703869"}
-local originalHitSoundIds = {}
-local soundService = game:GetService("SoundService")
-local function updateHitSounds()
-    local assetId = hitSoundIds[hitSoundSettings.soundType] or hitSoundIds["Rust"]
-    for _,name in ipairs(hitSoundList) do
-        local sound = soundService:FindFirstChild(name)
-        if sound and sound:IsA("Sound") then
-            if hitSoundSettings.enabled and assetId then
-                if not originalHitSoundIds[name] then originalHitSoundIds[name]=sound.SoundId end
-                sound.SoundId=assetId
-                sound.Volume=1
-            else
-                if originalHitSoundIds[name] then sound.SoundId=originalHitSoundIds[name] originalHitSoundIds[name]=nil end
-            end
-        end
-    end
-end
-game:GetService("RunService").RenderStepped:Connect(updateHitSounds)
 ------------------------------------------------------------
 -- LOGS (Kill/Hit)
 ------------------------------------------------------------
