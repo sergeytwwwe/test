@@ -245,88 +245,85 @@ return function(VisualTab)
     local WorldBox = VisualTab:AddRightGroupbox("World", "globe")
     local SafeZoneBox = VisualTab:AddRightGroupbox("Safe zone", "shield", {Bottom=true})
 
-    -- === CHAMS UI (исправленный и полный) ===
-    -- Hand Chams
-    local handColorPicker, handOutlineColorPicker, handMatDropdown
-    local function updateHandChamsUI()
-        local enabled = chamsSettings.hand
-        handColorPicker:SetVisible(enabled)
-        handMatDropdown:SetVisible(enabled)
-        handOutlineColorPicker:SetVisible(enabled and chamsSettings.handMat == "Chams")
-    end
-    local handChamsToggle = ChamsBox:AddToggle("HandChams", {
-        Text = "Hand Chams",
-        Default = chamsSettings.hand,
-        Callback = function(val)
-            chamsSettings.hand = val
-            updateHandChamsUI()
-        end
-    })
-    handColorPicker = handChamsToggle:AddColorPicker("HandChamsColor", {
-        Default = chamsSettings.handColor,
-        Text = "Hand Color",
-        Callback = function(val)
-            chamsSettings.handColor = val
-        end
-    })
-    handOutlineColorPicker = handChamsToggle:AddColorPicker("HandChamsOutlineColor", {
-        Default = chamsSettings.handOutlineColor,
-        Text = "Hand Outline Color",
-        Callback = function(color)
-            chamsSettings.handOutlineColor = color
-        end
-    })
-    handMatDropdown = ChamsBox:AddDropdown("HandChamsMat", {
-        Values = {"ForceField", "Neon", "Chams"},
-        Default = chamsSettings.handMat,
-        Text = "Hand Material",
-        Callback = function(val)
-            chamsSettings.handMat = val
-            updateHandChamsUI()
-        end
-    })
-    updateHandChamsUI()
 
-    -- Item Chams
-    local itemColorPicker, itemOutlineColorPicker, itemMatDropdown
-    local function updateItemChamsUI()
-        local enabled = chamsSettings.item
-        itemColorPicker:SetVisible(enabled)
-        itemMatDropdown:SetVisible(enabled)
-        itemOutlineColorPicker:SetVisible(enabled and chamsSettings.itemMat == "Chams")
+-- Hand Chams
+local handChamsToggle = ChamsBox:AddToggle("HandChams", {
+    Text = "Hand Chams",
+    Default = chamsSettings.hand,
+    Callback = function(val)
+        chamsSettings.hand = val
+        handColorPicker:SetVisible(val)
+        handMatDropdown:SetVisible(val)
+        handOutlineColorPicker:SetVisible(val and chamsSettings.handMat == "Chams")
     end
-    local itemChamsToggle = ChamsBox:AddToggle("ItemChams", {
-        Text = "Item Chams",
-        Default = chamsSettings.item,
-        Callback = function(val)
-            chamsSettings.item = val
-            updateItemChamsUI()
-        end
-    })
-    itemColorPicker = itemChamsToggle:AddColorPicker("ItemChamsColor", {
-        Default = chamsSettings.itemColor,
-        Text = "Item Color",
-        Callback = function(val)
-            chamsSettings.itemColor = val
-        end
-    })
-    itemOutlineColorPicker = itemChamsToggle:AddColorPicker("ItemChamsOutlineColor", {
-        Default = chamsSettings.itemOutlineColor,
-        Text = "Item Outline Color",
-        Callback = function(color)
-            chamsSettings.itemOutlineColor = color
-        end
-    })
-    itemMatDropdown = ChamsBox:AddDropdown("ItemChamsMat", {
-        Values = {"ForceField", "Neon", "Chams"},
-        Default = chamsSettings.itemMat,
-        Text = "Item Material",
-        Callback = function(val)
-            chamsSettings.itemMat = val
-            updateItemChamsUI()
-        end
-    })
-    updateItemChamsUI()
+})
+local handColorPicker = handChamsToggle:AddColorPicker("HandChamsColor", {
+    Default = chamsSettings.handColor,
+    Text = "Hand Color",
+    Callback = function(val)
+        chamsSettings.handColor = val
+    end
+})
+local handOutlineColorPicker = handChamsToggle:AddColorPicker("HandChamsOutlineColor", {
+    Default = chamsSettings.handOutlineColor,
+    Text = "Hand Outline Color",
+    Callback = function(color)
+        chamsSettings.handOutlineColor = color
+    end
+})
+local handMatDropdown = ChamsBox:AddDropdown("HandChamsMat", {
+    Values = {"ForceField", "Neon", "Chams"},
+    Default = chamsSettings.handMat,
+    Text = "Hand Material",
+    Callback = function(val)
+        chamsSettings.handMat = val
+        handOutlineColorPicker:SetVisible(chamsSettings.hand and val == "Chams")
+    end
+})
+
+-- Изначальная видимость при запуске
+handColorPicker:SetVisible(chamsSettings.hand)
+handMatDropdown:SetVisible(chamsSettings.hand)
+handOutlineColorPicker:SetVisible(chamsSettings.hand and chamsSettings.handMat == "Chams")
+
+-- Item Chams
+local itemChamsToggle = ChamsBox:AddToggle("ItemChams", {
+    Text = "Item Chams",
+    Default = chamsSettings.item,
+    Callback = function(val)
+        chamsSettings.item = val
+        itemColorPicker:SetVisible(val)
+        itemMatDropdown:SetVisible(val)
+        itemOutlineColorPicker:SetVisible(val and chamsSettings.itemMat == "Chams")
+    end
+})
+local itemColorPicker = itemChamsToggle:AddColorPicker("ItemChamsColor", {
+    Default = chamsSettings.itemColor,
+    Text = "Item Color",
+    Callback = function(val)
+        chamsSettings.itemColor = val
+    end
+})
+local itemOutlineColorPicker = itemChamsToggle:AddColorPicker("ItemChamsOutlineColor", {
+    Default = chamsSettings.itemOutlineColor,
+    Text = "Item Outline Color",
+    Callback = function(color)
+        chamsSettings.itemOutlineColor = color
+    end
+})
+local itemMatDropdown = ChamsBox:AddDropdown("ItemChamsMat", {
+    Values = {"ForceField", "Neon", "Chams"},
+    Default = chamsSettings.itemMat,
+    Text = "Item Material",
+    Callback = function(val)
+        chamsSettings.itemMat = val
+        itemOutlineColorPicker:SetVisible(chamsSettings.item and val == "Chams")
+    end
+})
+
+itemColorPicker:SetVisible(chamsSettings.item)
+itemMatDropdown:SetVisible(chamsSettings.item)
+itemOutlineColorPicker:SetVisible(chamsSettings.item and chamsSettings.itemMat == "Chams")
 
     -- === Offscreen ESP UI (полный функционал) ===
     OffscreenEspBox:AddToggle("offscreenEnabled", {
