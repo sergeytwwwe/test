@@ -246,12 +246,15 @@ return function(VisualTab)
     local SafeZoneBox = VisualTab:AddRightGroupbox("Safe zone", "shield", {Bottom=true})
 
 
+-- === CHAMS UI (рабочий и понятный блок для твоей структуры) ===
+
 -- Hand Chams
 local handChamsToggle = ChamsBox:AddToggle("HandChams", {
     Text = "Hand Chams",
     Default = chamsSettings.hand,
     Callback = function(val)
         chamsSettings.hand = val
+        -- динамика colorpicker/outline/dropdown
         handColorPicker:SetVisible(val)
         handMatDropdown:SetVisible(val)
         handOutlineColorPicker:SetVisible(val and chamsSettings.handMat == "Chams")
@@ -259,7 +262,6 @@ local handChamsToggle = ChamsBox:AddToggle("HandChams", {
 })
 local handColorPicker = handChamsToggle:AddColorPicker("HandChamsColor", {
     Default = chamsSettings.handColor,
-    Text = "Hand Color",
     Callback = function(val)
         chamsSettings.handColor = val
     end
@@ -280,8 +282,6 @@ local handMatDropdown = ChamsBox:AddDropdown("HandChamsMat", {
         handOutlineColorPicker:SetVisible(chamsSettings.hand and val == "Chams")
     end
 })
-
--- Изначальная видимость при запуске
 handColorPicker:SetVisible(chamsSettings.hand)
 handMatDropdown:SetVisible(chamsSettings.hand)
 handOutlineColorPicker:SetVisible(chamsSettings.hand and chamsSettings.handMat == "Chams")
@@ -299,7 +299,6 @@ local itemChamsToggle = ChamsBox:AddToggle("ItemChams", {
 })
 local itemColorPicker = itemChamsToggle:AddColorPicker("ItemChamsColor", {
     Default = chamsSettings.itemColor,
-    Text = "Item Color",
     Callback = function(val)
         chamsSettings.itemColor = val
     end
@@ -320,7 +319,6 @@ local itemMatDropdown = ChamsBox:AddDropdown("ItemChamsMat", {
         itemOutlineColorPicker:SetVisible(chamsSettings.item and val == "Chams")
     end
 })
-
 itemColorPicker:SetVisible(chamsSettings.item)
 itemMatDropdown:SetVisible(chamsSettings.item)
 itemOutlineColorPicker:SetVisible(chamsSettings.item and chamsSettings.itemMat == "Chams")
