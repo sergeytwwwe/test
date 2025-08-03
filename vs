@@ -86,21 +86,92 @@ return function(VisualTab)
         removeFog = false,
         skybox = "Default"
     }
+
+    -- Только рабочие Skybox (обновлённый список, новые id)
     local skyboxes = {
-        ["Default"] = {SkyboxBk="rbxassetid://401664839",SkyboxDn="rbxassetid://401664862",SkyboxFt="rbxassetid://401664936",SkyboxLf="rbxassetid://401664881",SkyboxRt="rbxassetid://401664929",SkyboxUp="rbxassetid://401664883"},
-        ["Spongebob"] = {SkyboxBk="rbxassetid://9076122431",SkyboxDn="rbxassetid://9076122431",SkyboxFt="rbxassetid://9076122431",SkyboxLf="rbxassetid://9076122431",SkyboxRt="rbxassetid://9076122431",SkyboxUp="rbxassetid://9076122431"},
-        ["Darksky"] = {SkyboxBk="rbxassetid://116873078",SkyboxDn="rbxassetid://116873078",SkyboxFt="rbxassetid://116873078",SkyboxLf="rbxassetid://116873078",SkyboxRt="rbxassetid://116873078",SkyboxUp="rbxassetid://116873078"},
-        ["Night Time Sky"] = {SkyboxBk="rbxassetid://466635038",SkyboxDn="rbxassetid://466635038",SkyboxFt="rbxassetid://466635038",SkyboxLf="rbxassetid://466635038",SkyboxRt="rbxassetid://466635038",SkyboxUp="rbxassetid://466635038"},
-        ["Minecraft Sky"] = {SkyboxBk="rbxassetid://2758029221",SkyboxDn="rbxassetid://2758029221",SkyboxFt="rbxassetid://2758029221",SkyboxLf="rbxassetid://2758029221",SkyboxRt="rbxassetid://2758029221",SkyboxUp="rbxassetid://2758029221"},
-        ["pink sky"] = {SkyboxBk="rbxassetid://10340396563",SkyboxDn="rbxassetid://10340396563",SkyboxFt="rbxassetid://10340396563",SkyboxLf="rbxassetid://10340396563",SkyboxRt="rbxassetid://10340396563",SkyboxUp="rbxassetid://10340396563"},
-        ["Purple sky"] = {SkyboxBk="rbxassetid://5094389324",SkyboxDn="rbxassetid://5094389324",SkyboxFt="rbxassetid://5094389324",SkyboxLf="rbxassetid://5094389324",SkyboxRt="rbxassetid://5094389324",SkyboxUp="rbxassetid://5094389324"},
-        ["FireWatch"] = {SkyboxBk="rbxassetid://8720439638",SkyboxDn="rbxassetid://8720439638",SkyboxFt="rbxassetid://8720439638",SkyboxLf="rbxassetid://8720439638",SkyboxRt="rbxassetid://8720439638",SkyboxUp="rbxassetid://8720439638"},
-        ["c00lkidd Skybox"] = {SkyboxBk="rbxassetid://133973334152130",SkyboxDn="rbxassetid://133973334152130",SkyboxFt="rbxassetid://133973334152130",SkyboxLf="rbxassetid://133973334152130",SkyboxRt="rbxassetid://133973334152130",SkyboxUp="rbxassetid://133973334152130"},
-        ["Nyan Cat"] = {SkyboxBk="rbxassetid://57754921",SkyboxDn="rbxassetid://57754921",SkyboxFt="rbxassetid://57754921",SkyboxLf="rbxassetid://57754921",SkyboxRt="rbxassetid://57754921",SkyboxUp="rbxassetid://57754921"},
-        ["scary skybox"] = {SkyboxBk="rbxassetid://4868486619",SkyboxDn="rbxassetid://4868486619",SkyboxFt="rbxassetid://4868486619",SkyboxLf="rbxassetid://4868486619",SkyboxRt="rbxassetid://4868486619",SkyboxUp="rbxassetid://4868486619"}
+        ["Default"] = { -- Roblox стандартный skybox
+            SkyboxBk = "rbxassetid://401664839",
+            SkyboxDn = "rbxassetid://401664862",
+            SkyboxFt = "rbxassetid://401664936",
+            SkyboxLf = "rbxassetid://401664881",
+            SkyboxRt = "rbxassetid://401664929",
+            SkyboxUp = "rbxassetid://401664883"
+        },
+        ["Delta"] = {
+            SkyboxBk = "rbxassetid://117012443612361",
+            SkyboxDn = "rbxassetid://117012443612361",
+            SkyboxFt = "rbxassetid://117012443612361",
+            SkyboxLf = "rbxassetid://117012443612361",
+            SkyboxRt = "rbxassetid://117012443612361",
+            SkyboxUp = "rbxassetid://117012443612361"
+        },
+        ["Black"] = {
+            SkyboxBk = "rbxassetid://8222365457",
+            SkyboxDn = "rbxassetid://8222365457",
+            SkyboxFt = "rbxassetid://8222365457",
+            SkyboxLf = "rbxassetid://8222365457",
+            SkyboxRt = "rbxassetid://8222365457",
+            SkyboxUp = "rbxassetid://8222365457"
+        },
+        ["TrollFace"] = {
+            SkyboxBk = "rbxassetid://103891272942638",
+            SkyboxDn = "rbxassetid://103891272942638",
+            SkyboxFt = "rbxassetid://103891272942638",
+            SkyboxLf = "rbxassetid://103891272942638",
+            SkyboxRt = "rbxassetid://103891272942638",
+            SkyboxUp = "rbxassetid://103891272942638"
+        },
+        ["Purple"] = {
+            SkyboxBk = "rbxassetid://6807694157",
+            SkyboxDn = "rbxassetid://6807694157",
+            SkyboxFt = "rbxassetid://6807694157",
+            SkyboxLf = "rbxassetid://6807694157",
+            SkyboxRt = "rbxassetid://6807694157",
+            SkyboxUp = "rbxassetid://6807694157"
+        },
+        ["Skeleton"] = {
+            SkyboxBk = "rbxassetid://10180536577",
+            SkyboxDn = "rbxassetid://10180536577",
+            SkyboxFt = "rbxassetid://10180536577",
+            SkyboxLf = "rbxassetid://10180536577",
+            SkyboxRt = "rbxassetid://10180536577",
+            SkyboxUp = "rbxassetid://10180536577"
+        },
+        ["Spooky scary"] = {
+            SkyboxBk = "rbxassetid://12075892911",
+            SkyboxDn = "rbxassetid://12075892911",
+            SkyboxFt = "rbxassetid://12075892911",
+            SkyboxLf = "rbxassetid://12075892911",
+            SkyboxRt = "rbxassetid://12075892911",
+            SkyboxUp = "rbxassetid://12075892911"
+        },
+        ["Night"] = {
+            SkyboxBk = "rbxassetid://6489194051",
+            SkyboxDn = "rbxassetid://6489194051",
+            SkyboxFt = "rbxassetid://6489194051",
+            SkyboxLf = "rbxassetid://6489194051",
+            SkyboxRt = "rbxassetid://6489194051",
+            SkyboxUp = "rbxassetid://6489194051"
+        },
+        ["SpongeBob Sad"] = {
+            SkyboxBk = "rbxassetid://10729455634",
+            SkyboxDn = "rbxassetid://10729455634",
+            SkyboxFt = "rbxassetid://10729455634",
+            SkyboxLf = "rbxassetid://10729455634",
+            SkyboxRt = "rbxassetid://10729455634",
+            SkyboxUp = "rbxassetid://10729455634"
+        },
+        ["Bikini Bottom"] = { -- Новый id!
+            SkyboxBk = "rbxassetid://16631601462",
+            SkyboxDn = "rbxassetid://16631601462",
+            SkyboxFt = "rbxassetid://16631601462",
+            SkyboxLf = "rbxassetid://16631601462",
+            SkyboxRt = "rbxassetid://16631601462",
+            SkyboxUp = "rbxassetid://16631601462"
+        }
     }
 
-    -- == HIT SOUND LOGIC ==
+    -- === HIT SOUND LOGIC ===
     local hitSoundList = {
         "PlayerHit",
         "PlayerHit2",
@@ -145,11 +216,11 @@ return function(VisualTab)
     end
     game:GetService("RunService").RenderStepped:Connect(updateHitSounds)
 
-    -- == SKYBOX LOGIC ==
+    -- === SKYBOX LOGIC ===
     local Lighting = game:GetService("Lighting")
     local function setSkybox(name)
-        for _,sky in pairs(Lighting:GetChildren()) do
-            if sky:IsA("Sky") then sky:Destroy() end
+        for _,v in pairs(Lighting:GetChildren()) do
+            if v:IsA("Sky") then v:Destroy() end
         end
         local sb = skyboxes[name]
         if sb then
@@ -209,7 +280,12 @@ return function(VisualTab)
     local ambientColorPicker = ambientToggle:AddColorPicker("AmbientColor",{Default=worldVisuals.ambient,Callback=function(val)worldVisuals.ambient=val end})
     local alwaysDayToggle = WorldBox:AddToggle("AlwaysDay",{Text="Always Day",Default=worldVisuals.alwaysDay,Callback=function(val)worldVisuals.alwaysDay=val end})
     local removeFogToggle = WorldBox:AddToggle("RemoveFog",{Text="Remove Fog",Default=worldVisuals.removeFog,Callback=function(val)worldVisuals.removeFog=val end})
-    WorldBox:AddDropdown("SkyboxSelect",{Text="Skybox",Values={"Default","Spongebob","Darksky","Night Time Sky","Minecraft Sky","pink sky","Purple sky","FireWatch","c00lkidd Skybox","Nyan Cat","scary skybox"},Default="Default",Callback=function(val)worldVisuals.skybox=val; setSkybox(val) end})
+    WorldBox:AddDropdown("SkyboxSelect",{
+        Text="Skybox",
+        Values={"Default","Delta","Black","TrollFace","Purple","Skeleton","Spooky scary","Night","SpongeBob Sad","Bikini Bottom"},
+        Default="Default",
+        Callback=function(val) worldVisuals.skybox=val; setSkybox(val) end
+    })
     WorldBox:AddToggle("BulletTrace",{Text="Bullet Trace",Default=false,Callback=function(val)traceSettings.enabled=val end}):AddColorPicker("BulletTraceColor",{Default=Color3.new(0,0.4,1),Title="Bullet Trace Color",Callback=function(val)traceSettings.color=val end})
     WorldBox:AddDropdown("BulletTraceMode",{Values={"Legit","Neon"},Default="Legit",Text="Bullet Trace Mode",Callback=function(val)traceSettings.mode=val end})
     WorldBox:AddToggle("HitSound",{Text="Hit sound",Default=false,Callback=function(val)hitSoundSettings.enabled=val; updateHitSounds() end})
@@ -230,7 +306,6 @@ return function(VisualTab)
     szChamsToggle:AddColorPicker("SafeZoneChamsColor",{Default=safeZoneChamsSettings.color,Callback=function(val)safeZoneChamsSettings.color=val end})
     SafeZoneBox:AddSlider("SafeZoneChamsTransparency",{Text="Transparency",Default=safeZoneChamsSettings.transparency,Min=1,Max=100,Rounding=0,Callback=function(val)safeZoneChamsSettings.transparency=val end})
 
-    -- !!! ВАЖНО: подписка на события colorpickers только ОДИН РАЗ, после их создания !!!
     cloudsColorPicker:OnChanged(function(val)
         worldVisuals.cloudsColor = val
     end)
