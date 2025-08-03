@@ -1177,7 +1177,6 @@ local function SleepCheck(plrChar)
     end
     return false
 end
-
 ------------------------------------------------------------
 -- ESP (игроки): Box, Name, Weapon, Distance
 ------------------------------------------------------------
@@ -1202,32 +1201,32 @@ local function removeEspFor(char, esp)
     end
 end
 
--- Новый расчет бокса по всем частям тела
-local function GetFullBodyBox(char)
-    local parts = {
-        "Head", "LeftFoot", "RightFoot", "LeftHand", "RightHand",
-        "LeftLowerLeg", "RightLowerLeg", "LeftUpperArm", "RightUpperArm",
-        "Torso", "HumanoidRootPart", "LowerTorso"
-    }
-    local minY, maxY, minX, maxX = math.huge, -math.huge, math.huge, -math.huge
-    local found = false
-    for _, name in ipairs(parts) do
-        local part = char:FindFirstChild(name)
-        if part then
-            local screenPos, onscreen = camera:WorldToViewportPoint(part.Position)
-            if onscreen then
-                minY = math.min(minY, screenPos.Y)
-                maxY = math.max(maxY, screenPos.Y)
-                minX = math.min(minX, screenPos.X)
-                maxX = math.max(maxX, screenPos.X)
-                found = true
-            end
-        end
-    end
-    if not found then return end
-    local boxW = maxX - minX
-    local boxH = maxY - minY
-    return minX, minY, maxX, maxY, boxW, boxH
+-- Простой расчет бокса: только основные части
+local function SimpleBodyBox(char)
+    local head = char:FindFirstChild("Head")
+    local torso = char:FindFirstChild("Torso")
+    local leftFoot = char:FindFirstChild("LeftFoot")
+    local rightFoot = char:FindFirstChild("RightFoot")
+    if not (head and torso and leftFoot and rightFoot) then return end
+
+    -- Для верха берем голову, для низа — самую низкую ногу
+    local topWorld = head.Position
+    local bottomWorld = (leftFoot.Position.Y < rightFoot.Position.Y) and leftFoot.Position or rightFoot.Position
+
+    -- Преобразуем в экранные координаты
+    local top2d = camera:WorldToViewportPoint(topWorld)
+    local bottom2d = camera:WorldToViewportPoint(bottomWorld)
+
+    -- Ширина бокса — фиксированная или можешь поправить на свой вкус
+    local boxH = math.abs(bottom2d.Y - top2d.Y)
+    local boxW = boxH * 0.5 -- стандартная ширина (можешь сделать больше/меньше)
+
+    local left = top2d.X - boxW / 2
+    local top = top2d.Y
+    local right = top2d.X + boxW / 2
+    local bottom = bottom2d.Y
+
+    return left, top, right, bottom, boxW, boxH
 end
 
 local veryFarUpdateDelay = 0.25
@@ -1289,7 +1288,7 @@ local function CreateEsp(char)
             if tick() - lastUpdate < veryFarUpdateDelay then return end
             lastUpdate = tick()
         end
-        local left, top, right, bottom, boxW, boxH = GetFullBodyBox(char)
+        local left, top, right, bottom, boxW, boxH = SimpleBodyBox(char)
         if not left then return end
         local centerX = left + boxW / 2
         if espSettings.box then
