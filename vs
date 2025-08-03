@@ -950,39 +950,26 @@ end)
 ------------------------------------------------------------
 -- HIT SOUND
 ------------------------------------------------------------
-local hitSoundList = {
-    "PlayerHit",
-    "PlayerHit2",
-    "PlayerHit2_Muffled",
-    "PlayerHitHeadshot",
-    "PlayerHitHeadshot_Muffled",
-    "PlayerHit_Muffled"
-}
-local rustSoundId = "rbxassetid://18805676593"
+local hitSoundList = {"PlayerHit","PlayerHit2","PlayerHit2_Muffled","PlayerHitHeadshot","PlayerHitHeadshot_Muffled","PlayerHit_Muffled"}
+local hitSoundIds = {["Rust"]="rbxassetid://18805676593",["Skeet"]="rbxassetid://83717596220569",["Sonic"]="rbxassetid://6817149233",["Sonic Checkpoint"]="rbxassetid://6817150445",["Oof"]="rbxassetid://79348298352567",["Windows XP Error"]="rbxassetid://9066167010",["Punch"]="rbxassetid://9117969687",["Buble"]="rbxassetid://9114176282",["byebye"]="rbxassetid://70888261086432",["cowbell"]="rbxassetid://99351661703869"}
 local originalHitSoundIds = {}
+local soundService = game:GetService("SoundService")
 local function updateHitSounds()
-    local soundService = game:GetService("SoundService")
-    for _, name in ipairs(hitSoundList) do
+    local assetId = hitSoundIds[hitSoundSettings.soundType] or hitSoundIds["Rust"]
+    for _,name in ipairs(hitSoundList) do
         local sound = soundService:FindFirstChild(name)
         if sound and sound:IsA("Sound") then
-            if hitSoundSettings.enabled and hitSoundSettings.soundType == "Rust" then
-                if not originalHitSoundIds[name] then
-                    originalHitSoundIds[name] = sound.SoundId
-                end
-                sound.SoundId = rustSoundId
+            if hitSoundSettings.enabled and assetId then
+                if not originalHitSoundIds[name] then originalHitSoundIds[name]=sound.SoundId end
+                sound.SoundId=assetId
+                sound.Volume=1
             else
-                if originalHitSoundIds[name] then
-                    sound.SoundId = originalHitSoundIds[name]
-                    originalHitSoundIds[name] = nil
-                end
+                if originalHitSoundIds[name] then sound.SoundId=originalHitSoundIds[name] originalHitSoundIds[name]=nil end
             end
         end
     end
 end
-RunService.RenderStepped:Connect(function()
-    updateHitSounds()
-end)
-
+game:GetService("RunService").RenderStepped:Connect(updateHitSounds)
 ------------------------------------------------------------
 -- LOGS (Kill/Hit)
 ------------------------------------------------------------
