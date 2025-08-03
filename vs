@@ -58,9 +58,13 @@ return function(VisualTab)
         hand = false,
         handColor = Color3.new(1, 1, 1),
         handMat = "ForceField",
+        handOutline = false,
+        handOutlineColor = Color3.fromRGB(255,255,255),
         item = false,
         itemColor = Color3.new(1, 1, 1),
-        itemMat = "ForceField"
+        itemMat = "ForceField",
+        itemOutline = false,
+        itemOutlineColor = Color3.fromRGB(255,255,255)
     }
     local traceSettings = {
         enabled = false,
@@ -296,10 +300,15 @@ return function(VisualTab)
     -- CHAMS UI
     local handChamsToggle = ChamsBox:AddToggle("HandChams",{Text="Hand Chams",Default=chamsSettings.hand,Callback=function(val)chamsSettings.hand=val end})
     handChamsToggle:AddColorPicker("HandChamsColor",{Default=chamsSettings.handColor,Callback=function(val)chamsSettings.handColor=val end})
-    ChamsBox:AddDropdown("HandChamsMat",{Values={"ForceField","Neon"},Default="ForceField",Text="Hand Material",Callback=function(val)chamsSettings.handMat=val end})
+    ChamsBox:AddDropdown("HandChamsMat",{Values={"ForceField","Neon","Outline"},Default="ForceField",Text="Hand Material",Callback=function(val)chamsSettings.handMat=val end})
+    local handOutlineToggle = ChamsBox:AddToggle("HandOutlineChams",{Text="Hand Outline Chams",Default=chamsSettings.handOutline,Callback=function(val)chamsSettings.handOutline=val end})
+    handOutlineToggle:AddColorPicker("HandOutlineChamsColor",{Default=chamsSettings.handOutlineColor,Callback=function(val)chamsSettings.handOutlineColor=val end})
+
     local itemChamsToggle = ChamsBox:AddToggle("ItemChams",{Text="Item Chams",Default=chamsSettings.item,Callback=function(val)chamsSettings.item=val end})
     itemChamsToggle:AddColorPicker("ItemChamsColor",{Default=chamsSettings.itemColor,Callback=function(val)chamsSettings.itemColor=val end})
-    ChamsBox:AddDropdown("ItemChamsMat",{Values={"ForceField","Neon"},Default="ForceField",Text="Item Material",Callback=function(val)chamsSettings.itemMat=val end})
+    ChamsBox:AddDropdown("ItemChamsMat",{Values={"ForceField","Neon","Outline"},Default="ForceField",Text="Item Material",Callback=function(val)chamsSettings.itemMat=val end})
+    local itemOutlineToggle = ChamsBox:AddToggle("ItemOutlineChams",{Text="Item Outline Chams",Default=chamsSettings.itemOutline,Callback=function(val)chamsSettings.itemOutline=val end})
+    itemOutlineToggle:AddColorPicker("ItemOutlineChamsColor",{Default=chamsSettings.itemOutlineColor,Callback=function(val)chamsSettings.itemOutlineColor=val end})
 
     -- SAFE ZONE CHAMS UI
     local szChamsToggle = SafeZoneBox:AddToggle("SafeZoneChams",{Text="Safe zone chams",Default=safeZoneChamsSettings.enabled,Callback=function(val)safeZoneChamsSettings.enabled=val end})
@@ -813,22 +822,101 @@ print("[UI] Конец блока подключения UI событий (Worl
 
 -- === CHAMS (Руки и предметы) ===
 local originalHandProps, originalItemProps = {}, {}
+local handOutlines = {}
+local itemOutlines = {}
+
+local function drawOutlineForPart(part, outlineColor, thickness)
+    -- Remove previous outline if exists
+    if handOutlines[part] then
+        for _, outline in ipairs(handOutlines[part]) do
+            outline.Visible = false
+            outline:Remove()
+        end
+        handOutlines[part] = nil
+    end
+    -- Get part screen corners
+    local Camera = workspace.CurrentCamera
+    local cf, size = part.CFrame, part.Size
+    local corners = {
+        cf * Vector3.new(-size.X/2, -size.Y/2, -size.Z/2),
+        cf * Vector3.new(size.X/2, -size.Y/2, -size.Z/2),
+        cf * Vector3.new(size.X/2, size.Y/2, -size.Z/2),
+        cf * Vector3.new(-size.X/2, size.Y/2, -size.Z/2),
+        cf * Vector3.new(-size.X/2, -size.Y/2, size.Z/2),
+        cf * Vector3.new(size.X/2, -size.Y/2, size.Z/2),
+        cf * Vector3.new(size.X/2, size.Y/2, size.Z/2),
+        cf * Vector3.new(-size.X/2, size.Y/2, size.Z/2),
+    }
+    local outlines = {}
+    for i = 1, 4 do
+        local line = Drawing.new("Line")
+        line.Color = outlineColor
+        line.Thickness = thickness
+        line.Visible = true
+        line.From = Vector2.new(Camera:WorldToViewportPoint(corners[i]).X, Camera:WorldToViewportPoint(corners[i]).Y)
+        line.To = Vector2.new(Camera:WorldToViewportPoint(corners[i%4+1]).X, Camera:WorldToViewportPoint(corners[i%4+1]).Y)
+        table.insert(outlines, line)
+    end
+    for i = 5, 8 do
+        local line = Drawing.new("Line")
+        line.Color = outlineColor
+        line.Thickness = thickness
+        line.Visible = true
+        line.From = Vector2.new(Camera:WorldToViewportPoint(corners[i]).X, Camera:WorldToViewportPoint(corners[i]).Y)
+        line.To = Vector2.new(Camera:WorldToViewportPoint(corners[((i-1)%4)+5]).X, Camera:WorldToViewportPoint(corners[((i-1)%4)+5]).Y)
+        table.insert(outlines, line)
+    end
+    for i = 1, 4 do
+        local line = Drawing.new("Line")
+        line.Color = outlineColor
+        line.Thickness = thickness
+        line.Visible = true
+        line.From = Vector2.new(Camera:WorldToViewportPoint(corners[i]).X, Camera:WorldToViewportPoint(corners[i]).Y)
+        line.To = Vector2.new(Camera:WorldToViewportPoint(corners[i+4]).X, Camera:WorldToViewportPoint(corners[i+4]).Y)
+        table.insert(outlines, line)
+    end
+    handOutlines[part] = outlines
+end
 
 local function applyItemChams(obj)
     local id = obj:GetDebugId()
     if obj.Name == "Arrow" or obj.Name == "Bullet" then return end
     if chamsSettings.item then
-        if not originalItemProps[id] then
-            originalItemProps[id] = {Material=obj.Material, Color=obj.Color}
+        if chamsSettings.itemMat == "Outline" and chamsSettings.itemOutline then
+            if not itemOutlines[obj] then
+                itemOutlines[obj] = {}
+            end
+            drawOutlineForPart(obj, chamsSettings.itemOutlineColor, 2.5)
+            obj.Transparency = 0.6
+        else
+            if not originalItemProps[id] then
+                originalItemProps[id] = {Material=obj.Material, Color=obj.Color, Transparency=obj.Transparency}
+            end
+            obj.Material = Enum.Material[chamsSettings.itemMat]
+            obj.Color = chamsSettings.itemColor
+            obj.Transparency = 0
+            if itemOutlines[obj] then
+                for _, outline in ipairs(itemOutlines[obj]) do
+                    outline.Visible = false
+                    outline:Remove()
+                end
+                itemOutlines[obj] = nil
+            end
         end
-        obj.Material = Enum.Material[chamsSettings.itemMat]
-        obj.Color = chamsSettings.itemColor
     else
         local old = originalItemProps[id]
         if old then
             obj.Material = old.Material
             obj.Color = old.Color
+            obj.Transparency = old.Transparency or 0
             originalItemProps[id] = nil
+        end
+        if itemOutlines[obj] then
+            for _, outline in ipairs(itemOutlines[obj]) do
+                outline.Visible = false
+                outline:Remove()
+            end
+            itemOutlines[obj] = nil
         end
     end
 end
@@ -902,17 +990,38 @@ local function updateHandChams()
         if hand and hand:IsA("MeshPart") then
             local id = hand:GetDebugId()
             if chamsSettings.hand then
-                if not originalHandProps[id] then
-                    originalHandProps[id] = {Material=hand.Material, Color=hand.Color}
+                if chamsSettings.handMat == "Outline" and chamsSettings.handOutline then
+                    drawOutlineForPart(hand, chamsSettings.handOutlineColor, 2.5)
+                    hand.Transparency = 0.6
+                else
+                    if not originalHandProps[id] then
+                        originalHandProps[id] = {Material=hand.Material, Color=hand.Color, Transparency=hand.Transparency}
+                    end
+                    hand.Material = Enum.Material[chamsSettings.handMat]
+                    hand.Color = chamsSettings.handColor
+                    hand.Transparency = 0
+                    if handOutlines[hand] then
+                        for _, outline in ipairs(handOutlines[hand]) do
+                            outline.Visible = false
+                            outline:Remove()
+                        end
+                        handOutlines[hand] = nil
+                    end
                 end
-                hand.Material = Enum.Material[chamsSettings.handMat]
-                hand.Color = chamsSettings.handColor
             else
                 local old = originalHandProps[id]
                 if old then
                     hand.Material = old.Material
                     hand.Color = old.Color
+                    hand.Transparency = old.Transparency or 0
                     originalHandProps[id] = nil
+                end
+                if handOutlines[hand] then
+                    for _, outline in ipairs(handOutlines[hand]) do
+                        outline.Visible = false
+                        outline:Remove()
+                    end
+                    handOutlines[hand] = nil
                 end
             end
         end
@@ -925,17 +1034,38 @@ local function updateHandChams()
             if limb and limb:IsA("MeshPart") then
                 local id = limb:GetDebugId()
                 if chamsSettings.hand then
-                    if not originalHandProps[id] then
-                        originalHandProps[id] = {Material=limb.Material, Color=limb.Color}
+                    if chamsSettings.handMat == "Outline" and chamsSettings.handOutline then
+                        drawOutlineForPart(limb, chamsSettings.handOutlineColor, 2.5)
+                        limb.Transparency = 0.6
+                    else
+                        if not originalHandProps[id] then
+                            originalHandProps[id] = {Material=limb.Material, Color=limb.Color, Transparency=limb.Transparency}
+                        end
+                        limb.Material = Enum.Material[chamsSettings.handMat]
+                        limb.Color = chamsSettings.handColor
+                        limb.Transparency = 0
+                        if handOutlines[limb] then
+                            for _, outline in ipairs(handOutlines[limb]) do
+                                outline.Visible = false
+                                outline:Remove()
+                            end
+                            handOutlines[limb] = nil
+                        end
                     end
-                    limb.Material = Enum.Material[chamsSettings.handMat]
-                    limb.Color = chamsSettings.handColor
                 else
                     local old = originalHandProps[id]
                     if old then
                         limb.Material = old.Material
                         limb.Color = old.Color
+                        limb.Transparency = old.Transparency or 0
                         originalHandProps[id] = nil
+                    end
+                    if handOutlines[limb] then
+                        for _, outline in ipairs(handOutlines[limb]) do
+                            outline.Visible = false
+                            outline:Remove()
+                        end
+                        handOutlines[limb] = nil
                     end
                 end
             end
@@ -944,7 +1074,6 @@ local function updateHandChams()
 end
 
 RunService.RenderStepped:Connect(function() updateHandChams() end)
-
 ------------------------------------------------------------
 -- BULLET TRACE
 ------------------------------------------------------------
