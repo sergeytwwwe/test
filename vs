@@ -369,11 +369,11 @@ local Lighting = game:GetService("Lighting")
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
--- === Кэш стрелок и текстов для offscreen
+-- === Offscreen ESP throttle/лимит ===
 local offscreenArrows, offscreenOutlines, offscreenLabels = {}, {}, {}
 local lastOffscreenUpdate = 0
-local MAX_OFFSCREEN = 15
-local OFFSCREEN_ESP_INTERVAL = 0.07
+local OFFSCREEN_ESP_INTERVAL = 0.08
+local MAX_OFFSCREEN = 10
 
 local function getScreenCenter()
     local v = Camera.ViewportSize
@@ -479,6 +479,7 @@ local function updateOffscreenESP()
             if offscreenLabels[i] then offscreenLabels[i].Visible = false end
         end
     end
+
     -- остальные стрелки скрыть
     for i = #targets+1, #offscreenArrows do
         if offscreenArrows[i] then offscreenArrows[i].Visible = false end
@@ -841,10 +842,12 @@ local function updateHandChams()
     end
 end
 
-game:GetService("RunService").RenderStepped:Connect(function()
+RunService.RenderStepped:Connect(function()
     updateItemChams()
     updateHandChams()
 end)
+
+-- конец chams, дальше идёт BULLET TRACE
 ------------------------------------------------------------
 -- BULLET TRACE
 ------------------------------------------------------------
