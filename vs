@@ -371,68 +371,9 @@ local LocalPlayer = Players.LocalPlayer
 
 -- === Кэш стрелок и текстов для offscreen
 local offscreenArrows, offscreenOutlines, offscreenLabels = {}, {}, {}
-
--- link to global PlayerTable from visual ESP
-local PlayerTable = nil
-for _, v in pairs(getgc(true)) do
-    if typeof(v) == "function" and islclosure(v) then
-        local info = debug.getinfo(v)
-        if info and tostring(info.name) == "updatePlayers" then
-            local ups = debug.getupvalues(v)
-            if type(ups[1]) == "table" and next(ups[1]) then
-                PlayerTable = ups[1]
-                break
-            end
-        end
-    end
-end
-
-local function SleepCheck(model)
-    local ac = model:FindFirstChild("AnimationController")
-    if not ac then return false end
-    for _, track in pairs(ac:GetPlayingAnimationTracks()) do
-        if track.IsPlaying and track.Animation.AnimationId == "rbxassetid://13280887764" then
-            return true
-        end
-    end
-    return false
-end
-
-local function GetPlayerNameForOffscreen(model)
-    local head = model:FindFirstChild("Head")
-    if head and head:FindFirstChild("Nametag") and head.Nametag:FindFirstChild("tag") then
-        local tag = head.Nametag.tag
-        if tag.Text == "Shylou2644" then return "AI" end
-        return tag.Text
-    end
-    return "Player"
-end
-
-local function GetPlayerWeaponType(char)
-    local head = char:FindFirstChild("Head")
-    if head and head:FindFirstChild("Nametag") and head.Nametag:FindFirstChild("tag") then
-        local tag = head.Nametag.tag
-        if tag.Text == "Shylou2644" then
-            local handModel = char:FindFirstChild("HandModel")
-            if handModel and handModel:GetAttribute("name") then
-                return tostring(handModel:GetAttribute("name"))
-            else
-                return "None"
-            end
-        end
-    end
-    if not PlayerTable then return "None" end
-    for _, entry in pairs(PlayerTable) do
-        if entry and entry.model == char then
-            if entry.equippedItem and entry.equippedItem.type and entry.equippedItem.type ~= "" then
-                return tostring(entry.equippedItem.type)
-            else
-                return "None"
-            end
-        end
-    end
-    return "None"
-end
+local lastOffscreenUpdate = 0
+local MAX_OFFSCREEN = 15
+local OFFSCREEN_ESP_INTERVAL = 0.07
 
 local function getScreenCenter()
     local v = Camera.ViewportSize
@@ -447,38 +388,7 @@ local function lerpColor(a, b, t)
     )
 end
 
-local function getOffscreenTargets()
-    local result = {}
-    for _, model in pairs(workspace:GetChildren()) do
-        if model:IsA("Model") and model ~= LocalPlayer.Character then
-            local head = model:FindFirstChild("Head")
-            local root = model:FindFirstChild("HumanoidRootPart")
-            if head and root then
-                local dist = (Camera.CFrame.Position - root.Position).Magnitude
-                if dist <= offscreenSettings.maxDist then
-                    local name = GetPlayerNameForOffscreen(model)
-                    local isAI = (offscreenSettings.aicheck and name == "AI")
-                    local isSleep = (offscreenSettings.sleepcheck and SleepCheck(model))
-                    if not isAI and not isSleep then
-                        local vec, onScreen = Camera:WorldToViewportPoint(root.Position)
-                        if not onScreen or vec.Z < 0 then
-                            table.insert(result, {
-                                model = model,
-                                position = root.Position,
-                                dist = dist,
-                                name = name
-                            })
-                        end
-                    end
-                end
-            end
-        end
-    end
-    table.sort(result, function(a, b) return a.dist < b.dist end)
-    return result
-end
-
-RunService.RenderStepped:Connect(function()
+local function updateOffscreenESP()
     if not offscreenSettings.enabled or not offscreenSettings.arrow then
         for i, obj in pairs(offscreenArrows) do if obj then obj.Visible = false end end
         for i, obj in pairs(offscreenOutlines) do if obj then obj.Visible = false end end
@@ -494,7 +404,8 @@ RunService.RenderStepped:Connect(function()
     end
 
     local cx, cy = getScreenCenter()
-    for i, target in ipairs(targets) do
+    for i = 1, math.min(#targets, MAX_OFFSCREEN) do
+        local target = targets[i]
         local camPos = Camera.CFrame.Position
         local dir = (target.position - camPos).Unit
         local look = Camera.CFrame.LookVector
@@ -509,15 +420,15 @@ RunService.RenderStepped:Connect(function()
         local arrowSize = offscreenSettings.arrowSize
 
         -- Black outline
-        if not offscreenOutlines[i] then
-            local outline = Drawing.new("Triangle")
+        local outline = offscreenOutlines[i]
+        if not outline then
+            outline = Drawing.new("Triangle")
             outline.Filled = true
             outline.Thickness = 2.5
             outline.Color = Color3.new(0,0,0)
             outline.Transparency = 0.85
             offscreenOutlines[i] = outline
         end
-        local outline = offscreenOutlines[i]
         local outlineSize = arrowSize + 2.3
         outline.PointA = Vector2.new(posX + math.sin(angle) * outlineSize, posY - math.cos(angle) * outlineSize)
         outline.PointB = Vector2.new(posX + math.sin(angle + math.rad(120)) * outlineSize, posY - math.cos(angle + math.rad(120)) * outlineSize)
@@ -525,13 +436,13 @@ RunService.RenderStepped:Connect(function()
         outline.Visible = true
 
         -- Arrow itself
-        if not offscreenArrows[i] then
-            local arrow = Drawing.new("Triangle")
+        local arrow = offscreenArrows[i]
+        if not arrow then
+            arrow = Drawing.new("Triangle")
             arrow.Filled = true
             arrow.Thickness = 1.3
             offscreenArrows[i] = arrow
         end
-        local arrow = offscreenArrows[i]
         local tip = Vector2.new(posX + math.sin(angle) * arrowSize, posY - math.cos(angle) * arrowSize)
         local left = Vector2.new(posX + math.sin(angle + math.rad(120)) * arrowSize, posY - math.cos(angle + math.rad(120)) * arrowSize)
         local rightpt = Vector2.new(posX + math.sin(angle - math.rad(120)) * arrowSize, posY - math.cos(angle - math.rad(120)) * arrowSize)
@@ -544,25 +455,21 @@ RunService.RenderStepped:Connect(function()
 
         -- Текстовая подпись
         local lblStr = ""
-        if offscreenSettings.name then
-            lblStr = target.name
-        end
-        if offscreenSettings.distance then
-            lblStr = lblStr .. ((lblStr~="") and " [" or "[") .. tostring(math.floor(target.dist)) .. "m]"
-        end
+        if offscreenSettings.name then lblStr = target.name end
+        if offscreenSettings.distance then lblStr = lblStr .. ((lblStr~="") and " [" or "[") .. tostring(math.floor(target.dist)) .. "m]" end
         if offscreenSettings.weapon then
             local weap = GetPlayerWeaponType(target.model)
             lblStr = lblStr .. "\n" .. (weap or "None")
         end
         if lblStr ~= "" then
-            if not offscreenLabels[i] then
-                local label = Drawing.new("Text")
+            local label = offscreenLabels[i]
+            if not label then
+                label = Drawing.new("Text")
                 label.Outline = true
                 label.OutlineColor = outlineColor
                 label.Center = true
                 offscreenLabels[i] = label
             end
-            local label = offscreenLabels[i]
             label.Visible = true
             label.Text = lblStr
             label.Size = offscreenSettings.textSize or 14
@@ -572,7 +479,21 @@ RunService.RenderStepped:Connect(function()
             if offscreenLabels[i] then offscreenLabels[i].Visible = false end
         end
     end
+    -- остальные стрелки скрыть
+    for i = #targets+1, #offscreenArrows do
+        if offscreenArrows[i] then offscreenArrows[i].Visible = false end
+        if offscreenOutlines[i] then offscreenOutlines[i].Visible = false end
+        if offscreenLabels[i] then offscreenLabels[i].Visible = false end
+    end
+end
+
+RunService.RenderStepped:Connect(function()
+    if tick() - lastOffscreenUpdate > OFFSCREEN_ESP_INTERVAL then
+        lastOffscreenUpdate = tick()
+        updateOffscreenESP()
+    end
 end)
+
 ------------------------------------------------------------
 -- WORLD VISUALS LOGIC (No Grass, No Leaves, Clouds, Ambient, Always Day, Remove Fog, Skybox)
 ------------------------------------------------------------
@@ -644,7 +565,7 @@ local function setClouds(enabled, color)
     end
 end
 
--- Ambient logic (точно как в visual esp)
+-- Ambient logic
 local oldAmbient, oldBrightness, oldOutdoorAmbient, ambientApplyConn = nil, nil, nil, nil
 local function setAmbient(enabled, color)
     if enabled then
@@ -671,6 +592,7 @@ local function setAmbient(enabled, color)
         oldAmbient, oldBrightness, oldOutdoorAmbient = nil, nil, nil
     end
 end
+
 -- Always Day
 local oldTime, alwaysDayConn = nil, nil
 local function setAlwaysDay(enabled)
@@ -735,92 +657,11 @@ local function setSkybox(name)
     end
 end
 
-print("[UI] Начинается блок подключения UI событий (World Visuals)")
-
--- ЧЕКБОКСЫ: только boolean
-print("[LOG] grassToggle:SetValue - type:", typeof(worldVisuals.noGrass), "value:", worldVisuals.noGrass)
-grassToggle:SetValue(worldVisuals.noGrass)
-grassToggle:OnChanged(function(val)
-    print("[LOG] grassToggle:OnChanged, val:", val)
-    worldVisuals.noGrass = val
-    setGrassEnabled(not val)
-end)
-
-print("[LOG] leavesToggle:SetValue - type:", typeof(worldVisuals.noLeaves), "value:", worldVisuals.noLeaves)
-leavesToggle:SetValue(worldVisuals.noLeaves)
-leavesToggle:OnChanged(function(val)
-    print("[LOG] leavesToggle:OnChanged, val:", val)
-    worldVisuals.noLeaves = val
-    leavesWatcher()
-end)
-
-print("[LOG] cloudsToggle:SetValue - type:", typeof(worldVisuals.clouds), "value:", worldVisuals.clouds)
-cloudsToggle:SetValue(worldVisuals.clouds)
-cloudsToggle:OnChanged(function(val)
-    print("[LOG] cloudsToggle:OnChanged, val:", val, "worldVisuals.cloudsColor:", worldVisuals.cloudsColor)
-    worldVisuals.clouds = val
-    setClouds(val, worldVisuals.cloudsColor)
-end)
-
-print("[LOG] ambientToggle:SetValue - type:", typeof(worldVisuals.ambientEnabled), "value:", worldVisuals.ambientEnabled)
-ambientToggle:SetValue(worldVisuals.ambientEnabled)
-ambientToggle:OnChanged(function(val)
-    print("[LOG] ambientToggle:OnChanged, val:", val, "worldVisuals.ambient:", worldVisuals.ambient)
-    worldVisuals.ambientEnabled = val
-    -- ВАЖНО: только Color3!
-    if typeof(worldVisuals.ambient) ~= "Color3" then
-        print("[ERROR] worldVisuals.ambient не Color3! Значение:", worldVisuals.ambient)
-        worldVisuals.ambient = Color3.fromRGB(120,120,120)
-    end
-    setAmbient(val, worldVisuals.ambient)
-end)
-
-print("[LOG] alwaysDayToggle:SetValue - type:", typeof(worldVisuals.alwaysDay), "value:", worldVisuals.alwaysDay)
-alwaysDayToggle:SetValue(worldVisuals.alwaysDay)
-alwaysDayToggle:OnChanged(function(val)
-    print("[LOG] alwaysDayToggle:OnChanged, val:", val)
-    worldVisuals.alwaysDay = val
-    setAlwaysDay(val)
-end)
-
-print("[LOG] removeFogToggle:SetValue - type:", typeof(worldVisuals.removeFog), "value:", worldVisuals.removeFog)
-removeFogToggle:SetValue(worldVisuals.removeFog)
-removeFogToggle:OnChanged(function(val)
-    print("[LOG] removeFogToggle:OnChanged, val:", val)
-    worldVisuals.removeFog = val
-    setRemoveFog(val)
-end)
-
-print("[LOG] cloudsColorPicker:OnChanged will be set")
-cloudsColorPicker:OnChanged(function(val)
-    print("[LOG] cloudsColorPicker:OnChanged, val:", val)
-    worldVisuals.cloudsColor = val
-    if worldVisuals.clouds then
-        setClouds(true, val)
-    end
-end)
-
-print("[LOG] ambientColorPicker:OnChanged will be set")
-ambientColorPicker:OnChanged(function(val)
-    print("[LOG] ambientColorPicker:OnChanged, val:", val)
-    worldVisuals.ambient = val
-    -- ВАЖНО: только Color3!
-    if typeof(val) ~= "Color3" then
-        print("[ERROR] ambientColorPicker вернул не Color3! Значение:", val)
-        worldVisuals.ambient = Color3.fromRGB(120,120,120)
-    end
-    if worldVisuals.ambientEnabled then
-        setAmbient(true, worldVisuals.ambient)
-    end
-end)
-
-print("[UI] Конец блока подключения UI событий (World Visuals)")
 ------------------------------------------------------------
 -- ЧАСТЬ 3. ЛОГИКА: CHAMS, Bullet Trace, HitSound, Logs, SafeZone Chams, очистка при выгрузке
 ------------------------------------------------------------
 
 -- === CHAMS (Руки и предметы) ===
--- === CHAMS (Руки и предметы, один colorpicker на всё) ===
 local originalHandProps, originalItemProps = {}, {}
 
 local function applyHighlight(part, color)
@@ -1004,7 +845,6 @@ game:GetService("RunService").RenderStepped:Connect(function()
     updateItemChams()
     updateHandChams()
 end)
--- конец chams, дальше идёт BULLET TRACE
 ------------------------------------------------------------
 -- BULLET TRACE
 ------------------------------------------------------------
